@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% from "_macros.html" import score_chip, not_built, icon_warn %}
+{% block title %}{{ d.lake.code }} {{ d.lake.name }}{% endblock %}
+{% block main %}
+{% set l = d.lake %}{% set s = l.summary %}
+<div class="breadcrumb"><a href="/">Dashboard</a> / <span class="mono">{{ l.code }}</span></div>
+
+<section class="card">
+  <div class="card-head">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <h1 style="margin:0"><span class="mono">{{ l.code }}</span> {{ l.name }}</h1>
+      {{ score_chip(d.score) }}
+      {% if l.data_gap %}<span class="chip muted" title="No usable observation in {{ stale_days }} days">Data gap</span>{% endif %}
+    </div>
+  </div>
+  <div class="grid four" style="margin-top:6px">
+    <div><div class="note" style="color:var(--muted);font-size:13.5px">Latest usable area</div>
+      <div style="font-size:22px;font-weight:600" class="mono">{{ s.latest_ok_measurement.extent_ha | ha if s.latest_ok_measurement else "None yet" }}</div>
+      <div style="color:var(--muted);font-size:13.5px">{% if s.latest_ok_measurement %}{{ s.latest_ok_measurement.acquired_at | date }}, {{ s.days_since_last_ok }} days ago{% endif %}</div></div>
+    <div><div style="color:var(--muted);font-size:13.5px">Latest scene</div>
+      <div style="font-size:22px;font-weight:600">{{ s.latest_scene.acquired_at | date if s.latest_scene else "None" }}</div>
+      <div style="color:var(--muted);font-size:13.5px">{% if s.latest_scene %}{{ "too cloudy, not downloaded" if s.latest_scene.too_cloudy else (s.latest_scene.measurement_status or "").replace("_", " ") }}{% endif %}</div></div>
+    <div><div style="color:var(--muted);font-size:13.5px">Scenes recorded</div>
+      <div style="font-size:22px;font-weight:600" class="mono">{{ s.counts.scenes }}</div>
+      <div style="color:var(--muted);font-size:13.5px">{{ s.counts.measured_ok }} usable, {{ s.counts.insufficient_observation }} refused, {{ s.counts.too_cloudy }} too cloudy</div></div>
+    <div><div style="color:var(--muted);font-size:13.5px">Settings</div>
+      <div style="font-size:14px;margin-top:4px"><span class="mono">{{ "%.5f" | format(l.centre_lat) }} N, {{ "%.5f" | format(l.centre_lon) }} E</span><br>
+        window {{ "%.0f" | format(l.boundary_radius_m) }} m, growth limit {{ "%.0f" | format(l.growth_distance_limit_m) }} m</div></div>
+  </div>
+</section>
+
+<div class="grid two mt">
+  <section class="card">
+    <div class="card-head">
+      <h2 style="margin:0">Lake extent (hectares)</h2>
+      <span class="segmented">
+        {% for key, label in [("12m", "12 months"), ("24m", "24 months"), ("all", "All")] %}
+        <a href="?range={{ key }}" class="{{ 'on' if d.range_key == key }}">{{ label }}</a>
+        {% endfor %}
+      </span>
+    </div>
+    <div class="legend">
+      <span><i style="background:#1e4e8c"></i>Sentinel-2 optical, usable</span>
+      <span><i class="dash" style="background:#5b6470"></i>Seasonal baseline (where scored)</span>
+      <span><i class="bar" style="background:#1e4e8c"></i><i class="bar" style="background:#b08a2e"></i><i class="bar" style="background:#a7b0ba"></i>Scenes: measured, refused, too cloudy</span>
+    </div>
+    {% if d.chart %}{{ d.chart | safe }}{% else %}<p>No scenes recorded for this lake yet.</p>{% endif %}
+    <p class="footnote">{{ d.chart_start | date }} to {{ d.chart_end | date }}: {{ d.ok_in_range }} usable measurements.
+      Points more than 45 days apart are not joined: a gap is a gap, not a trend. Sentinel-1 radar is not part of this build.</p>
+  </section>
+
+  <section class="card">
+    <h2>How the latest score was made</h2>
+    {% if d.score is none %}
+      <p>No risk score has been computed for this lake yet.</p>
+    {% else %}
+      <dl class="kv">
+        <dt>Scene</dt><dd>{{ d.score.acquired_at | date }}</dd>
+        <dt>Measured area</dt><dd>{{ d.score.extent_ha | ha }}</dd>
+        <dt>Earlier {{ d.score.acquired_at | month }} values</dt><dd>{{ d.score_inputs.count }} from {{ d.score_inputs.years | length }} year{{ "s" if d.score_inputs.years | length != 1 }}</dd>
+        {% if d.score.status == 'ok' %}
+        <dt>Seasonal baseline</dt><dd>{{ d.score.baseline_ha | ha }}</dd>
+        <dt>Deviation score</dt><dd>{{ d.score.deviation_score | score }}</dd>
+        {% else %}
+        <dt>Result</dt><dd>Insufficient history</dd>
+        {% endif %}
+      </dl>
+      <p class="footnote">
+      {% if d.score.status == 'ok' %}
+        Baseline = mean of the earlier values for this calendar month; score = (area − baseline) ÷ their standard deviation.
+        It is a statistical deviation, not a danger level or a probability.
+      {% else %}
+        A score needs at least 5 earlier values for this calendar month from at least 2 different years. With fewer, "normal" cannot be estimated.
+      {% endif %}
+      </p>
+    {% endif %}
+  </section>
+</div>
+
+<div class="grid two mt">
+  <section class="card">
+    <h2>Latest usable image</h2>
+    {% if d.image is none %}
+      <p>No usable image yet.</p>
+    {% elif not d.image.available %}
+      <div class="banner warn">{{ icon_warn() }}<div>The image file for {{ d.image.acquired_at | date }} is not on this machine
+        (<span class="mono">{{ d.image.file_path }}</span>). Backfill images are kept only on the developer's laptop.</div></div>
+    {% else %}
+      <img class="scene-img" src="/lakes/{{ l.code }}/latest-image.png" alt="Sentinel-2 true colour, {{ d.image.acquired_at | date }}, with the measured lake outline">
+      <p class="footnote">Sentinel-2 true colour, {{ d.image.acquired_at | date }}. Yellow outline: the lake region, recomputed from the stored file with the
+        same measurement code; stored area {{ d.image.extent_ha | ha }}.</p>
+    {% endif %}
+  </section>
+  <div class="grid" style="grid-template-columns:1fr 1fr;align-content:start">
+    {{ not_built("Dam and glacier") }}
+    {{ not_built("Terrain above the lake") }}
+    {{ not_built("Recent weather") }}
+    {{ not_built("Sentinel-1 radar") }}
+  </div>
+</div>
+
+<section class="card table-card mt">
+  <h2>Observation log</h2>
+  <table>
+    <tr><th>Date</th><th>Sensor</th><th class="num">Cloud over lake</th><th class="num">Extent</th><th>Quality</th><th>Risk</th></tr>
+    {% for r in d.log_rows %}
+    {% set q = quality(r) %}
+    <tr class="{{ 'dim' if q[0] != 'ok' }}">
+      <td class="mono">{{ r.acquired_at | date }}</td>
+      <td>Sentinel-2 optical</td>
+      <td class="num">{{ "%.1f%%" | format(r.cloud_fraction) if r.cloud_fraction is not none else "no valid pixels" }}</td>
+      <td class="num">{{ r.extent_ha | ha }}</td>
+      <td><span class="chip {{ q[0] }}">{{ q[1] }}</span></td>
+      <td>{% if r.risk_status == 'ok' %}<span class="mono">{{ r.deviation_score | score }}</span>{% elif r.risk_status == 'insufficient_history' %}<span style="color:var(--muted)">insufficient history</span>{% else %}—{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <div class="pager">
+    Page {{ d.page }} of {{ d.pages }} ({{ d.scene_count }} scenes, newest first)
+    {% if d.page > 1 %}<a href="?range={{ d.range_key }}&page={{ d.page - 1 }}">‹ Newer</a>{% endif %}
+    {% if d.page < d.pages %}<a href="?range={{ d.range_key }}&page={{ d.page + 1 }}">Older ›</a>{% endif %}
+  </div>
+  <p class="footnote" style="padding:0 20px 16px">"Refused by quality checks": centre not water, cloud or snow/ice touching the lake, or the lake cut off at the window edge.
+    The exact reason for each scene is in that run's log file (logs/runs/).</p>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% from "_macros.html" import score_chip, icon_info, icon_warn, icon_error %}
+{% block title %}Dashboard{% endblock %}
+{% block main %}
+<div class="page-head">
+  <h1>Dashboard</h1>
+  <span class="meta">
+    {% if d.latest_run %}Last pipeline run {{ d.latest_run.started_at | pkt }}{% else %}No pipeline run recorded{% endif %}
+  </span>
+</div>
+
+{% if d.stale_lakes %}
+<div class="banner warn">{{ icon_warn() }}
+  <div>No usable observation in the last {{ stale_days }} days for {{ d.stale_lakes | length }} of {{ d.lakes | length }} lakes
+  ({% for l in d.stale_lakes %}{{ l.name }}{{ ", " if not loop.last }}{% endfor %}). Cloud, snow and ice block optical measurement for long stretches, especially from October to May.</div>
+</div>
+{% endif %}
+{% if d.latest_run and d.latest_run.errors %}
+<div class="banner error">{{ icon_error() }}
+  <div><strong>The latest pipeline run (run {{ d.latest_run.id }}) recorded an error.</strong>
+  <span class="mono">{{ d.latest_run.errors.splitlines()[0] }}</span></div>
+</div>
+{% endif %}
+
+<div class="grid kpis">
+  <div class="card kpi"><div class="label">Lakes monitored</div>
+    <div class="value">{{ d.lakes | length }}</div>
+    <div class="note">{% for l in d.lakes %}{{ l.name }}{{ ", " if not loop.last }}{% endfor %}</div></div>
+  <div class="card kpi"><div class="label">Scenes recorded</div>
+    <div class="value">{{ d.totals.scene }}</div>
+    <div class="note">{% if d.first_scene %}{{ d.first_scene | date }} to {{ d.last_scene | date }}{% else %}none yet{% endif %}</div></div>
+  <div class="card kpi"><div class="label">Too cloudy for optical</div>
+    <div class="value">{% if d.too_cloudy_pct is not none %}{{ "%.0f" | format(d.too_cloudy_pct) }}%{% else %}—{% endif %}</div>
+    <div class="note">{{ d.totals.too_cloudy }} of {{ d.totals.scene }} scenes: over 10% cloud on the lake</div></div>
+  <div class="card kpi"><div class="label">Usable measurements</div>
+    <div class="value">{{ d.measured_ok }}</div>
+    <div class="note">of {{ d.totals.measurement }} downloaded scenes passed every check</div></div>
+  <div class="card kpi"><div class="label">Days since a usable image</div>
+    <div class="value">{% if d.freshest %}{{ d.freshest.summary.days_since_last_ok }}{% else %}—{% endif %}</div>
+    <div class="note">{% if d.freshest %}{{ d.freshest.name }}, {{ d.freshest.summary.latest_ok_measurement.acquired_at | date }}{% else %}no usable image yet{% endif %}</div></div>
+</div>
+
+<div class="grid two">
+  <section class="card">
+    <div class="card-head"><h2>Monitored lakes</h2></div>
+    {% if d.map_svg %}{{ d.map_svg | safe }}{% endif %}
+    <div class="legend" style="margin-top:10px">
+      <span><i style="background:#1e4e8c"></i>Usable image in the last {{ stale_days }} days</span>
+      <span><i style="background:#fff;border:2px dashed #5b6470"></i>Data gap: none in {{ stale_days }} days</span>
+    </div>
+    <p class="footnote">Real lake centres on a latitude/longitude grid. No basemap: it would need an internet connection.</p>
+  </section>
+
+  <section class="card">
+    <h2>Lakes</h2>
+    {% for l in d.lakes %}
+    {% set s = l.summary %}
+    <a class="lake-row" href="/lakes/{{ l.code }}">
+      <span class="rank">{{ loop.index }}</span>
+      <span><span class="code">{{ l.code }}</span> {{ l.name }}<br>
+        <span class="sub">{% if s.latest_ok_measurement %}{{ s.latest_ok_measurement.extent_ha | ha }} on {{ s.latest_ok_measurement.acquired_at | date }}, {{ s.days_since_last_ok }} days ago{% else %}No usable measurement yet{% endif %}</span></span>
+      <span>{{ score_chip(s.latest_risk_score) }}</span>
+      <span>{{ l.sparkline | safe }}</span>
+      <span>›</span>
+    </a>
+    {% endfor %}
+    <p class="footnote">Lakes are listed in database order, not ranked: deviation scores are not danger levels.
+      The line shows each lake's last usable extents (up to 15).</p>
+  </section>
+</div>
+
+<section class="card table-card mt">
+  <h2>Pipeline runs</h2>
+  <table>
+    <tr><th>Run</th><th>Started</th><th>Finished</th><th class="num">Lakes</th><th class="num">Downloads</th><th>Result</th></tr>
+    {% for r in d.runs %}
+    <tr>
+      <td class="mono">{{ r.id }}</td>
+      <td>{{ r.started_at | pkt }}</td>
+      <td>{{ r.finished_at | pkt }}</td>
+      <td class="num">{{ r.lakes_processed }}</td>
+      <td class="num">{{ r.scenes_downloaded }}</td>
+      <td>{% if r.errors %}<span class="chip error" title="{{ r.errors }}">Error: {{ r.errors.splitlines()[0][:70] }}</span>{% elif r.finished_at %}<span class="chip ok">Completed</span>{% else %}<span class="chip warn">Not finished</span>{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">No pipeline run recorded.</td></tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

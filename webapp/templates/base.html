@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SailAb GLOF{% endblock %} · SailAb GLOF</title>
+  <link rel="icon" href="/static/logo_mark.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><img src="/static/logo_mark.png" alt="">SailAb GLOF</a>
+    <span class="spacer"></span>
+    <a class="provenance" href="/api/provenance" title="Which published database state these pages show">
+      Data: commit <span class="mono">{{ provenance.git_commit or "unknown" }}</span>, copied {{ provenance.copied_at | utc_time }}
+    </a>
+  </header>
+  <div class="banner-top">
+    Prototype. Monitoring and measurement only: Downstream Analysis and Alerting are not built, so this system sends no alerts.
+  </div>
+  <div class="layout">
+    <nav class="sidebar">
+      <a href="/" class="{{ 'active' if nav == 'dashboard' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        Dashboard</a>
+      <div class="section">Lakes</div>
+      {% for l in nav_lakes %}
+      <a href="/lakes/{{ l.code }}" class="sub {{ 'active' if nav == l.code }}"><span class="mono">{{ l.code }}</span>&nbsp;{{ l.name }}</a>
+      {% endfor %}
+    </nav>
+    <main>{% block main %}{% endblock %}</main>
+  </div>
+</body>
+</html>

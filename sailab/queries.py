@@ -89,3 +89,24 @@ def database_totals(conn: sqlite3.Connection) -> dict[str, int]:
     out["too_cloudy"] = conn.execute(
         f"SELECT COUNT(*) FROM scene WHERE file_path LIKE '{NOT_DOWNLOADED_PREFIX}%'").fetchone()[0]
     return out
+
+
+def same_month_inputs(conn: sqlite3.Connection, lake_id: int, acquired_on: date,
+                      exclude_measurement_id: int | None = None) -> dict[str, Any]:
+    """The earlier usable values the seasonal baseline for this scene could use: same calendar month,
+    observed strictly before the scene (the same inputs pipeline.py's check F counts)."""
+    rows = conn.execute(
+        """SELECT s.acquired_at, m.extent_ha FROM measurement m JOIN scene s ON s.id = m.scene_id
+           WHERE m.lake_id = ? AND m.status = 'ok' AND m.id IS NOT ? ORDER BY s.acquired_at""",
+        (lake_id, exclude_measurement_id)).fetchall()
+    earlier = [r for r in rows if date.fromisoformat(r["acquired_at"][:10]) < acquired_on
+               and date.fromisoformat(r["acquired_at"][:10]).month == acquired_on.month]
+    return {"count": len(earlier), "years": sorted({int(r["acquired_at"][:4]) for r in earlier}),
+            "values": [(r["acquired_at"][:10], r["extent_ha"]) for r in earlier]}
+
+
+def recent_ok_extents(conn: sqlite3.Connection, lake_id: int, n: int = 15) -> list[float]:
+    rows = conn.execute(
+        """SELECT m.extent_ha FROM measurement m JOIN scene s ON s.id = m.scene_id
+           WHERE m.lake_id = ? AND m.status = 'ok' ORDER BY s.acquired_at DESC LIMIT ?""", (lake_id, n)).fetchall()
+    return [r[0] for r in reversed(rows)]

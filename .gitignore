@@ -12,3 +12,5 @@ data/backfill/
 data/archive_v1/
 # Web app working copy of the database (see webapp/main.py: never the published file)
 .webapp/
+# Local editor/app config (machine-specific paths)
+.claude/

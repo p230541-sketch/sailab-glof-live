@@ -1,0 +1,20 @@
+{% macro score_chip(score) -%}
+  {%- if score is none -%}
+    <span class="chip muted" title="No risk score has been computed for this lake yet">No score yet</span>
+  {%- elif score.status == 'insufficient_history' -%}
+    <span class="chip muted" title="Not enough earlier same-month measurements to say what is normal (check F: 5 values from 2 years)">Insufficient history</span>
+  {%- else -%}
+    <span class="chip score" title="Deviation score: standard deviations from this lake's earlier values in the same calendar month. Not a probability or danger level.">Deviation <span class="num">{{ score.deviation_score | score }}</span></span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro icon_info() %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>{% endmacro %}
+{% macro icon_warn() %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17v.5"/></svg>{% endmacro %}
+{% macro icon_error() %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>{% endmacro %}
+
+{% macro not_built(title) -%}
+<section class="card not-built">
+  <h2>{{ title }}</h2>
+  <p>No data: not part of this build.</p>
+</section>
+{%- endmacro %}

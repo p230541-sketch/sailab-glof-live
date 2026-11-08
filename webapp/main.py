@@ -18,9 +18,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Iterator
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from sailab import queries
+from webapp import images, pages
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_SOURCE_DB = REPO / "sailab_glof.db"
@@ -63,7 +67,7 @@ def make_working_copy(source_db: Path, work_dir: Path) -> dict[str, Any]:
 
 
 def create_app(source_db: Path | None = None, work_dir: Path | None = None,
-               today: Callable[[], Any] | None = None) -> FastAPI:
+               today: Callable[[], Any] | None = None, repo: Path | None = None) -> FastAPI:
     source_db = Path(source_db or os.environ.get("SAILAB_SOURCE_DB", DEFAULT_SOURCE_DB))
     work_dir = Path(work_dir or os.environ.get("SAILAB_WORK_DIR", DEFAULT_WORK_DIR))
     today = today or (lambda: datetime.now(timezone.utc).date())
@@ -127,5 +131,47 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
     def totals() -> dict[str, int]:
         with read_only() as conn:
             return queries.database_totals(conn)
+
+    # --- HTML pages -------------------------------------------------------------------------
+    templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
+    templates.env.filters.update({"date": pages.fmt_date, "utc_time": pages.fmt_utc_time, "pkt": pages.fmt_pkt,
+                                  "ha": pages.fmt_ha, "score": pages.fmt_score,
+                                  "month": lambda iso: datetime.fromisoformat(iso).strftime("%B")})
+    templates.env.globals.update({"quality": pages.scene_quality, "stale_days": pages.STALE_AFTER_DAYS})
+    app.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "static")), name="static")
+    repo_root = Path(repo or os.environ.get("SAILAB_REPO", REPO))   # where scene file paths are resolved
+
+    def render(request: Request, name: str, nav: str, d: dict[str, Any]) -> HTMLResponse:
+        with read_only() as conn:
+            nav_lakes = queries.list_lakes(conn)
+        return templates.TemplateResponse(request, name, {"d": d, "nav": nav, "nav_lakes": nav_lakes,
+                                                          "provenance": app.state.provenance})
+
+    @app.get("/", response_class=HTMLResponse)
+    def dashboard_page(request: Request) -> HTMLResponse:
+        with read_only() as conn:
+            d = pages.dashboard(conn, today())
+        return render(request, "dashboard.html", "dashboard", d)
+
+    @app.get("/lakes/{code}", response_class=HTMLResponse)
+    def lake_page(request: Request, code: str, range: str = "all", page: int = 1) -> HTMLResponse:
+        with read_only() as conn:
+            d = pages.lake_detail(conn, lake_or_404(conn, code), today(), range, page, repo_root)
+        return render(request, "lake.html", code, d)
+
+    @app.get("/lakes/{code}/latest-image.png")
+    def lake_latest_image(code: str) -> FileResponse:
+        with read_only() as conn:
+            found = lake_or_404(conn, code)
+            latest = queries.lake_summary(conn, found["id"], today())["latest_ok_measurement"]
+        if latest is None:
+            raise HTTPException(status_code=404, detail=f"{code} has no usable measurement yet")
+        tif = repo_root / latest["file_path"]
+        if not tif.is_file():
+            raise HTTPException(status_code=404, detail=f"image file not on this machine: {latest['file_path']}")
+        png = work_dir / "images" / f"{code}_{tif.stem}.png"
+        if not png.is_file():
+            images.render_scene_png(tif, found, png)
+        return FileResponse(png, media_type="image/png")
 
     return app

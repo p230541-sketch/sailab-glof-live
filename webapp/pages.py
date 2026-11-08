@@ -1,0 +1,125 @@
+"""Builds what each page shows, entirely from sailab.queries over the read-only working copy.
+
+Kept separate from the templates so that every number on a screen can be traced (and tested) to a
+query result. Nothing here supplies a default value for missing data: missing stays None, and the
+template says so in words.
+"""
+from __future__ import annotations
+
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any
+
+from sailab import queries
+from webapp import charts
+
+STALE_AFTER_DAYS = 7          # the reference design's "data gap": no usable observation in 7 days
+PKT = timezone(timedelta(hours=5))
+HISTORY_PAGE_SIZE = 25
+RANGES = {"12m": 365, "24m": 730, "all": None}
+
+
+def _d(iso: str | date) -> date:
+    if isinstance(iso, datetime):
+        return iso.date()
+    if isinstance(iso, date):
+        return iso
+    return datetime.fromisoformat(iso).date()
+
+
+def lake_card(conn, lake: dict, today: date) -> dict[str, Any]:
+    s = queries.lake_summary(conn, lake["id"], today)
+    gap = s["days_since_last_ok"] is None or s["days_since_last_ok"] > STALE_AFTER_DAYS
+    return {**lake, "summary": s, "data_gap": gap,
+            "sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"]))}
+
+
+def dashboard(conn, today: date) -> dict[str, Any]:
+    lakes = [lake_card(conn, l, today) for l in queries.list_lakes(conn)]
+    totals = queries.database_totals(conn)
+    first = conn.execute("SELECT MIN(acquired_at), MAX(acquired_at) FROM scene").fetchone()
+    with_ok = [l for l in lakes if l["summary"]["days_since_last_ok"] is not None]
+    freshest = min(with_ok, key=lambda l: l["summary"]["days_since_last_ok"]) if with_ok else None
+    return {
+        "lakes": lakes,
+        "totals": totals,
+        "first_scene": first[0],
+        "last_scene": first[1],
+        "too_cloudy_pct": (100.0 * totals["too_cloudy"] / totals["scene"]) if totals["scene"] else None,
+        "measured_ok": conn.execute("SELECT COUNT(*) FROM measurement WHERE status = 'ok'").fetchone()[0],
+        "freshest": freshest,
+        "stale_lakes": [l for l in lakes if l["data_gap"]],
+        "latest_run": queries.latest_run(conn),
+        "runs": queries.run_log(conn, 6),
+        "map_svg": charts.location_map([{**l, "link": f"/lakes/{l['code']}"} for l in lakes]) if lakes else None,
+    }
+
+
+def lake_detail(conn, lake: dict, today: date, range_key: str, page: int, repo: Path) -> dict[str, Any]:
+    card = lake_card(conn, lake, today)
+    history = queries.lake_history(conn, lake["id"])
+    days = RANGES.get(range_key, None) if range_key in RANGES else None
+    range_key = range_key if range_key in RANGES else "all"
+    end = today
+    start = (end - timedelta(days=days)) if days else (_d(history[0]["acquired_at"]) if history else end)
+    chart = charts.extent_chart(history, start, end) if history else None
+
+    latest_score = card["summary"]["latest_risk_score"]
+    score_inputs = None
+    if latest_score is not None:
+        m = conn.execute(
+            """SELECT m.id FROM risk_score r JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
+               WHERE r.lake_id = ? ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""", (lake["id"],)).fetchone()
+        score_inputs = queries.same_month_inputs(conn, lake["id"], _d(latest_score["acquired_at"]), m[0])
+
+    latest_ok = card["summary"]["latest_ok_measurement"]
+    image = None
+    if latest_ok is not None:
+        image = {"available": (repo / latest_ok["file_path"]).is_file(), "file_path": latest_ok["file_path"],
+                 "acquired_at": latest_ok["acquired_at"], "extent_ha": latest_ok["extent_ha"]}
+
+    newest_first = list(reversed(history))
+    pages = max(1, -(-len(newest_first) // HISTORY_PAGE_SIZE))
+    page = min(max(page, 1), pages)
+    rows = newest_first[(page - 1) * HISTORY_PAGE_SIZE: page * HISTORY_PAGE_SIZE]
+    return {"lake": card, "chart": chart, "range_key": range_key, "chart_start": start, "chart_end": end,
+            "score": latest_score, "score_inputs": score_inputs, "image": image, "log_rows": rows,
+            "page": page, "pages": pages, "scene_count": len(history),
+            "ok_in_range": sum(1 for r in history if r["measurement_status"] == "ok" and start <= _d(r["acquired_at"]) <= end)}
+
+
+def scene_quality(row: dict) -> tuple[str, str]:
+    """(chip style, words) for one observation-log row, from its stored status only."""
+    if row["too_cloudy"]:
+        return "muted", "Not downloaded: cloud over lake"
+    if row["measurement_status"] == "ok":
+        return "ok", "Usable"
+    if row["measurement_status"] == "insufficient_observation":
+        return "warn", "Refused by quality checks"
+    return "muted", "No measurement recorded"
+
+
+# --- template filters ------------------------------------------------------------------------
+def fmt_date(iso: str | None) -> str:
+    return "—" if not iso else _d(iso).strftime("%d %b %Y")
+
+
+def fmt_utc_time(iso: str | None) -> str:
+    if not iso:
+        return "—"
+    t = datetime.fromisoformat(iso).astimezone(timezone.utc)
+    return t.strftime("%d %b %Y, %H:%M UTC")
+
+
+def fmt_pkt(iso: str | None) -> str:
+    if not iso:
+        return "—"
+    return datetime.fromisoformat(iso).astimezone(PKT).strftime("%d %b %Y, %H:%M PKT")
+
+
+def fmt_ha(v: float | None) -> str:
+    return "—" if v is None else f"{v:.2f} ha"
+
+
+def fmt_score(v: float | None) -> str:
+    return "—" if v is None else f"{v:+.2f}".replace("-", "−")
