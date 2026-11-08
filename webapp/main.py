@@ -159,6 +159,19 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
             d = pages.lake_detail(conn, lake_or_404(conn, code), today(), range, page, repo_root)
         return render(request, "lake.html", code, d)
 
+    # Design previews: static templates with the design's own sample data. They read nothing from the
+    # database, and the app has no POST/PUT/DELETE route at all, so nothing on them can act.
+    previews = {"confirm-advisory": ("preview_confirm_advisory.html", "p-confirm"),
+                "delivery-status": ("preview_delivery_status.html", "p-delivery"),
+                "risk-threshold": ("preview_risk_threshold.html", "p-threshold")}
+
+    @app.get("/preview/{name}", response_class=HTMLResponse)
+    def preview_page(request: Request, name: str) -> HTMLResponse:
+        if name not in previews:
+            raise HTTPException(status_code=404, detail=f"no design preview called {name!r}")
+        template, nav = previews[name]
+        return render(request, template, nav, {})
+
     @app.get("/lakes/{code}/latest-image.png")
     def lake_latest_image(code: str) -> FileResponse:
         with read_only() as conn:

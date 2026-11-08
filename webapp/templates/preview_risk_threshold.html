@@ -1,0 +1,51 @@
+{% extends "preview_base.html" %}
+{% set why = "Not built: the 0-1 risk score and alert threshold belong to the trained model and Alerting, which are not part of this build." %}
+{% block title %}Preview: Risk threshold{% endblock %}
+{% block preview %}
+<h1>Risk threshold <span class="sample">sample from the design</span></h1>
+<div class="grid two mt">
+  <section class="card">
+    <h2>Alert threshold</h2>
+    <label style="font-size:14.5px">Threshold, 0.00 to 1.00
+      <input type="text" value="0.60" disabled title="{{ why }}"
+             style="display:block;width:100%;margin-top:6px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font:15px var(--mono);background:#f7f9fa">
+    </label>
+    <input type="range" min="0" max="1" step="0.01" value="0.60" disabled title="{{ why }}" style="width:100%;margin:18px 0 6px">
+    <div style="display:flex;height:8px;border-radius:4px;overflow:hidden">
+      <span style="flex:40;background:#e6eff6"></span><span style="flex:20;background:#fff3cc"></span>
+      <span style="flex:20;background:#fdebdd"></span><span style="flex:20;background:#fbe9e9"></span></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:6px">
+      <span>Low (0.00–0.39)</span><span>Elevated</span><span>High</span><span>Critical</span></div>
+    <p style="font-size:15.5px">At 0.60, 3 of 33 lakes are above the threshold.</p>
+    <div class="banner info">The threshold decides when an advisory is created. It does not change the risk tiers.
+      Changes apply only to advisories created from now on.</div>
+    <p style="color:var(--muted);font-size:13.5px">Last changed 28 Sep 2026 by Project Admin, from 0.55 to 0.60.</p>
+    <button type="button" class="btn primary" disabled title="{{ why }}">Save threshold</button>
+  </section>
+
+  <div class="grid" style="align-content:start">
+    <section class="card">
+      <h2>Current scores</h2>
+      {% set counts = [2, 6, 7, 6, 4, 1, 1, 1, 1, 0] %}
+      <svg viewBox="0 0 520 200" style="width:100%" role="img" aria-label="sample score histogram from the design">
+        {% for n in counts %}
+        {% set colour = "#4a8bbd" if loop.index0 < 4 else ("#9a7300" if loop.index0 < 6 else ("#a84a08" if loop.index0 < 8 else "#8e1b1b")) %}
+        <rect x="{{ 8 + loop.index0 * 51 }}" y="{{ 170 - n * 20 }}" width="44" height="{{ n * 20 if n else 2 }}" fill="{{ colour }}"/>
+        <text x="{{ 30 + loop.index0 * 51 }}" y="{{ 163 - n * 20 }}" text-anchor="middle" class="axis">{{ n }}</text>
+        <text x="{{ 30 + loop.index0 * 51 }}" y="190" text-anchor="middle" class="axis" style="font-size:9px">{{ "%.1f" | format(loop.index0 / 10) }}–{{ "%.1f" | format((loop.index0 + 1) / 10) }}</text>
+        {% endfor %}
+        <line x1="314" x2="314" y1="10" y2="172" stroke="#16191d" stroke-width="2"/>
+      </svg>
+      <p style="color:var(--muted);font-size:13.5px;margin-bottom:0">Scores are model output. They are not probabilities.
+        4 lakes have no score because they have no usable observation.</p>
+    </section>
+    <section class="card">
+      <h2>Measured false alarm rate</h2>
+      <p style="font-size:30px;font-weight:600;color:var(--muted);margin:4px 0">Not yet evaluated</p>
+      <p style="font-size:14px;margin:0">Measured in FYP-2 on Pakistani lakes held out from training.</p>
+    </section>
+  </div>
+</div>
+<p class="footnote">All values on this screen are the design's sample data (33 lakes, 0–1 scores, a 0.60 threshold). This build monitors 2 lakes and computes a
+  seasonal deviation score, which has no tiers and no alert threshold, because no alerts exist.</p>
+{% endblock %}

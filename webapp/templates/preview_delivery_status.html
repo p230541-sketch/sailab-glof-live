@@ -1,0 +1,52 @@
+{% extends "preview_base.html" %}
+{% block title %}Preview: Delivery status{% endblock %}
+{% block preview %}
+<div class="breadcrumb">Advisories / <span class="mono">ADV-2026-0041</span> / Delivery <span class="sample">sample from the design</span></div>
+<h1>Delivery status</h1>
+<p style="margin-top:0"><span class="mono">ADV-2026-0041</span>, <span class="mono">GL-021</span> Chitral. Confirmed by Demo Verifier, 01 Oct 2026, 09:42 PKT.</p>
+
+<div class="banner error"><div><strong>1 contact could not be reached by SMS or voice.</strong><br>
+  C6, Hamlet D, <span class="mono">+92 3•• ••• 6613</span>. Reach this person another way.</div></div>
+
+<section class="card">
+  <h2>Summary</h2>
+  <div class="grid" style="grid-template-columns:2fr 1fr 1fr;align-items:start">
+    <div>
+      <div class="stack" aria-label="9 reached, 1 no answer, 2 failed">
+        <span style="flex:9;background:#16794a"></span><span style="flex:1;background:#9a7300"></span><span style="flex:2;background:#8e1b1b"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:8px">
+        <span style="color:#16794a">9 reached</span><span style="color:#9a7300">1 no answer</span><span style="color:#8e1b1b">2 failed</span></div>
+      <p style="color:var(--muted);font-size:14px">12 attempts: 6 SMS and 6 voice calls.</p>
+    </div>
+    <div class="card"><strong>SMS</strong><hr style="border:0;border-top:1px solid var(--border)">
+      <div><span class="dot" style="background:#16794a"></span>5 delivered</div><div><span class="dot" style="background:#8e1b1b"></span>1 failed</div></div>
+    <div class="card"><strong>Voice</strong><hr style="border:0;border-top:1px solid var(--border)">
+      <div><span class="dot" style="background:#16794a"></span>4 answered</div><div><span class="dot" style="background:#9a7300"></span>1 no answer</div>
+      <div><span class="dot" style="background:#8e1b1b"></span>1 failed</div></div>
+  </div>
+</section>
+
+<section class="card table-card mt">
+  <h2>Contacts</h2>
+  <table>
+    <tr><th>Contact</th><th>Area</th><th>Number</th><th>Language</th><th>SMS</th><th>Voice</th><th>Overall</th></tr>
+    {% for c in [
+      ("C6", "Hamlet D", "6613", "Pashto", ("red", "Failed", "09:42:21"), ("red", "Failed", "09:44:02"), ("red", "Unreachable")),
+      ("C1", "Hamlet A", "4821", "Urdu", ("green", "Delivered", "09:42:18"), ("green", "Answered", "09:43:05"), ("green", "Reached")),
+      ("C2", "Hamlet A", "5530", "Pashto", ("green", "Delivered", "09:42:19"), ("green", "Answered", "09:43:11"), ("green", "Reached")),
+      ("C3", "Hamlet B", "1176", "Pashto", ("green", "Delivered", "09:42:19"), ("green", "Answered", "09:43:20"), ("green", "Reached")),
+      ("C4", "Hamlet B", "9042", "Urdu", ("green", "Delivered", "09:42:20"), ("amber", "No answer", "09:44:30"), ("amber", "Partly reached")),
+      ("C5", "Hamlet C", "2287", "Urdu", ("green", "Delivered", "09:42:20"), ("green", "Answered", "09:43:44"), ("green", "Reached"))] %}
+    <tr class="{{ 'alert' if c[6][0] == 'red' }}">
+      <td class="mono">{{ c[0] }}</td><td>{{ c[1] }}</td><td class="mono">+92 3•• ••• {{ c[2] }}</td><td>{{ c[3] }}</td>
+      <td><span class="chip {{ c[4][0] }}">{{ c[4][1] }}</span> <span class="mono" style="color:var(--muted)">{{ c[4][2] }}</span></td>
+      <td><span class="chip {{ c[5][0] }}">{{ c[5][1] }}</span> <span class="mono" style="color:var(--muted)">{{ c[5][2] }}</span></td>
+      <td><span class="chip {{ c[6][0] }}">{{ c[6][1] }}</span></td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+<p class="footnote">All values on this screen are the design's sample data. This system has no contacts, has never sent an SMS or made a call, and does not record delivery.
+  The page does not update: there is nothing behind it.</p>
+{% endblock %}

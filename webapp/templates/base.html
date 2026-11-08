@@ -27,6 +27,10 @@
       {% for l in nav_lakes %}
       <a href="/lakes/{{ l.code }}" class="sub {{ 'active' if nav == l.code }}"><span class="mono">{{ l.code }}</span>&nbsp;{{ l.name }}</a>
       {% endfor %}
+      <div class="section">Design previews (not built)</div>
+      <a href="/preview/confirm-advisory" class="sub preview-link {{ 'active' if nav == 'p-confirm' }}">Confirm advisory</a>
+      <a href="/preview/delivery-status" class="sub preview-link {{ 'active' if nav == 'p-delivery' }}">Delivery status</a>
+      <a href="/preview/risk-threshold" class="sub preview-link {{ 'active' if nav == 'p-threshold' }}">Risk threshold</a>
     </nav>
     <main>{% block main %}{% endblock %}</main>
   </div>

@@ -1,0 +1,35 @@
+{% extends "preview_base.html" %}
+{% set why = "Not built: Alerting is out of scope for this build, so no advisory can be confirmed or sent." %}
+{% block title %}Preview: Confirm advisory{% endblock %}
+{% block preview %}
+<div class="breadcrumb">Advisories / <span class="mono">ADV-2026-0043</span> <span class="sample">sample from the design</span></div>
+<h1>Advisory <span class="mono">ADV-2026-0043</span></h1>
+<p style="color:var(--muted);margin-top:0"><span class="mono">GL-014</span> Hunza, created 01 Oct 2026, 08:50 PKT</p>
+
+<div class="modal-backdrop">
+  <div class="modal" role="dialog" aria-label="Confirm advisory and send alerts (design preview)">
+    <h2 style="font-size:21px">Confirm advisory and send alerts</h2>
+    <dl class="kv" style="grid-template-columns:150px 1fr">
+      <dt>Lake</dt><dd style="text-align:left"><span class="mono">GL-014</span> Hunza</dd>
+      <dt>Risk</dt><dd style="text-align:left"><span class="chip red">Critical <span class="num">0.86</span></span></dd>
+      <dt>Recipients</dt><dd style="text-align:left">6 test numbers, Urdu 4 and Pashto 2</dd>
+      <dt>Messages</dt><dd style="text-align:left">12 in total: 6 SMS and 6 voice calls</dd>
+    </dl>
+    <div class="banner info" style="margin:16px 0 14px">Test mode. Messages go only to registered team test numbers.</div>
+    <strong>Message preview</strong>
+    <div class="tabs"><span class="on">English (operator reference, not sent)</span><span>Urdu</span><span>Pashto</span></div>
+    <div class="msg">[TEST] SailAb GLOF warning for Hunza. A glacial lake upstream (GL-014) may release water. Move to higher
+      ground now and stay away from the river. Follow instructions from [Authority name]. Issued 10:05 PKT.
+      <div class="mono" style="color:var(--muted);font-size:12px;margin-top:10px;font-style:italic">206 characters, 2 segments</div></div>
+    <label style="display:flex;gap:10px;align-items:center;margin:16px 0" title="{{ why }}">
+      <input type="checkbox" disabled title="{{ why }}"> I have reviewed this advisory and authorise sending these alerts.
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1px solid var(--border);padding-top:16px">
+      <button type="button" class="btn" disabled title="{{ why }}">Cancel</button>
+      <button type="button" class="btn primary" disabled title="{{ why }}">Confirm and send</button>
+    </div>
+  </div>
+</div>
+<p class="footnote">All values on this screen are the design's sample data (lake GL-014, score 0.86, six test numbers). None of them exist in this system.
+  The risk tiers and 0–1 score belong to the planned trained model, which is not built; this build computes a seasonal deviation score instead.</p>
+{% endblock %}
