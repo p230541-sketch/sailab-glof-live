@@ -1,0 +1,10 @@
+2026-11-08 21:32:00,250 INFO run_once: mode: scheduled/normal, data dir: /home/runner/work/sailab-glof-live/sailab-glof-live/data/scenes
+2026-11-08 21:32:00,417 INFO sailab.pipeline: run 6 started
+2026-11-08 21:32:01,247 INFO sailab.pipeline: signed in to Earth Engine as sailab-glof-bot@kaarigar-507118.iam.gserviceaccount.com
+2026-11-08 21:32:02,391 INFO sailab.pipeline: KRB: 1 scenes listed after 2026-11-04
+2026-11-08 21:32:02,392 INFO sailab.pipeline: KRB 20261105T055021_20261105T055015_T43SCA: already recorded, skipped
+2026-11-08 21:32:03,169 INFO sailab.pipeline: ATS: 1 scenes listed after 2026-11-04
+2026-11-08 21:32:03,170 INFO sailab.pipeline: ATS 20261105T055021_20261105T055015_T43SCA: already recorded, skipped
+2026-11-08 21:32:03,172 INFO sailab.pipeline: run 6 finished: RunResult(run_id=6, lakes_processed=2, scenes_recorded=0, scenes_downloaded=0, measurements=0, risk_scores=0, errors=None, notes=[])
+2026-11-08 21:32:03,172 INFO run_once: summary: run_id=6 lakes=2 scenes_recorded=0 downloaded=0 measurements=0 risk_scores=0
+2026-11-08 21:32:03,172 INFO run_once: run OK
