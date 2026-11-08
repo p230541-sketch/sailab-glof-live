@@ -108,7 +108,7 @@ def extent_chart(history: list[dict], start: date, end: date, width: int = 760, 
     return "".join(parts)
 
 
-def location_map(lakes: list[dict], width: int = 620, height: int = 420) -> str:
+def location_map(lakes: list[dict], width: int = 620, height: int = 330) -> str:
     """The lakes at their real coordinates on a plain lon/lat frame (no basemap: that would need internet).
 
     lakes: dicts with code, name, centre_lon, centre_lat, data_gap (bool), link.

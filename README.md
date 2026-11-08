@@ -10,7 +10,7 @@ running automatically on real Sentinel-2 satellite data.
 > outburst** (neither monitored lake has one on record). Please read [Limitations](#limitations)
 > before quoting any number from it.
 
-*Status as of 2026-11-08. Sections marked ⏳ change as the scheduled runs accumulate.*
+*Status as of 2026-11-08 (evening). Sections marked ⏳ change as the scheduled runs accumulate.*
 
 ---
 
@@ -20,7 +20,7 @@ Every night at **23:00 Pakistan time (18:00 UTC)**, GitHub Actions
 ([`.github/workflows/daily_run.yml`](.github/workflows/daily_run.yml)) does the following with no
 human involved:
 
-1. Installs the pinned packages and runs the **full test suite** (106 tests). If any test fails, the
+1. Installs the pinned packages and runs the **full test suite** (171 tests). If any test fails, the
    pipeline does not run, so broken code can never write to the database.
 2. Signs in to Google Earth Engine with a **service-account key** stored as an encrypted GitHub
    secret (no browser, no person).
@@ -39,8 +39,10 @@ human involved:
 The run history is public: open the **Actions** tab of this repository. Each bot commit
 ("Automated run: <UTC time> (success|failure)") contains that run's log.
 
-⏳ **Scheduled runs so far:** none yet. The only GitHub run so far (2026-11-08 12:00 UTC) was
-**triggered by hand** to test the setup; it does not count as an automatic run.
+⏳ **Scheduled runs so far:** none yet. The two GitHub runs so far (2026-11-08 12:00 and 19:01 UTC)
+were **triggered by hand** to test the setup; they do not count as automatic runs. The first scheduled
+slot (2026-11-08 18:00 UTC) had not run as of 20:21 UTC that evening; GitHub can delay or skip
+scheduled runs, so the Actions tab is the record of which ones actually happened.
 
 ## What still needs a human
 
@@ -153,6 +155,7 @@ cloud problem the project's radar fallback is meant to solve, measured with our 
 | 2 | First backfill (by hand), before checks C/D/F | Completed. Its rows were replaced (see below); the row is kept as history. |
 | 3 | Backfill re-run (by hand) with checks C/D/F | Completed: 611 scenes, 254 downloads. **These are the rows in the database now.** |
 | 4 | First GitHub Actions run (triggered by hand) | Completed: no new scenes since 2026-11-05. |
+| 5 | Second GitHub Actions run (triggered by hand, after pinning the runner to Ubuntu 24.04) | Completed: no new scenes. |
 
 The pre-C/D/F database and its 5-band images are archived locally (`data/archive_v1/`, not in this
 repository); the comparison is in `logs/2026-11-08_cdf_before_after.md`.
@@ -174,7 +177,7 @@ scheduled runs are committed to `data/scenes/`.
 | Cloud measured over the lake differs from the tile value in many scenes (Atro Sar: 7 of 17 decisions differ) | `logs/2026-11-08_step4_live_find_new_scenes.log` |
 | A failed run is recorded, not hidden | `run_log` row 1; `logs/runs/2026-11-08T103538Z_backfill.log` |
 
-**About the tests (106, all passing):** most use small synthetic grids with hand-calculated expected
+**About the tests (171, all passing):** most use small synthetic grids with hand-calculated expected
 answers — they prove the algorithms compute correctly, **not** real-world accuracy. Two use the
 project's original real GeoTIFFs (`tests/data/`). The Earth Engine tests replace Earth Engine with a
 mock (stated in the test file); the real connection is proven only by the live-run logs. The 20
@@ -207,6 +210,26 @@ tests inherited from the earlier project pass unchanged.
 
 ---
 
+## The web app (local, for demonstration)
+
+`.venv/bin/uvicorn app:app`, then open http://localhost:8000. It needs no internet connection except for
+the Live check button.
+
+- **Dashboard** and **Lake Detail**: every number is read from the database (a test checks that the
+  reference designs' sample values never appear). `scripts/verify_gui_numbers.py` re-checks every number
+  on both screens against independent SQL; the cold run-through result is in
+  `logs/2026-11-08_gui_cold_runthrough_numbers.md`.
+- **Working copy:** at start-up the app copies `sailab_glof.db` to `.webapp/` and shows which commit it
+  came from. It never writes to the published file, so it cannot collide with the nightly bot's commits.
+- **Live check:** one button runs the real pipeline for both lakes, writing to the working copy only.
+  Tested for real: no new scene (about 10 s), network cut (fails after about 33 s with a plain-language
+  error), and a copy rewound to 2026-08-15 (42 scenes found, 12 measured; every row and every file
+  identical to the backfill: `logs/2026-11-08_gui_live_check_new_scenes_vs_backfill.log`).
+- **Design previews** (Confirm advisory, Delivery status, Risk threshold): the design's own sample data,
+  watermarked, every control disabled. `POST /live/check` is the only route in the app that changes anything.
+- The screens next to the reference designs, and why they differ: `docs/comparison/`.
+- What to click and say in a demo, including if the live check fails: `docs/DEMO_SCRIPT.md`.
+
 ## Repository layout
 
 ```
@@ -216,10 +239,15 @@ sailab/
   db.py                    SQLite schema, inserts, history, seed lakes
   earth_engine_client.py   Earth Engine sign-in, scene listing, lake-window cloud, download
   pipeline.py              the run: stages wired together, checks C/D/F, resume, run log
+  queries.py               read-only queries behind every number the web app shows
+webapp/                    FastAPI + Jinja2 app: pages, offline SVG charts, live check, design previews
+app.py                     web app entry point (uvicorn app:app)
 scripts/
   run_once.py              entry point (GitHub Actions); --backfill for the one-off historical run
   init_db.py               create the database and seed the two lakes
-tests/                     106 tests; tests/data/ holds the two original real GeoTIFFs
+  verify_gui_numbers.py    check every number on the two real screens against the database
+docs/                      reference designs, side-by-side comparison, demo script
+tests/                     171 tests; tests/data/ holds the two original real GeoTIFFs
 logs/                      verification logs; logs/runs/ has one log per pipeline run
 sailab_glof.db             the database (open with DB Browser for SQLite)
 ```

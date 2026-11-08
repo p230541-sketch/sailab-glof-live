@@ -161,3 +161,14 @@ def test_location_map_places_both_lakes():
 
 def test_score_formatting_uses_a_real_minus_sign():
     assert pages.fmt_score(-0.9645) == "−0.96" and pages.fmt_score(1.5) == "+1.50" and pages.fmt_score(None) == "—"
+
+
+# --- offline: no page may load anything from the internet ---------------------------------------------
+@pytest.mark.parametrize("url", ["/", "/lakes/KRB", "/lakes/ATS", "/live", "/preview/confirm-advisory",
+                                 "/preview/delivery-status", "/preview/risk-threshold", "/static/style.css"])
+def test_pages_load_nothing_from_the_internet(client, url):
+    """Only the live check needs a network connection; every page, style and image is served locally."""
+    body = client.get(url).text
+    refs = re.findall(r"""(?:src|href|url)\s*[=(]\s*["']?([^"' )>]+)""", body)
+    external = [r for r in refs if re.match(r"(https?:)?//", r)]
+    assert external == [], external
