@@ -1,0 +1,16 @@
+started_at: 2026-11-08T18:03:50+00:00
+signed in as: sailab-glof-bot@kaarigar-507118.iam.gserviceaccount.com
+
+radius 800 m: original filter selects scene 20260718T054641_20260718T055712_T43SCA
+   file: EPSG:32643 10 m 163x163 px bands ('B2', 'B3', 'B4', 'B8', 'B11', 'SCL')
+   pipeline with all checks : insufficient_observation None ha (lake region (7651 px) borders 49 no-data pixels; it may be cut off)
+   original method (no SCL) : insufficient_observation None ha (lake region (7651 px) borders 49 no-data pixels; it may be cut off)
+
+radius 1500 m: original filter selects scene 20260718T054641_20260718T055712_T43SCA
+   file: EPSG:32643 10 m 304x305 px bands ('B2', 'B3', 'B4', 'B8', 'B11', 'SCL')
+   pipeline with all checks : ok 105.82 ha (10582 water pixels connected to the centre)
+   original method (no SCL) : ok 105.82 ha (10582 water pixels connected to the centre)
+
+cross-check: the backfill (run_log 3) stored this scene for ATS as: ('ok', 105.82)
+picture: /home/rayannn/Documents/SAILAB_FYP1_FINAL/logs/2026-11-08_atro_sar_corrected_figure.png
+finished_at: 2026-11-08T18:04:03+00:00

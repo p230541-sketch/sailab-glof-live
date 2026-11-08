@@ -45,4 +45,8 @@ jobs:
           # everything else (caches, local backfill images) out.
           git add -A
           git diff --staged --quiet || git commit -m "Automated run: $(date -u +%Y-%m-%dT%H:%M:%SZ) (${{ job.status }})"
+          # If someone pushed while this run was working (e.g. a docs commit), put the bot's commit on
+          # top instead of failing the push. Human commits never touch sailab_glof.db, so this cannot conflict
+          # on the database; if it ever does conflict, the step fails visibly rather than overwriting anything.
+          git pull --rebase origin main
           git push
