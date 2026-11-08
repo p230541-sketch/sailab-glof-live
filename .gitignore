@@ -10,3 +10,5 @@ ee-key*.json
 data/backfill/
 # Archived first backfill (5-band, before checks C/D/F), kept locally for comparison
 data/archive_v1/
+# Web app working copy of the database (see webapp/main.py: never the published file)
+.webapp/

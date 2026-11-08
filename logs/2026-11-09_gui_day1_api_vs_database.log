@@ -1,0 +1,29 @@
+  from starlette.testclient import TestClient as TestClient  # noqa
+checked_at: 2026-11-08T19:46:22+00:00 | today (UTC): 2026-11-08
+provenance: {'git_commit': '7d15e26', 'git_commit_subject': 'Automated run: 2026-11-08T19:01:54Z (success)', 'source_differs_from_commit': False} sha256 227ce005a7822022
+
+KRB Karambar Lake
+  OK   scenes: api=307 direct=307
+  OK   too cloudy: api=178 direct=178
+  OK   measured ok: api=20 direct=20
+  OK   insufficient obs: api=109 direct=109
+  OK   latest scene date: api='2026-11-05T05:58:53+00:00' direct='2026-11-05T05:58:53+00:00'
+  OK   latest ok (date, ha): api=('2026-09-06T05:58:56+00:00', 257.02) direct=('2026-09-06T05:58:56+00:00', 257.02)
+  OK   days since latest ok: api=63 direct=63
+  OK   latest risk (status, score): api=('insufficient_history', None) direct=('insufficient_history', None)
+  OK   history rows: api=307 direct=307
+
+ATS Atro Sar
+  OK   scenes: api=304 direct=304
+  OK   too cloudy: api=179 direct=179
+  OK   measured ok: api=25 direct=25
+  OK   insufficient obs: api=100 direct=100
+  OK   latest scene date: api='2026-11-05T05:58:53+00:00' direct='2026-11-05T05:58:53+00:00'
+  OK   latest ok (date, ha): api=('2026-08-27T05:58:56+00:00', 105.9) direct=('2026-08-27T05:58:56+00:00', 105.9)
+  OK   days since latest ok: api=73 direct=73
+  OK   latest risk (status, score): api=('ok', -0.9645598868154962) direct=('ok', -0.9645598868154962)
+  OK   history rows: api=304 direct=304
+  OK   
+latest run (id, started): api=(5, '2026-11-08T19:01:52+00:00') direct=(5, '2026-11-08T19:01:52+00:00')
+
+RESULT: every API value matches the independent SQL
