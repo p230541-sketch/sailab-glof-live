@@ -17,12 +17,12 @@ concurrency:
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04      # pinned: the system our first successful run used (ubuntu-latest is moving to 26)
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5          # Node 24 version (v4 used deprecated Node 20)
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6      # Node 24 version (v5 used deprecated Node 20)
         with:
           python-version: '3.13'   # the version every test and live run so far used
 
