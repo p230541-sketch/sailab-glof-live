@@ -55,7 +55,8 @@ def dashboard(conn, today: date) -> dict[str, Any]:
     }
 
 
-def lake_detail(conn, lake: dict, today: date, range_key: str, page: int, repo: Path) -> dict[str, Any]:
+def lake_detail(conn, lake: dict, today: date, range_key: str, page: int, repo: Path,
+                work_dir: Path | None = None) -> dict[str, Any]:
     card = lake_card(conn, lake, today)
     history = queries.lake_history(conn, lake["id"])
     days = RANGES.get(range_key, None) if range_key in RANGES else None
@@ -75,7 +76,8 @@ def lake_detail(conn, lake: dict, today: date, range_key: str, page: int, repo: 
     latest_ok = card["summary"]["latest_ok_measurement"]
     image = None
     if latest_ok is not None:
-        image = {"available": (repo / latest_ok["file_path"]).is_file(), "file_path": latest_ok["file_path"],
+        on_disk = (repo / latest_ok["file_path"]).is_file() or (work_dir is not None and (work_dir / latest_ok["file_path"]).is_file())
+        image = {"available": on_disk, "file_path": latest_ok["file_path"],
                  "acquired_at": latest_ok["acquired_at"], "extent_ha": latest_ok["extent_ha"]}
 
     newest_first = list(reversed(history))

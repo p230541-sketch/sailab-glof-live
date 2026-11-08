@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon_info, icon_warn, icon_error %}
+{% block title %}Live check{% endblock %}
+{% block head %}{% if d.state.status == 'running' %}<meta http-equiv="refresh" content="3">{% endif %}{% endblock %}
+{% block main %}
+{% set st = d.state %}{% set r = st.result %}
+<div class="page-head"><h1>Live check</h1></div>
+
+<section class="card">
+  <h2>Check for a new scene now</h2>
+  <p style="margin-top:0">Runs the real pipeline once for both lakes, exactly as the nightly run does: it asks Google Earth Engine for
+    Sentinel-2 scenes newer than the last stored one, checks the cloud over each lake, downloads and measures any clear scene,
+    and scores it. It needs an internet connection.</p>
+  <p style="color:var(--muted);font-size:14px">Results are written to this laptop's working copy of the database only, never to the
+    published record that the nightly run commits. From October to May both lakes are usually cloudy, frozen or snow-covered, so
+    "no usable observation" is the most likely honest result.</p>
+  <form method="post" action="/live/check">
+    <button type="submit" class="btn primary" {% if st.status == 'running' %}disabled title="A check is already running"{% endif %}>
+      {% if st.status == 'running' %}Checking…{% else %}Check both lakes now{% endif %}</button>
+  </form>
+</section>
+
+<section class="card mt">
+  <h2>Result</h2>
+  {% if st.status == 'idle' %}
+    <p style="color:var(--muted)">No live check has run since the app started.</p>
+  {% elif st.status == 'running' %}
+    <div class="banner info">{{ icon_info() }}<div><strong>Checking both lakes…</strong> Started {{ st.started_at | utc_time }}.
+      This page refreshes every 3 seconds. A check usually takes 10 to 60 seconds.</div></div>
+  {% elif st.status == 'failed' %}
+    <div class="banner error">{{ icon_error() }}<div><strong>The check could not complete.</strong> {{ st.explanation }}
+      <br><span style="font-size:14px">It stopped after {{ st.seconds }} seconds. Nothing was filled in or assumed: no new data was recorded,
+      and the failure itself is recorded in the run log{% if r and r.run_id %} (run {{ r.run_id }}){% endif %}. The pages keep showing the last stored data.</span></div></div>
+    <details><summary style="cursor:pointer;font-size:14px">Technical details: the exact error</summary>
+    <pre class="mono" style="white-space:pre-wrap;background:#f7f9fa;border:1px solid var(--border);border-radius:6px;padding:12px;font-size:12.5px">{{ st.errors }}</pre>
+    </details>
+  {% elif st.status == 'no_new_scene' %}
+    <div class="banner info">{{ icon_info() }}<div><strong>No new scene for either lake</strong> since the newest one already stored.
+      Earth Engine answered normally; Sentinel-2 passes about every 2 to 5 days and new scenes take some hours to appear.</div></div>
+  {% else %}
+    <div class="banner {{ 'info' if r.measurements else 'warn' }}">{{ icon_info() if r.measurements else icon_warn() }}<div>
+      <strong>{{ r.scenes_recorded }} new scene{{ "s" if r.scenes_recorded != 1 }} recorded.</strong>
+      {{ r.scenes_recorded - r.scenes_downloaded }} too cloudy over the lake (recorded, not downloaded);
+      {{ r.scenes_downloaded }} downloaded and measured; {{ r.risk_scores }} risk score{{ "s" if r.risk_scores != 1 }} written.
+      Each scene's outcome is in the log below, and on the lake pages.</div></div>
+  {% endif %}
+  {% if r %}
+  <dl class="kv" style="max-width:520px;margin-top:6px">
+    <dt>Run</dt><dd>{{ r.run_id }}</dd>
+    <dt>Started / finished</dt><dd>{{ st.started_at | utc_time }} / {{ st.finished_at | utc_time }}</dd>
+    <dt>Took</dt><dd>{{ st.seconds }} s</dd>
+    <dt>Lakes processed</dt><dd>{{ r.lakes_processed }}</dd>
+    <dt>New scenes recorded</dt><dd>{{ r.scenes_recorded }}</dd>
+    <dt>Downloaded and measured</dt><dd>{{ r.scenes_downloaded }}</dd>
+    <dt>Risk scores written</dt><dd>{{ r.risk_scores }}</dd>
+  </dl>
+  {% endif %}
+  {% if st.log %}
+  <details class="mt" {% if st.status != 'failed' %}open{% endif %}><summary style="cursor:pointer;font-weight:600">What the pipeline did (its own log)</summary>
+  <pre class="mono" style="white-space:pre-wrap;background:#f7f9fa;border:1px solid var(--border);border-radius:6px;padding:12px;font-size:12.5px;max-height:420px;overflow:auto">{% for line in st.log %}{{ line }}
+{% endfor %}</pre></details>
+  {% endif %}
+</section>
+
+{% if d.history %}
+<section class="card table-card mt">
+  <h2>Live checks since the app started</h2>
+  <table>
+    <tr><th>Run</th><th>Started</th><th>Finished</th><th>Outcome</th></tr>
+    {% for h in d.history %}
+    <tr><td class="mono">{{ h.run_id or "—" }}</td><td>{{ h.started_at | utc_time }}</td><td>{{ h.finished_at | utc_time }}</td>
+      <td>{% if h.status == 'failed' %}<span class="chip error">Failed</span>{% elif h.status == 'no_new_scene' %}<span class="chip muted">No new scene</span>{% else %}<span class="chip ok">New scenes recorded</span>{% endif %}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+{% endif %}
+{% endblock %}

@@ -19,12 +19,13 @@ from pathlib import Path
 from typing import Any, Callable, Iterator
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from sailab import queries
 from webapp import images, pages
+from webapp.live import LiveChecker
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_SOURCE_DB = REPO / "sailab_glof.db"
@@ -67,7 +68,8 @@ def make_working_copy(source_db: Path, work_dir: Path) -> dict[str, Any]:
 
 
 def create_app(source_db: Path | None = None, work_dir: Path | None = None,
-               today: Callable[[], Any] | None = None, repo: Path | None = None) -> FastAPI:
+               today: Callable[[], Any] | None = None, repo: Path | None = None,
+               live_runner: Callable[..., Any] | None = None) -> FastAPI:
     source_db = Path(source_db or os.environ.get("SAILAB_SOURCE_DB", DEFAULT_SOURCE_DB))
     work_dir = Path(work_dir or os.environ.get("SAILAB_WORK_DIR", DEFAULT_WORK_DIR))
     today = today or (lambda: datetime.now(timezone.utc).date())
@@ -75,6 +77,11 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
     app = FastAPI(title="SailAb GLOF", docs_url="/api/docs", redoc_url=None)
     app.state.provenance = make_working_copy(source_db, work_dir)
     working_copy = Path(app.state.provenance["working_copy"])
+    # A fresh copy means earlier live checks (and any half-finished one's resume file) no longer apply.
+    for stale in (work_dir / "live_checks.json", working_copy.with_suffix(".resume.json")):
+        stale.unlink(missing_ok=True)
+    live = LiveChecker(working_copy, work_dir / "live_scenes", work_dir / "live_checks.json", runner=live_runner)
+    app.state.live = live
 
     @contextmanager
     def read_only() -> Iterator[sqlite3.Connection]:
@@ -145,7 +152,8 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
         with read_only() as conn:
             nav_lakes = queries.list_lakes(conn)
         return templates.TemplateResponse(request, name, {"d": d, "nav": nav, "nav_lakes": nav_lakes,
-                                                          "provenance": app.state.provenance})
+                                                          "provenance": app.state.provenance,
+                                                          "live_run_ids": live.live_run_ids()})
 
     @app.get("/", response_class=HTMLResponse)
     def dashboard_page(request: Request) -> HTMLResponse:
@@ -156,7 +164,7 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
     @app.get("/lakes/{code}", response_class=HTMLResponse)
     def lake_page(request: Request, code: str, range: str = "all", page: int = 1) -> HTMLResponse:
         with read_only() as conn:
-            d = pages.lake_detail(conn, lake_or_404(conn, code), today(), range, page, repo_root)
+            d = pages.lake_detail(conn, lake_or_404(conn, code), today(), range, page, repo_root, work_dir)
         return render(request, "lake.html", code, d)
 
     # Design previews: static templates with the design's own sample data. They read nothing from the
@@ -172,6 +180,16 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
         template, nav = previews[name]
         return render(request, template, nav, {})
 
+    # --- live check: the ONLY route that changes anything, and only the working copy ------------
+    @app.get("/live", response_class=HTMLResponse)
+    def live_page(request: Request) -> HTMLResponse:
+        return render(request, "live.html", "live", {"state": live.snapshot(), "history": list(reversed(live.history))})
+
+    @app.post("/live/check")
+    def live_check() -> RedirectResponse:
+        live.start()                     # does nothing if a check is already running
+        return RedirectResponse("/live", status_code=303)
+
     @app.get("/lakes/{code}/latest-image.png")
     def lake_latest_image(code: str) -> FileResponse:
         with read_only() as conn:
@@ -180,6 +198,8 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
         if latest is None:
             raise HTTPException(status_code=404, detail=f"{code} has no usable measurement yet")
         tif = repo_root / latest["file_path"]
+        if not tif.is_file() and (work_dir / latest["file_path"]).is_file():
+            tif = work_dir / latest["file_path"]          # downloaded by a live check on this laptop
         if not tif.is_file():
             raise HTTPException(status_code=404, detail=f"image file not on this machine: {latest['file_path']}")
         png = work_dir / "images" / f"{code}_{tif.stem}.png"

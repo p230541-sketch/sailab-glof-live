@@ -1,0 +1,9 @@
+checked_at: 2026-11-08T20:15:20+00:00
+live check: app on port 8002, working copy of a scratch database with all scenes from 2026-08-15 removed (run 6 there)
+compared with: published sailab_glof.db (backfill run 3) for the same scenes
+
+rows: live 42, published 42
+rows that differ: 0
+usable measurements in the live run: 6 -> ATS 2026-08-17 105.84 ha, ATS 2026-08-22 106.14 ha, ATS 2026-08-27 105.90 ha, KRB 2026-08-17 256.04 ha, KRB 2026-08-22 254.37 ha, KRB 2026-09-06 257.02 ha
+
+file checksums: the 12 files downloaded by the live check vs the sha256 logged by backfill run 3 (logs/runs/2026-11-08T112314Z_backfill.log): 12 identical, 0 different

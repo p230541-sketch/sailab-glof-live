@@ -75,7 +75,7 @@
     <tr><th>Run</th><th>Started</th><th>Finished</th><th class="num">Lakes</th><th class="num">Downloads</th><th>Result</th></tr>
     {% for r in d.runs %}
     <tr>
-      <td class="mono">{{ r.id }}</td>
+      <td class="mono">{{ r.id }}{% if r.id in live_run_ids %} <span class="chip warn" title="Started from the Live check button on this laptop; written to the working copy only, not to the published database">live check, this laptop</span>{% endif %}</td>
       <td>{{ r.started_at | pkt }}</td>
       <td>{{ r.finished_at | pkt }}</td>
       <td class="num">{{ r.lakes_processed }}</td>
