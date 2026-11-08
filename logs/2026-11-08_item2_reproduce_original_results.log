@@ -1,0 +1,10 @@
+===== KRB: 505x507 px, 24293 water pixels in whole window, reported 237.2 ha = 23720 px; centre at row 253.47 col 252.24
+  A rows//2,cols//2 seed=253,252 water=True  limit=2500.0 m ->  23722 px =   237.22 ha  diff vs reported +0.02 ha
+  A rows//2,cols//2 seed=253,252 water=True  limit=   inf m ->  23722 px =   237.22 ha  diff vs reported +0.02 ha
+  B georeferenced   seed=253,252 water=True  limit=2500.0 m ->  23722 px =   237.22 ha  diff vs reported +0.02 ha
+  B georeferenced   seed=253,252 water=True  limit=   inf m ->  23722 px =   237.22 ha  diff vs reported +0.02 ha
+===== ATS: 163x163 px, 7651 water pixels in whole window, reported 76.51 ha = 7651 px; centre at row 81.62 col 81.54
+  A rows//2,cols//2 seed=81,81 water=True  limit=1200.0 m ->   7651 px =    76.51 ha  diff vs reported +0.00 ha
+  A rows//2,cols//2 seed=81,81 water=True  limit=   inf m ->   7651 px =    76.51 ha  diff vs reported +0.00 ha
+  B georeferenced   seed=81,81 water=True  limit=1200.0 m ->   7651 px =    76.51 ha  diff vs reported +0.00 ha
+  B georeferenced   seed=81,81 water=True  limit=   inf m ->   7651 px =    76.51 ha  diff vs reported +0.00 ha

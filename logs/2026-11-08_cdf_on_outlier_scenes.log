@@ -1,0 +1,7 @@
+started_at: 2026-11-08T11:22:23+00:00
+KRB 20250822 (normal, was 238.56) -> ok 238.56 | 23856 water pixels connected to the centre
+KRB 20251122 (snow leak, was 462.88) -> insufficient_observation None | check D: lake region (46288 px) borders 441 cloud/shadow pixels
+KRB 20240802 (under-detection, was 210.61) -> ok 210.61 | 21061 water pixels connected to the centre
+ATS 20250802 (normal, was 106.09) -> ok 106.09 | 10609 water pixels connected to the centre
+ATS 20250504 (frozen, was 0.14) -> insufficient_observation None | check C: lake region (14 px) borders 33 snow/ice pixels
+ATS 20250713 (cloud on lake, was 87.42) -> insufficient_observation None | check D: lake region (8742 px) borders 1180 cloud/shadow pixels

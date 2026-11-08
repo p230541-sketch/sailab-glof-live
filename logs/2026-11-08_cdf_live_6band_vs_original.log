@@ -1,0 +1,7 @@
+started_at: 2026-11-08T11:19:14+00:00
+KRB: ours 6 bands ('B2', 'B3', 'B4', 'B8', 'B11', 'SCL') uint16 505x507 | original 5 bands 505x507
+   bands 1-5 differing values: 0 of 1280175
+   SCL classes in window: {'0 no data': 6510, '2 dark/shadow': 28744, '4 vegetation': 5874, '5 bare': 145392, '6 water': 26302, '7 unclassified': 2355, '11 snow/ice': 40858}
+ATS: ours 6 bands ('B2', 'B3', 'B4', 'B8', 'B11', 'SCL') uint16 163x163 | original 5 bands 163x163
+   bands 1-5 differing values: 0 of 132845
+   SCL classes in window: {'0 no data': 803, '2 dark/shadow': 884, '4 vegetation': 526, '5 bare': 17188, '6 water': 7136, '7 unclassified': 32}

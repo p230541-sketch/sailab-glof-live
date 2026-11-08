@@ -1,0 +1,5 @@
+changed_at: 2026-11-08T10:24:30+00:00
+reason: 800 m window cut Atro Sar off; see logs/2026-11-08_step5_atro_sar_radius_check.log
+rows in other tables at the time of change (0 = no existing measurement is affected): {'scene': 0, 'measurement': 0, 'risk_score': 0, 'run_log': 0}
+before: (2, 'ATS', 'Atro Sar', 73.65037, 36.64458, 800.0, 1200.0)
+after:  (2, 'ATS', 'Atro Sar', 73.65037, 36.64458, 1500.0, 1500.0)

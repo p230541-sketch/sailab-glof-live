@@ -1,0 +1,977 @@
+2026-11-08 10:36:32,722 INFO run_once: mode: BACKFILL (started by hand), data dir: /home/rayannn/Documents/SAILAB_FYP1_FINAL/data/backfill
+2026-11-08 10:36:33,327 INFO sailab.pipeline: run 2 started
+2026-11-08 10:36:37,272 INFO sailab.pipeline: signed in to Earth Engine as sailab-glof-bot@kaarigar-507118.iam.gserviceaccount.com
+2026-11-08 10:40:04,795 INFO sailab.pipeline: KRB: 307 scenes listed after 2022-12-31
+2026-11-08 10:40:09,555 INFO sailab.pipeline: KRB 20230105T055231_20230105T055228_T43SCA: downloaded data/backfill/KRB/20230105T055231_20230105T055228_T43SCA.tif sha256=f25f5bc523f259515cda2ce7bcc10d8d38d981612d88d5cb031c53830a2a2382
+2026-11-08 10:40:10,132 INFO sailab.pipeline: KRB 20230105T055231_20230105T055228_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:10,138 INFO sailab.pipeline: KRB 20230110T055219_20230110T055214_T43SCA: lake cloud 95.20550735264166% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,146 INFO sailab.pipeline: KRB 20230115T055201_20230115T055201_T43SCA: lake cloud 93.39687970996782% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,151 INFO sailab.pipeline: KRB 20230120T055149_20230120T055143_T43SCA: lake cloud 40.41712493380586% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,158 INFO sailab.pipeline: KRB 20230125T055121_20230125T055121_T43SCA: lake cloud 99.96944885738726% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,167 INFO sailab.pipeline: KRB 20230130T055059_20230130T055056_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,175 INFO sailab.pipeline: KRB 20230204T055031_20230204T055032_T43SCA: lake cloud 38.19911198012139% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,181 INFO sailab.pipeline: KRB 20230209T055009_20230209T055524_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,187 INFO sailab.pipeline: KRB 20230214T054931_20230214T054931_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:10,196 INFO sailab.pipeline: KRB 20230219T054859_20230219T055203_T43SCA: lake cloud 99.99388977147746% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:13,836 INFO sailab.pipeline: KRB 20230224T054821_20230224T054823_T43SCA: downloaded data/backfill/KRB/20230224T054821_20230224T054823_T43SCA.tif sha256=c1a5daa26cf5a271193c0896f121915c31d905c73eff087b7425f04af8ca3a8f
+2026-11-08 10:40:14,388 INFO sailab.pipeline: KRB 20230224T054821_20230224T054823_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:14,393 INFO sailab.pipeline: KRB 20230301T054749_20230301T055132_T43SCA: lake cloud 45.88781620432604% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:17,587 INFO sailab.pipeline: KRB 20230306T054711_20230306T055732_T43SCA: downloaded data/backfill/KRB/20230306T054711_20230306T055732_T43SCA.tif sha256=4f583c7f48444901a325e0a1f53343aeeaf37ad1de911f3c99beacf48729a130
+2026-11-08 10:40:18,153 INFO sailab.pipeline: KRB 20230306T054711_20230306T055732_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:21,765 INFO sailab.pipeline: KRB 20230311T054649_20230311T055115_T43SCA: downloaded data/backfill/KRB/20230311T054649_20230311T055115_T43SCA.tif sha256=225292063dfacf07a30c99e4e9b0a1c8e867b45eb098cf38c93447685c24788b
+2026-11-08 10:40:22,318 INFO sailab.pipeline: KRB 20230311T054649_20230311T055115_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:25,895 INFO sailab.pipeline: KRB 20230316T054641_20230316T055547_T43SCA: downloaded data/backfill/KRB/20230316T054641_20230316T055547_T43SCA.tif sha256=2fa45a60a05dc2f5913c13d09b8569fdc9a86a58d05302e486ebbede16a7b76e
+2026-11-08 10:40:26,417 INFO sailab.pipeline: KRB 20230316T054641_20230316T055547_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:30,448 INFO sailab.pipeline: KRB 20230321T054639_20230321T055552_T43SCA: downloaded data/backfill/KRB/20230321T054639_20230321T055552_T43SCA.tif sha256=1a176f0b78e7cd50942ccf8dbcaaf633e1665c46e6ce8acd3d7f19f02af36677
+2026-11-08 10:40:30,992 INFO sailab.pipeline: KRB 20230321T054639_20230321T055552_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:34,311 INFO sailab.pipeline: KRB 20230326T054641_20230326T055548_T43SCA: downloaded data/backfill/KRB/20230326T054641_20230326T055548_T43SCA.tif sha256=8287170cd4da000980c97f564fd8ec81dfdce1ff4a44fc72ccc4968419e2753a
+2026-11-08 10:40:34,832 INFO sailab.pipeline: KRB 20230326T054641_20230326T055548_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:34,837 INFO sailab.pipeline: KRB 20230331T054639_20230331T055553_T43SCA: lake cloud 51.6823495865412% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:34,842 INFO sailab.pipeline: KRB 20230405T054641_20230405T055104_T43SCA: lake cloud 86.16033239643163% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:34,847 INFO sailab.pipeline: KRB 20230410T054639_20230410T055547_T43SCA: lake cloud 12.660393498716852% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:38,678 INFO sailab.pipeline: KRB 20230415T054641_20230415T055204_T43SCA: downloaded data/backfill/KRB/20230415T054641_20230415T055204_T43SCA.tif sha256=12d86913d7e1bbceb94be1e8ea2cb0798a00636aba5444dcdcbcc0156d92e6dc
+2026-11-08 10:40:39,227 INFO sailab.pipeline: KRB 20230415T054641_20230415T055204_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:39,232 INFO sailab.pipeline: KRB 20230420T054639_20230420T055551_T43SCA: lake cloud 66.24709764145179% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:42,326 INFO sailab.pipeline: KRB 20230425T054641_20230425T055530_T43SCA: downloaded data/backfill/KRB/20230425T054641_20230425T055530_T43SCA.tif sha256=2960448fb4a0292c578289585c4ea4968dd5449e9c2b37d77e05089e8e0f2de7
+2026-11-08 10:40:42,892 INFO sailab.pipeline: KRB 20230425T054641_20230425T055530_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:47,122 INFO sailab.pipeline: KRB 20230430T054639_20230430T055551_T43SCA: downloaded data/backfill/KRB/20230430T054639_20230430T055551_T43SCA.tif sha256=069d43779dc16ab969b05481f80c4e1627182caad4308b53c415b24532adbc13
+2026-11-08 10:40:47,647 INFO sailab.pipeline: KRB 20230430T054639_20230430T055551_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:47,652 INFO sailab.pipeline: KRB 20230505T054641_20230505T055534_T43SCA: lake cloud 74.44498757586867% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:40:51,423 INFO sailab.pipeline: KRB 20230510T054639_20230510T055552_T43SCA: downloaded data/backfill/KRB/20230510T054639_20230510T055552_T43SCA.tif sha256=83dd5554b6b5491b7badfa010ae529f94a1e16488e1a50cb9dc40a0d5c0cb463
+2026-11-08 10:40:51,954 INFO sailab.pipeline: KRB 20230510T054639_20230510T055552_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:55,158 INFO sailab.pipeline: KRB 20230515T054641_20230515T055531_T43SCA: downloaded data/backfill/KRB/20230515T054641_20230515T055531_T43SCA.tif sha256=a3c8059ab1c91327ec17b71c59f54aa14b569bc34448c63f54931b30d0626a3d
+2026-11-08 10:40:55,682 INFO sailab.pipeline: KRB 20230515T054641_20230515T055531_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:59,175 INFO sailab.pipeline: KRB 20230520T054639_20230520T055535_T43SCA: downloaded data/backfill/KRB/20230520T054639_20230520T055535_T43SCA.tif sha256=9c11f4430daed183d321096add7aa06f8276a461b3b454bac00c1a0763d9f542
+2026-11-08 10:40:59,719 INFO sailab.pipeline: KRB 20230520T054639_20230520T055535_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:40:59,723 INFO sailab.pipeline: KRB 20230525T054641_20230525T055359_T43SCA: lake cloud 15.638111532037964% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:02,867 INFO sailab.pipeline: KRB 20230530T054639_20230530T055534_T43SCA: downloaded data/backfill/KRB/20230530T054639_20230530T055534_T43SCA.tif sha256=12cda6ada840f2ab38bf1d7a210002b9f55d030a9d48584f6f6d578a60977c5b
+2026-11-08 10:41:03,403 INFO sailab.pipeline: KRB 20230530T054639_20230530T055534_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:41:07,573 INFO sailab.pipeline: KRB 20230604T054641_20230604T055534_T43SCA: downloaded data/backfill/KRB/20230604T054641_20230604T055534_T43SCA.tif sha256=ce8dc68ed2d6e58171aff8879793e3b1ff01d2155dac48a966b28edca7d71f49
+2026-11-08 10:41:08,104 INFO sailab.pipeline: KRB 20230604T054641_20230604T055534_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:41:12,454 INFO sailab.pipeline: KRB 20230609T054639_20230609T055542_T43SCA: downloaded data/backfill/KRB/20230609T054639_20230609T055542_T43SCA.tif sha256=678cb3098d32ca746bcc5994975197e9b7983806e82ade770cd8db60c3358f92
+2026-11-08 10:41:12,998 INFO sailab.pipeline: KRB 20230609T054639_20230609T055542_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:41:13,003 INFO sailab.pipeline: KRB 20230614T054641_20230614T055538_T43SCA: lake cloud 35.57375045826714% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:13,007 INFO sailab.pipeline: KRB 20230619T054639_20230619T055538_T43SCA: lake cloud 26.591714530123426% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:17,286 INFO sailab.pipeline: KRB 20230624T054641_20230624T055540_T43SCA: downloaded data/backfill/KRB/20230624T054641_20230624T055540_T43SCA.tif sha256=da7aacd5fe0a46151545733e3310dfd404908f9026518f2c108f0815343385e2
+2026-11-08 10:41:17,820 INFO sailab.pipeline: KRB 20230624T054641_20230624T055540_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:41:21,316 INFO sailab.pipeline: KRB 20230629T054639_20230629T055321_T43SCA: downloaded data/backfill/KRB/20230629T054639_20230629T055321_T43SCA.tif sha256=c243df667aaf204758efe2b7fe6b32a3cafbe547b10984d771d3203ac2e9bfa9
+2026-11-08 10:41:21,850 INFO sailab.pipeline: KRB 20230629T054639_20230629T055321_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:41:21,854 INFO sailab.pipeline: KRB 20230704T054641_20230704T055539_T43SCA: lake cloud 23.424579412603364% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:21,860 INFO sailab.pipeline: KRB 20230709T054639_20230709T055539_T43SCA: lake cloud 82.85673550857469% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:24,786 INFO sailab.pipeline: KRB 20230714T054641_20230714T055452_T43SCA: downloaded data/backfill/KRB/20230714T054641_20230714T055452_T43SCA.tif sha256=e51231434caf74fccc356ce1dc68f6536915202c9d65cfacab388c6e78cde8f2
+2026-11-08 10:41:25,355 INFO sailab.pipeline: KRB 20230714T054641_20230714T055452_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:41:29,738 INFO sailab.pipeline: KRB 20230719T054639_20230719T055539_T43SCA: downloaded data/backfill/KRB/20230719T054639_20230719T055539_T43SCA.tif sha256=aa5f3fc2ed4a3ad6e4ff8f187bdc7710aa54907a5bfb8ed3a057614c8e15641f
+2026-11-08 10:41:30,422 INFO sailab.pipeline: KRB 20230719T054639_20230719T055539_T43SCA: ok 235.28 (23528 water pixels connected to the centre)
+2026-11-08 10:41:30,426 INFO sailab.pipeline: KRB 20230719T054639_20230719T055539_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:30,431 INFO sailab.pipeline: KRB 20230724T054641_20230724T055535_T43SCA: lake cloud 96.06501283147989% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:30,435 INFO sailab.pipeline: KRB 20230729T054639_20230729T055539_T43SCA: lake cloud 99.84928102977717% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:30,440 INFO sailab.pipeline: KRB 20230803T054641_20230803T055539_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:33,973 INFO sailab.pipeline: KRB 20230808T054639_20230808T055318_T43SCA: downloaded data/backfill/KRB/20230808T054639_20230808T055318_T43SCA.tif sha256=d3d161334b5678f6286cd51c207540480a18849b782707e7af64a96f0a6ce66c
+2026-11-08 10:41:34,647 INFO sailab.pipeline: KRB 20230808T054639_20230808T055318_T43SCA: ok 256.11 (25611 water pixels connected to the centre)
+2026-11-08 10:41:34,652 INFO sailab.pipeline: KRB 20230808T054639_20230808T055318_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:37,479 INFO sailab.pipeline: KRB 20230813T054641_20230813T054844_T43SCA: downloaded data/backfill/KRB/20230813T054641_20230813T054844_T43SCA.tif sha256=804f26b2ea3821d6e9ea54c08f5c613e91637e2646ce9335a085e36f0e4982fa
+2026-11-08 10:41:38,148 INFO sailab.pipeline: KRB 20230813T054641_20230813T054844_T43SCA: ok 255.38 (25538 water pixels connected to the centre)
+2026-11-08 10:41:38,153 INFO sailab.pipeline: KRB 20230813T054641_20230813T054844_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:41,395 INFO sailab.pipeline: KRB 20230818T054639_20230818T055321_T43SCA: downloaded data/backfill/KRB/20230818T054639_20230818T055321_T43SCA.tif sha256=3eb13f673ca39d6bb345533f53e1497be2d2439fd566d02da47cac82d1cefc18
+2026-11-08 10:41:42,092 INFO sailab.pipeline: KRB 20230818T054639_20230818T055321_T43SCA: ok 256.88 (25688 water pixels connected to the centre)
+2026-11-08 10:41:42,097 INFO sailab.pipeline: KRB 20230818T054639_20230818T055321_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:42,102 INFO sailab.pipeline: KRB 20230823T054641_20230823T055246_T43SCA: lake cloud 13.489347834942361% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:45,425 INFO sailab.pipeline: KRB 20230828T054639_20230828T054756_T43SCA: downloaded data/backfill/KRB/20230828T054639_20230828T054756_T43SCA.tif sha256=04cd3128355cea1d25ff8fb863ca9cfffd116c37ccfebbefad9378fcb3729f8c
+2026-11-08 10:41:46,109 INFO sailab.pipeline: KRB 20230828T054639_20230828T054756_T43SCA: ok 257.51 (25751 water pixels connected to the centre)
+2026-11-08 10:41:46,114 INFO sailab.pipeline: KRB 20230828T054639_20230828T054756_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:46,120 INFO sailab.pipeline: KRB 20230902T054641_20230902T055245_T43SCA: lake cloud 52.04081632653061% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:46,125 INFO sailab.pipeline: KRB 20230907T054639_20230907T055157_T43SCA: lake cloud 90.9894496720844% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:49,184 INFO sailab.pipeline: KRB 20230912T054641_20230912T055242_T43SCA: downloaded data/backfill/KRB/20230912T054641_20230912T055242_T43SCA.tif sha256=34eb1fda80576d765dc61eebf0fff2b001addb91bdb1137de65ff20ebfeffeff
+2026-11-08 10:41:49,854 INFO sailab.pipeline: KRB 20230912T054641_20230912T055242_T43SCA: ok 256.8 (25680 water pixels connected to the centre)
+2026-11-08 10:41:49,859 INFO sailab.pipeline: KRB 20230912T054641_20230912T055242_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:49,863 INFO sailab.pipeline: KRB 20230917T054639_20230917T054755_T43SCA: lake cloud 94.0873355330156% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:49,868 INFO sailab.pipeline: KRB 20230922T054641_20230922T054638_T43SCA: lake cloud 13.059595095523239% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:49,872 INFO sailab.pipeline: KRB 20230927T054639_20230927T055533_T43SCA: lake cloud 13.974092631064401% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:49,877 INFO sailab.pipeline: KRB 20231002T054641_20231002T054642_T43SCA: lake cloud 23.874699580430974% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:49,881 INFO sailab.pipeline: KRB 20231007T054719_20231007T055725_T43SCA: lake cloud 63.10847692370361% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:54,031 INFO sailab.pipeline: KRB 20231012T054751_20231012T054832_T43SCA: downloaded data/backfill/KRB/20231012T054751_20231012T054832_T43SCA.tif sha256=a1f1007ab1a9cfccbe6b2065ef8a0dab79524b5fe17f5a4e804de162c810e7da
+2026-11-08 10:41:54,672 INFO sailab.pipeline: KRB 20231012T054751_20231012T054832_T43SCA: insufficient_observation None (lake region (21840 px) borders 240 no-data pixels; it may be cut off)
+2026-11-08 10:41:54,677 INFO sailab.pipeline: KRB 20231017T054829_20231017T054826_T43SCA: lake cloud 55.438103385066604% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:54,682 INFO sailab.pipeline: KRB 20231022T054901_20231022T054910_T43SCA: lake cloud 59.517699295286974% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:41:58,735 INFO sailab.pipeline: KRB 20231027T054929_20231027T054929_T43SCA: downloaded data/backfill/KRB/20231027T054929_20231027T054929_T43SCA.tif sha256=8dabb0d6cec420339829218b58334d3058febc91c4eaa46c818c881db127f63b
+2026-11-08 10:41:59,451 INFO sailab.pipeline: KRB 20231027T054929_20231027T054929_T43SCA: ok 282.7 (28270 water pixels connected to the centre)
+2026-11-08 10:41:59,455 INFO sailab.pipeline: KRB 20231027T054929_20231027T054929_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:41:59,461 INFO sailab.pipeline: KRB 20231101T055001_20231101T054956_T43SCA: lake cloud 96.66177848384864% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:03,429 INFO sailab.pipeline: KRB 20231106T055029_20231106T055026_T43SCA: downloaded data/backfill/KRB/20231106T055029_20231106T055026_T43SCA.tif sha256=f8f7410ba8240e7e724412248cb35d806cc7e887cd82ade9a86091c3aa54500d
+2026-11-08 10:42:04,092 INFO sailab.pipeline: KRB 20231106T055029_20231106T055026_T43SCA: insufficient_observation None (lake region (20680 px) borders 9 no-data pixels; it may be cut off)
+2026-11-08 10:42:07,491 INFO sailab.pipeline: KRB 20231111T055051_20231111T055051_T43SCA: downloaded data/backfill/KRB/20231111T055051_20231111T055051_T43SCA.tif sha256=a708318d8e5b81a301f973ef0f373f021be825dbf8225b5d7732ab91f92439c0
+2026-11-08 10:42:08,149 INFO sailab.pipeline: KRB 20231111T055051_20231111T055051_T43SCA: ok 237.0 (23700 water pixels connected to the centre)
+2026-11-08 10:42:08,154 INFO sailab.pipeline: KRB 20231111T055051_20231111T055051_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:42:11,157 INFO sailab.pipeline: KRB 20231116T055109_20231116T055536_T43SCA: downloaded data/backfill/KRB/20231116T055109_20231116T055536_T43SCA.tif sha256=b395acca3f03145113460418e2e9818f88327046ce649244e15a2b0a1dd5fe37
+2026-11-08 10:42:11,849 INFO sailab.pipeline: KRB 20231116T055109_20231116T055536_T43SCA: ok 302.28 (30228 water pixels connected to the centre)
+2026-11-08 10:42:11,853 INFO sailab.pipeline: KRB 20231116T055109_20231116T055536_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:42:16,084 INFO sailab.pipeline: KRB 20231121T055131_20231121T055132_T43SCA: downloaded data/backfill/KRB/20231121T055131_20231121T055132_T43SCA.tif sha256=ff81189bc6ad49632b59ba2a4f5ca6eae2e560586128090c3613df0a9f935854
+2026-11-08 10:42:16,773 INFO sailab.pipeline: KRB 20231121T055131_20231121T055132_T43SCA: insufficient_observation None (lake region (31162 px) borders 1 no-data pixels; it may be cut off)
+2026-11-08 10:42:16,778 INFO sailab.pipeline: KRB 20231126T055149_20231126T055149_T43SCA: lake cloud 52.60092060776407% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:16,783 INFO sailab.pipeline: KRB 20231201T055201_20231201T055202_T43SCA: lake cloud 26.561163387510693% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:16,788 INFO sailab.pipeline: KRB 20231216T055239_20231216T055239_T43SCA: lake cloud 25.17821499857428% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:21,236 INFO sailab.pipeline: KRB 20231221T055241_20231221T055239_T43SCA: downloaded data/backfill/KRB/20231221T055241_20231221T055239_T43SCA.tif sha256=f25d16052fd552982273ed29f6f7b280d9c84e53d2cf916212766dc176bc77be
+2026-11-08 10:42:21,765 INFO sailab.pipeline: KRB 20231221T055241_20231221T055239_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:25,059 INFO sailab.pipeline: KRB 20231226T055249_20231226T055245_T43SCA: downloaded data/backfill/KRB/20231226T055249_20231226T055245_T43SCA.tif sha256=2f755182fc39af01558499aa72aa274224d5499a0aa0387f739ac995023b93f8
+2026-11-08 10:42:25,585 INFO sailab.pipeline: KRB 20231226T055249_20231226T055245_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:28,826 INFO sailab.pipeline: KRB 20231231T055241_20231231T055237_T43SCA: downloaded data/backfill/KRB/20231231T055241_20231231T055237_T43SCA.tif sha256=390a1fa19c61167815c8c6782ade61b7ae186c4f3e256330e82ba452436eb861
+2026-11-08 10:42:29,369 INFO sailab.pipeline: KRB 20231231T055241_20231231T055237_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:29,378 INFO sailab.pipeline: KRB 20240105T055229_20240105T055232_T43SCA: lake cloud 18.25532608252882% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:32,969 INFO sailab.pipeline: KRB 20240110T055211_20240110T055214_T43SCA: downloaded data/backfill/KRB/20240110T055211_20240110T055214_T43SCA.tif sha256=fff4e5e49aa4b85a61c9614baa5aeee1d9752b2172fbb5c67953f0439fb607d1
+2026-11-08 10:42:33,510 INFO sailab.pipeline: KRB 20240110T055211_20240110T055214_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:33,515 INFO sailab.pipeline: KRB 20240120T055141_20240120T055138_T43SCA: lake cloud 24.829931972789115% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:33,519 INFO sailab.pipeline: KRB 20240125T055129_20240125T055745_T43SCA: lake cloud 19.507922929650903% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:33,525 INFO sailab.pipeline: KRB 20240130T055101_20240130T055057_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:33,531 INFO sailab.pipeline: KRB 20240204T055039_20240204T055035_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:37,069 INFO sailab.pipeline: KRB 20240209T055001_20240209T055004_T43SCA: downloaded data/backfill/KRB/20240209T055001_20240209T055004_T43SCA.tif sha256=c4571cf744f73d0bb56c4749afa1ec88aabecff09ceb3f0f8f2eb4fd9466909e
+2026-11-08 10:42:37,603 INFO sailab.pipeline: KRB 20240209T055001_20240209T055004_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:41,047 INFO sailab.pipeline: KRB 20240214T054939_20240214T054937_T43SCA: downloaded data/backfill/KRB/20240214T054939_20240214T054937_T43SCA.tif sha256=3ffa10ae8c814dbbe12ecc716dbd072675fb8f7fbad76518d930dc7a2edaf525
+2026-11-08 10:42:41,586 INFO sailab.pipeline: KRB 20240214T054939_20240214T054937_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:41,591 INFO sailab.pipeline: KRB 20240219T054901_20240219T054912_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:41,598 INFO sailab.pipeline: KRB 20240224T054829_20240224T055837_T43SCA: lake cloud 53.55004277159966% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:41,604 INFO sailab.pipeline: KRB 20240229T054751_20240229T054758_T43SCA: lake cloud 94.25231170312436% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:41,612 INFO sailab.pipeline: KRB 20240305T054719_20240305T055640_T43SCA: lake cloud 48.784064524013196% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:41,617 INFO sailab.pipeline: KRB 20240310T054641_20240310T055834_T43SCA: lake cloud 58.0655016497617% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:45,276 INFO sailab.pipeline: KRB 20240315T054639_20240315T055528_T43SCA: downloaded data/backfill/KRB/20240315T054639_20240315T055528_T43SCA.tif sha256=0be05ca40b0ef761cebbbd603f7ddac73504bbdb1c331a262775ec94ee832c04
+2026-11-08 10:42:45,793 INFO sailab.pipeline: KRB 20240315T054639_20240315T055528_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:49,828 INFO sailab.pipeline: KRB 20240320T054641_20240320T055810_T43SCA: downloaded data/backfill/KRB/20240320T054641_20240320T055810_T43SCA.tif sha256=55673a327dec31b6f07bdc00033770a5852d07005a4bb6288cbb74b1b89642c0
+2026-11-08 10:42:50,350 INFO sailab.pipeline: KRB 20240320T054641_20240320T055810_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:54,527 INFO sailab.pipeline: KRB 20240325T054639_20240325T054926_T43SCA: downloaded data/backfill/KRB/20240325T054639_20240325T054926_T43SCA.tif sha256=89f1cc078d6ade35b8d5173f7b1fcbb09b491dad6ce677cdb56402922aa7c674
+2026-11-08 10:42:55,073 INFO sailab.pipeline: KRB 20240325T054639_20240325T054926_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:55,080 INFO sailab.pipeline: KRB 20240330T054641_20240330T055233_T43SCA: lake cloud 99.96741211454642% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:55,084 INFO sailab.pipeline: KRB 20240404T054639_20240404T055528_T43SCA: lake cloud 59.01666055643815% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:58,873 INFO sailab.pipeline: KRB 20240409T054641_20240409T055258_T43SCA: downloaded data/backfill/KRB/20240409T054641_20240409T055258_T43SCA.tif sha256=81dcb90bb773e17e663eb117f30db96f14f58d9bf8ec213953384b0ea0d21a41
+2026-11-08 10:42:59,395 INFO sailab.pipeline: KRB 20240409T054641_20240409T055258_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:42:59,400 INFO sailab.pipeline: KRB 20240414T054639_20240414T055531_T43SCA: lake cloud 55.06537944519125% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:42:59,406 INFO sailab.pipeline: KRB 20240419T054641_20240419T055435_T43SCA: lake cloud 89.98126196586419% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:03,324 INFO sailab.pipeline: KRB 20240424T054639_20240424T055529_T43SCA: downloaded data/backfill/KRB/20240424T054639_20240424T055529_T43SCA.tif sha256=5f053cf1122d3e3704231112c69ad3eb41d78dafdbcae8b691d556bf426a9731
+2026-11-08 10:43:03,866 INFO sailab.pipeline: KRB 20240424T054639_20240424T055529_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:43:03,871 INFO sailab.pipeline: KRB 20240429T054641_20240429T055337_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:03,876 INFO sailab.pipeline: KRB 20240504T054639_20240504T055534_T43SCA: lake cloud 74.94195282903581% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:07,387 INFO sailab.pipeline: KRB 20240509T054641_20240509T055101_T43SCA: downloaded data/backfill/KRB/20240509T054641_20240509T055101_T43SCA.tif sha256=ae5f0c2a545907e1a5cca07b8e7cb5e4aaf27b0f3db6f435d175d39642df4831
+2026-11-08 10:43:07,914 INFO sailab.pipeline: KRB 20240509T054641_20240509T055101_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:43:11,949 INFO sailab.pipeline: KRB 20240514T054639_20240514T055022_T43SCA: downloaded data/backfill/KRB/20240514T054639_20240514T055022_T43SCA.tif sha256=8141dd4c5e4c4dcd361c6af9baea243b8d9b6b112cd83a0c59cb12d9b12e35a6
+2026-11-08 10:43:12,502 INFO sailab.pipeline: KRB 20240514T054639_20240514T055022_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:43:12,510 INFO sailab.pipeline: KRB 20240519T054641_20240519T055422_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:12,518 INFO sailab.pipeline: KRB 20240524T054639_20240524T054929_T43SCA: lake cloud 28.212961831439163% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:17,202 INFO sailab.pipeline: KRB 20240529T055021_20240529T055018_T43SCA: downloaded data/backfill/KRB/20240529T055021_20240529T055018_T43SCA.tif sha256=9df912cd35a6f66dba69694533d0f4ef5c23fdf61cd33fb11cd285dfed5488e4
+2026-11-08 10:43:17,729 INFO sailab.pipeline: KRB 20240529T055021_20240529T055018_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:43:17,734 INFO sailab.pipeline: KRB 20240603T054639_20240603T055535_T43SCA: lake cloud 42.963053484867004% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:17,739 INFO sailab.pipeline: KRB 20240608T054641_20240608T054913_T43SCA: lake cloud 92.37647154670252% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:17,746 INFO sailab.pipeline: KRB 20240613T054639_20240613T055533_T43SCA: lake cloud 57.733512566703325% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:17,750 INFO sailab.pipeline: KRB 20240618T054641_20240618T054935_T43SCA: lake cloud 99.83095034420954% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:17,756 INFO sailab.pipeline: KRB 20240623T054639_20240623T055540_T43SCA: lake cloud 99.98777954295491% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:17,763 INFO sailab.pipeline: KRB 20240628T054641_20240628T055815_T43SCA: lake cloud 48.63130881094953% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:22,045 INFO sailab.pipeline: KRB 20240703T054639_20240703T055541_T43SCA: downloaded data/backfill/KRB/20240703T054639_20240703T055541_T43SCA.tif sha256=41f7b8ed8f1279797413b8958fbb24bbd7063184fe342d7c91bf10982f64b58b
+2026-11-08 10:43:22,575 INFO sailab.pipeline: KRB 20240703T054639_20240703T055541_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:43:22,580 INFO sailab.pipeline: KRB 20240708T054641_20240708T055718_T43SCA: lake cloud 92.30314880443196% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:22,585 INFO sailab.pipeline: KRB 20240713T054639_20240713T055532_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:22,589 INFO sailab.pipeline: KRB 20240718T054641_20240718T055801_T43SCA: lake cloud 68.79913642103548% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:22,594 INFO sailab.pipeline: KRB 20240723T054639_20240723T054932_T43SCA: lake cloud 41.516966067864274% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:22,601 INFO sailab.pipeline: KRB 20240728T054641_20240728T054755_T43SCA: lake cloud 59.132754898366535% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:26,208 INFO sailab.pipeline: KRB 20240802T054639_20240802T055153_T43SCA: downloaded data/backfill/KRB/20240802T054639_20240802T055153_T43SCA.tif sha256=892e6db2f776ed95a2a9f3f6ac8dea9f6c612ea3b25581e8c243bf3e632997d5
+2026-11-08 10:43:26,858 INFO sailab.pipeline: KRB 20240802T054639_20240802T055153_T43SCA: ok 210.61 (21061 water pixels connected to the centre)
+2026-11-08 10:43:26,864 INFO sailab.pipeline: KRB 20240802T054639_20240802T055153_T43SCA: risk ok baseline=256.47 score=-49.573309051547
+2026-11-08 10:43:30,478 INFO sailab.pipeline: KRB 20240807T054641_20240807T054840_T43SCA: downloaded data/backfill/KRB/20240807T054641_20240807T054840_T43SCA.tif sha256=5033bfa1e1f451bd9b936ddc6fd5f4d37b49ece7befb927c93c4ea514f370fc5
+2026-11-08 10:43:31,148 INFO sailab.pipeline: KRB 20240807T054641_20240807T054840_T43SCA: ok 254.91 (25491 water pixels connected to the centre)
+2026-11-08 10:43:31,153 INFO sailab.pipeline: KRB 20240807T054641_20240807T054840_T43SCA: risk ok baseline=247.298 score=0.37086737624094984
+2026-11-08 10:43:34,637 INFO sailab.pipeline: KRB 20240812T054639_20240812T054752_T43SCA: downloaded data/backfill/KRB/20240812T054639_20240812T054752_T43SCA.tif sha256=29946738bf8d16660ffb0eb30a7672abbe2f2017c9e0977e549660db67214891
+2026-11-08 10:43:35,305 INFO sailab.pipeline: KRB 20240812T054639_20240812T054752_T43SCA: ok 255.8 (25580 water pixels connected to the centre)
+2026-11-08 10:43:35,310 INFO sailab.pipeline: KRB 20240812T054639_20240812T054752_T43SCA: risk ok baseline=248.56666666666666 score=0.38848882278272184
+2026-11-08 10:43:35,316 INFO sailab.pipeline: KRB 20240817T054641_20240817T055117_T43SCA: lake cloud 80.39838689967004% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:35,325 INFO sailab.pipeline: KRB 20240822T054639_20240822T054747_T43SCA: lake cloud 85.4393254307711% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:35,330 INFO sailab.pipeline: KRB 20240827T054631_20240827T055025_T43SCA: lake cloud 99.95722840034217% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:35,335 INFO sailab.pipeline: KRB 20240901T054639_20240901T054748_T43SCA: lake cloud 70.21263595258462% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:38,463 INFO sailab.pipeline: KRB 20240906T054641_20240906T055027_T43SCA: downloaded data/backfill/KRB/20240906T054641_20240906T055027_T43SCA.tif sha256=75c90fccbb265df53dbaa9742c61be080e1f95c59a035bc8a45d15715353bc40
+2026-11-08 10:43:39,150 INFO sailab.pipeline: KRB 20240906T054641_20240906T055027_T43SCA: ok 257.96 (25796 water pixels connected to the centre)
+2026-11-08 10:43:39,155 INFO sailab.pipeline: KRB 20240906T054641_20240906T055027_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:43:39,160 INFO sailab.pipeline: KRB 20240911T054639_20240911T054749_T43SCA: lake cloud 43.77164039268402% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:39,167 INFO sailab.pipeline: KRB 20240916T054641_20240916T055020_T43SCA: lake cloud 52.19153529675343% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:42,851 INFO sailab.pipeline: KRB 20240921T054629_20240921T054925_T43SCA: downloaded data/backfill/KRB/20240921T054629_20240921T054925_T43SCA.tif sha256=6a041f90a2dfdfab4e4cc6c153b22d33924f027ca54349faa83d89abfca63c4a
+2026-11-08 10:43:43,536 INFO sailab.pipeline: KRB 20240921T054629_20240921T054925_T43SCA: ok 257.83 (25783 water pixels connected to the centre)
+2026-11-08 10:43:43,541 INFO sailab.pipeline: KRB 20240921T054629_20240921T054925_T43SCA: risk ok baseline=257.38 score=0.5486173302309433
+2026-11-08 10:43:46,750 INFO sailab.pipeline: KRB 20240926T054641_20240926T055127_T43SCA: downloaded data/backfill/KRB/20240926T054641_20240926T055127_T43SCA.tif sha256=e2ccf2e8bad5739027da553c47e67f65739b9466e17102a8c89cc8d442f24220
+2026-11-08 10:43:47,424 INFO sailab.pipeline: KRB 20240926T054641_20240926T055127_T43SCA: insufficient_observation None (lake region (23607 px) borders 223 no-data pixels; it may be cut off)
+2026-11-08 10:43:51,677 INFO sailab.pipeline: KRB 20241001T054639_20241001T055527_T43SCA: downloaded data/backfill/KRB/20241001T054639_20241001T055527_T43SCA.tif sha256=2e199e8c2ddec00e3df30eaa469cbacf36cbd4506bb1386ef195ce5a618b61a8
+2026-11-08 10:43:52,364 INFO sailab.pipeline: KRB 20241001T054639_20241001T055527_T43SCA: insufficient_observation None (lake region (25707 px) borders 19 no-data pixels; it may be cut off)
+2026-11-08 10:43:52,371 INFO sailab.pipeline: KRB 20241006T054721_20241006T055638_T43SCA: lake cloud 36.663407878121305% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:43:55,644 INFO sailab.pipeline: KRB 20241011T054649_20241011T055447_T43SCA: downloaded data/backfill/KRB/20241011T054649_20241011T055447_T43SCA.tif sha256=a9d141c5df6fd8de93f21df434fbe4080365eb54dd3e6d7a30f2dc68d193a8e6
+2026-11-08 10:43:56,279 INFO sailab.pipeline: KRB 20241011T054649_20241011T055447_T43SCA: ok 214.42 (21442 water pixels connected to the centre)
+2026-11-08 10:43:56,284 INFO sailab.pipeline: KRB 20241011T054649_20241011T055447_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:43:56,291 INFO sailab.pipeline: KRB 20241016T054821_20241016T055018_T43SCA: lake cloud 25.10285551346287% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:00,485 INFO sailab.pipeline: KRB 20241021T054809_20241021T055744_T43SCA: downloaded data/backfill/KRB/20241021T054809_20241021T055744_T43SCA.tif sha256=77705f64df5890e8c633b71f7201daa8aba2f46a4a3d88d1f0e7d612e71882fd
+2026-11-08 10:44:01,111 INFO sailab.pipeline: KRB 20241021T054809_20241021T055744_T43SCA: insufficient_observation None (lake region (16229 px) borders 440 no-data pixels; it may be cut off)
+2026-11-08 10:44:01,116 INFO sailab.pipeline: KRB 20241026T054931_20241026T054926_T43SCA: lake cloud 27.50213857998289% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:05,670 INFO sailab.pipeline: KRB 20241031T054909_20241031T054903_T43SCA: downloaded data/backfill/KRB/20241031T054909_20241031T054903_T43SCA.tif sha256=7cb1f657f2fd944595f5d2160b69b7161ae17d3b208214a84c4249449986808d
+2026-11-08 10:44:06,371 INFO sailab.pipeline: KRB 20241031T054909_20241031T054903_T43SCA: ok 264.93 (26493 water pixels connected to the centre)
+2026-11-08 10:44:06,376 INFO sailab.pipeline: KRB 20241031T054909_20241031T054903_T43SCA: risk ok baseline=248.56 score=0.3390550090223722
+2026-11-08 10:44:09,814 INFO sailab.pipeline: KRB 20241105T055021_20241105T055020_T43SCA: downloaded data/backfill/KRB/20241105T055021_20241105T055020_T43SCA.tif sha256=858debe5bcb5967f538723e65048c2bc0f49a2c5675650a2e603b1b095d47f58
+2026-11-08 10:44:10,371 INFO sailab.pipeline: KRB 20241105T055021_20241105T055020_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:10,376 INFO sailab.pipeline: KRB 20241110T054949_20241110T054948_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:10,380 INFO sailab.pipeline: KRB 20241115T055111_20241115T055105_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:13,631 INFO sailab.pipeline: KRB 20241120T055039_20241120T055706_T43SCA: downloaded data/backfill/KRB/20241120T055039_20241120T055706_T43SCA.tif sha256=9d507962e9c36bba9dc0e0f3e5ff9df6538155e51d6adf0e7fe2e762ad35c506
+2026-11-08 10:44:14,171 INFO sailab.pipeline: KRB 20241120T055039_20241120T055706_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:18,761 INFO sailab.pipeline: KRB 20241125T055151_20241125T055152_T43SCA: downloaded data/backfill/KRB/20241125T055151_20241125T055152_T43SCA.tif sha256=37f2f94929d11aea19fb0d941c12c8fd34caa49e02b17d98e14a4cbdaf238cad
+2026-11-08 10:44:19,281 INFO sailab.pipeline: KRB 20241125T055151_20241125T055152_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:19,286 INFO sailab.pipeline: KRB 20241130T055109_20241130T055108_T43SCA: lake cloud 52.723125178215% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:23,447 INFO sailab.pipeline: KRB 20241205T055221_20241205T055223_T43SCA: downloaded data/backfill/KRB/20241205T055221_20241205T055223_T43SCA.tif sha256=31a156c7e346d7037adf44d662f0c8e2d1c26f89c8e701f40e19af69fdd4a794
+2026-11-08 10:44:23,965 INFO sailab.pipeline: KRB 20241205T055221_20241205T055223_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:27,726 INFO sailab.pipeline: KRB 20241210T055139_20241210T055139_T43SCA: downloaded data/backfill/KRB/20241210T055139_20241210T055139_T43SCA.tif sha256=2373b3e8ee6e65e9c2ea9539eb478528d3ab21fd8b8917cd41d830de367310de
+2026-11-08 10:44:28,245 INFO sailab.pipeline: KRB 20241210T055139_20241210T055139_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:31,860 INFO sailab.pipeline: KRB 20241215T055241_20241215T055240_T43SCA: downloaded data/backfill/KRB/20241215T055241_20241215T055240_T43SCA.tif sha256=ffaf4d2dccd53221615be7eb9fa9fa261a043bdeb2fbac466610d990028d0216
+2026-11-08 10:44:32,407 INFO sailab.pipeline: KRB 20241215T055241_20241215T055240_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:36,433 INFO sailab.pipeline: KRB 20241220T055149_20241220T055214_T43SCA: downloaded data/backfill/KRB/20241220T055149_20241220T055214_T43SCA.tif sha256=120dcd9179b1d95a9111572351d898e73fd9f63f2d250a8f701c837daebfff0b
+2026-11-08 10:44:36,974 INFO sailab.pipeline: KRB 20241220T055149_20241220T055214_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:41,363 INFO sailab.pipeline: KRB 20241225T055241_20241225T055244_T43SCA: downloaded data/backfill/KRB/20241225T055241_20241225T055244_T43SCA.tif sha256=f1d757b18328981450fa036a37a33edffaaecfaddbd77c4ec2933bb41fb9c7df
+2026-11-08 10:44:41,897 INFO sailab.pipeline: KRB 20241225T055241_20241225T055244_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:41,902 INFO sailab.pipeline: KRB 20241230T055149_20241230T055144_T43SCA: lake cloud 22.4143549635423% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:41,908 INFO sailab.pipeline: KRB 20250104T055231_20250104T055231_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:46,503 INFO sailab.pipeline: KRB 20250109T055129_20250109T055124_T43SCA: downloaded data/backfill/KRB/20250109T055129_20250109T055124_T43SCA.tif sha256=35281dfb002994ba35ab5b98e316e236646f34cf69ecda3d33d1d725f7f6dd65
+2026-11-08 10:44:47,022 INFO sailab.pipeline: KRB 20250109T055129_20250109T055124_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:47,028 INFO sailab.pipeline: KRB 20250114T055211_20250114T055205_T43SCA: lake cloud 10.998411340584138% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:47,036 INFO sailab.pipeline: KRB 20250119T055049_20250119T055355_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:50,495 INFO sailab.pipeline: KRB 20250124T055201_20250124T055156_T43SCA: downloaded data/backfill/KRB/20250124T055201_20250124T055156_T43SCA.tif sha256=afd04327f29a2dfc9f355f07455932d798e867bd29ed0cb9ab72810e44903ed6
+2026-11-08 10:44:51,029 INFO sailab.pipeline: KRB 20250124T055201_20250124T055156_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:51,035 INFO sailab.pipeline: KRB 20250129T055009_20250129T055010_T43SCA: lake cloud 99.99388977147746% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:51,040 INFO sailab.pipeline: KRB 20250203T055101_20250203T055104_T43SCA: lake cloud 13.079962523931728% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:51,045 INFO sailab.pipeline: KRB 20250208T054919_20250208T055601_T43SCA: lake cloud 21.862397653672247% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:44:54,662 INFO sailab.pipeline: KRB 20250213T055001_20250213T055001_T43SCA: downloaded data/backfill/KRB/20250213T055001_20250213T055001_T43SCA.tif sha256=b847572701c77c5c58889029469bd6c5f079909c5217c714c9e77246576a7f2a
+2026-11-08 10:44:55,197 INFO sailab.pipeline: KRB 20250213T055001_20250213T055001_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:44:58,727 INFO sailab.pipeline: KRB 20250218T054819_20250218T055515_T43SCA: downloaded data/backfill/KRB/20250218T054819_20250218T055515_T43SCA.tif sha256=940b3776ab843cadf3a9aa1ab7f6b1a612800d7a536d3099b41aebcc5093c2ba
+2026-11-08 10:44:59,255 INFO sailab.pipeline: KRB 20250218T054819_20250218T055515_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:02,904 INFO sailab.pipeline: KRB 20250223T054851_20250223T054923_T43SCA: downloaded data/backfill/KRB/20250223T054851_20250223T054923_T43SCA.tif sha256=30627601cc0dc733de71e4f79ac3747d9dfcd06fdb97b7b77b8c3fd863e15b81
+2026-11-08 10:45:03,475 INFO sailab.pipeline: KRB 20250223T054851_20250223T054923_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:03,480 INFO sailab.pipeline: KRB 20250228T054659_20250228T055547_T43SCA: lake cloud 99.51321846103711% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:07,205 INFO sailab.pipeline: KRB 20250305T054741_20250305T055749_T43SCA: downloaded data/backfill/KRB/20250305T054741_20250305T055749_T43SCA.tif sha256=81a4b6fe271cdda8fb78aac527a662c23883f25852756a269d9d2e1f41ee9494
+2026-11-08 10:45:07,718 INFO sailab.pipeline: KRB 20250305T054741_20250305T055749_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:07,723 INFO sailab.pipeline: KRB 20250310T054639_20250310T055536_T43SCA: lake cloud 86.37826388040246% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:07,727 INFO sailab.pipeline: KRB 20250315T054701_20250315T055546_T43SCA: lake cloud 15.34685730579657% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:11,961 INFO sailab.pipeline: KRB 20250320T054639_20250320T055120_T43SCA: downloaded data/backfill/KRB/20250320T054639_20250320T055120_T43SCA.tif sha256=f6903e5fa0ed3656f1f4296334b9fdc56882ef9dc7443597f6a0607443736d4c
+2026-11-08 10:45:12,488 INFO sailab.pipeline: KRB 20250320T054639_20250320T055120_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:12,493 INFO sailab.pipeline: KRB 20250325T054701_20250325T055545_T43SCA: lake cloud 99.62320257444296% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:12,498 INFO sailab.pipeline: KRB 20250327T055251_20250327T055245_T43SCA: lake cloud 99.93686097193368% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:12,503 INFO sailab.pipeline: KRB 20250330T054639_20250330T055531_T43SCA: lake cloud 76.87074829931973% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:12,510 INFO sailab.pipeline: KRB 20250404T054701_20250404T055734_T43SCA: lake cloud 24.263717463033117% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:12,517 INFO sailab.pipeline: KRB 20250409T054639_20250409T055532_T43SCA: lake cloud 86.53305633630698% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:12,523 INFO sailab.pipeline: KRB 20250414T054701_20250414T055110_T43SCA: lake cloud None% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:16,530 INFO sailab.pipeline: KRB 20250414T054701_20250414T055906_T43SCA: downloaded data/backfill/KRB/20250414T054701_20250414T055906_T43SCA.tif sha256=9a1ffdccdf5a6647d923ee376d52cd1d1f78ef1817d7730a4c7d45ac0f69df0e
+2026-11-08 10:45:17,058 INFO sailab.pipeline: KRB 20250414T054701_20250414T055906_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:17,064 INFO sailab.pipeline: KRB 20250416T055251_20250416T055250_T43SCA: lake cloud 93.92439610574769% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:17,070 INFO sailab.pipeline: KRB 20250419T054639_20250419T055532_T43SCA: lake cloud 95.23402175241354% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:17,074 INFO sailab.pipeline: KRB 20250424T054701_20250424T055205_T43SCA: lake cloud 53.04085706138743% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:20,586 INFO sailab.pipeline: KRB 20250429T054639_20250429T055535_T43SCA: downloaded data/backfill/KRB/20250429T054639_20250429T055535_T43SCA.tif sha256=18971841f5982c65b6ef6c441ef0e046469d0571ffcc98cf481958e13e6ea0e3
+2026-11-08 10:45:21,108 INFO sailab.pipeline: KRB 20250429T054639_20250429T055535_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:24,846 INFO sailab.pipeline: KRB 20250504T054701_20250504T055522_T43SCA: downloaded data/backfill/KRB/20250504T054701_20250504T055522_T43SCA.tif sha256=08b6d4fc7d32e2598fdb9edcf5a89ab369ca2102d1a8b324922872b05b3a0f09
+2026-11-08 10:45:25,382 INFO sailab.pipeline: KRB 20250504T054701_20250504T055522_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:29,585 INFO sailab.pipeline: KRB 20250506T055251_20250506T055250_T43SCA: downloaded data/backfill/KRB/20250506T055251_20250506T055250_T43SCA.tif sha256=cf7e8e4c685aa5401d361844d995f89f6840c0b13ab218d3559e27fa5bcad29c
+2026-11-08 10:45:30,065 INFO sailab.pipeline: KRB 20250506T055251_20250506T055250_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:30,073 INFO sailab.pipeline: KRB 20250509T054639_20250509T055509_T43SCA: lake cloud 99.98370605727321% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:34,201 INFO sailab.pipeline: KRB 20250514T054651_20250514T055605_T43SCA: downloaded data/backfill/KRB/20250514T054651_20250514T055605_T43SCA.tif sha256=4dd4267fb0902c5da714d411fc5ce4595fcec93d97f05a9b5db2ad2006444e4f
+2026-11-08 10:45:34,696 INFO sailab.pipeline: KRB 20250514T054651_20250514T055605_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:34,703 INFO sailab.pipeline: KRB 20250519T054639_20250519T055748_T43SCA: lake cloud 13.196056865860117% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:34,707 INFO sailab.pipeline: KRB 20250524T054701_20250524T055534_T43SCA: lake cloud 10.99433785490244% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:38,499 INFO sailab.pipeline: KRB 20250526T055251_20250526T055254_T43SCA: downloaded data/backfill/KRB/20250526T055251_20250526T055254_T43SCA.tif sha256=8f3da8a05e499804fbd13b81c09d9fff4548a67e81ed6b7073401e8536ad8c25
+2026-11-08 10:45:39,003 INFO sailab.pipeline: KRB 20250526T055251_20250526T055254_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:39,011 INFO sailab.pipeline: KRB 20250529T054639_20250529T055506_T43SCA: lake cloud 65.98028432930059% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,017 INFO sailab.pipeline: KRB 20250603T054701_20250603T055609_T43SCA: lake cloud 99.84724428693633% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,023 INFO sailab.pipeline: KRB 20250608T054639_20250608T055529_T43SCA: lake cloud 88.72662837590126% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,030 INFO sailab.pipeline: KRB 20250613T054701_20250613T055615_T43SCA: lake cloud 95.91022037557538% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,035 INFO sailab.pipeline: KRB 20250615T055251_20250615T055251_T43SCA: lake cloud 99.99388977147746% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,043 INFO sailab.pipeline: KRB 20250618T054639_20250618T055812_T43SCA: lake cloud 57.737586052385026% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,052 INFO sailab.pipeline: KRB 20250623T054701_20250623T055806_T43SCA: lake cloud 10.041142205385148% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:39,057 INFO sailab.pipeline: KRB 20250628T054639_20250628T055536_T43SCA: lake cloud 37.85490244001792% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:43,089 INFO sailab.pipeline: KRB 20250703T054701_20250703T055606_T43SCA: downloaded data/backfill/KRB/20250703T054701_20250703T055606_T43SCA.tif sha256=196442d744e0a0466824f07d3d8e0cde67e1a09cb38cd61bf4f55ec1c53c10a1
+2026-11-08 10:45:43,586 INFO sailab.pipeline: KRB 20250703T054701_20250703T055606_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:45:47,078 INFO sailab.pipeline: KRB 20250705T055301_20250705T055255_T43SCA: downloaded data/backfill/KRB/20250705T055301_20250705T055255_T43SCA.tif sha256=cffb6f0ba7261669075873246ffc2e1e62acf3e8b41e1947b526611378b11b77
+2026-11-08 10:45:47,701 INFO sailab.pipeline: KRB 20250705T055301_20250705T055255_T43SCA: ok 221.71 (22171 water pixels connected to the centre)
+2026-11-08 10:45:47,706 INFO sailab.pipeline: KRB 20250705T055301_20250705T055255_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:45:47,711 INFO sailab.pipeline: KRB 20250708T054639_20250708T055511_T43SCA: lake cloud 11.701087620677013% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:47,716 INFO sailab.pipeline: KRB 20250713T054701_20250713T055806_T43SCA: lake cloud 11.279481852621288% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:47,721 INFO sailab.pipeline: KRB 20250718T054639_20250718T055750_T43SCA: lake cloud 45.174956210028924% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:47,729 INFO sailab.pipeline: KRB 20250723T054701_20250723T055803_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:47,734 INFO sailab.pipeline: KRB 20250725T055301_20250725T055256_T43SCA: lake cloud 99.92871400057028% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:47,740 INFO sailab.pipeline: KRB 20250728T054639_20250728T055531_T43SCA: lake cloud 26.347305389221557% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:45:51,010 INFO sailab.pipeline: KRB 20250802T054701_20250802T055801_T43SCA: downloaded data/backfill/KRB/20250802T054701_20250802T055801_T43SCA.tif sha256=8ed2f561569840ddbd870a1f24bf7157d8ea3df0b1764a9dfff996ea64d31408
+2026-11-08 10:45:51,626 INFO sailab.pipeline: KRB 20250802T054701_20250802T055801_T43SCA: ok 234.86 (23486 water pixels connected to the centre)
+2026-11-08 10:45:51,631 INFO sailab.pipeline: KRB 20250802T054701_20250802T055801_T43SCA: risk ok baseline=249.6 score=-0.856212251933663
+2026-11-08 10:45:55,457 INFO sailab.pipeline: KRB 20250807T054639_20250807T055535_T43SCA: downloaded data/backfill/KRB/20250807T054639_20250807T055535_T43SCA.tif sha256=79a2a9be0d58d716facda813fad0c84b03782ee9ad39353d074790558cd1f77f
+2026-11-08 10:45:56,088 INFO sailab.pipeline: KRB 20250807T054639_20250807T055535_T43SCA: ok 255.38 (25538 water pixels connected to the centre)
+2026-11-08 10:45:56,093 INFO sailab.pipeline: KRB 20250807T054639_20250807T055535_T43SCA: risk ok baseline=247.7575 score=0.4545676882046146
+2026-11-08 10:45:59,583 INFO sailab.pipeline: KRB 20250812T054701_20250812T055542_T43SCA: downloaded data/backfill/KRB/20250812T054701_20250812T055542_T43SCA.tif sha256=cba9bff759cb5c210d21829bc61eeb2abeca2d88df649f12729dbf617b3f34cf
+2026-11-08 10:46:00,262 INFO sailab.pipeline: KRB 20250812T054701_20250812T055542_T43SCA: ok 198.31 (19831 water pixels connected to the centre)
+2026-11-08 10:46:00,266 INFO sailab.pipeline: KRB 20250812T054701_20250812T055542_T43SCA: risk ok baseline=248.60444444444445 score=-3.165139597031229
+2026-11-08 10:46:00,272 INFO sailab.pipeline: KRB 20250814T055251_20250814T055250_T43SCA: lake cloud 45.12607438184855% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:04,341 INFO sailab.pipeline: KRB 20250817T054639_20250817T055749_T43SCA: downloaded data/backfill/KRB/20250817T054639_20250817T055749_T43SCA.tif sha256=ae70bfbe05bee7a86ed1aa1d0d780ae61ea0e87331b3cf42d641b58d7508d994
+2026-11-08 10:46:04,969 INFO sailab.pipeline: KRB 20250817T054639_20250817T055749_T43SCA: insufficient_observation None (lake region (19901 px) borders 724 no-data pixels; it may be cut off)
+2026-11-08 10:46:08,870 INFO sailab.pipeline: KRB 20250822T054701_20250822T055800_T43SCA: downloaded data/backfill/KRB/20250822T054701_20250822T055800_T43SCA.tif sha256=aea7447b084dbc02334c267e4bd8263501f7763de7ea8c3da6e030c746273180
+2026-11-08 10:46:09,541 INFO sailab.pipeline: KRB 20250822T054701_20250822T055800_T43SCA: ok 238.56 (23856 water pixels connected to the centre)
+2026-11-08 10:46:09,546 INFO sailab.pipeline: KRB 20250822T054701_20250822T055800_T43SCA: risk ok baseline=243.575 score=-0.2295263271279146
+2026-11-08 10:46:13,909 INFO sailab.pipeline: KRB 20250827T054639_20250827T055535_T43SCA: downloaded data/backfill/KRB/20250827T054639_20250827T055535_T43SCA.tif sha256=196cdee93e780755a0341eb553fa3213686b813d7c4fb1c45cbd713ce96e0241
+2026-11-08 10:46:14,613 INFO sailab.pipeline: KRB 20250827T054639_20250827T055535_T43SCA: ok 255.78 (25578 water pixels connected to the centre)
+2026-11-08 10:46:14,618 INFO sailab.pipeline: KRB 20250827T054639_20250827T055535_T43SCA: risk ok baseline=243.11909090909091 score=0.6091899520543244
+2026-11-08 10:46:18,699 INFO sailab.pipeline: KRB 20250901T054651_20250901T055758_T43SCA: downloaded data/backfill/KRB/20250901T054651_20250901T055758_T43SCA.tif sha256=1f5eaa65c392cdaf1ff561264f004e78c457ad5a250a42afab227ae0569e5852
+2026-11-08 10:46:19,362 INFO sailab.pipeline: KRB 20250901T054651_20250901T055758_T43SCA: ok 234.26 (23426 water pixels connected to the centre)
+2026-11-08 10:46:19,367 INFO sailab.pipeline: KRB 20250901T054651_20250901T055758_T43SCA: risk ok baseline=257.53 score=-36.615035260539464
+2026-11-08 10:46:19,374 INFO sailab.pipeline: KRB 20250903T055251_20250903T055425_T43SCA: lake cloud 33.109291620839954% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:19,378 INFO sailab.pipeline: KRB 20250906T054639_20250906T055529_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:19,384 INFO sailab.pipeline: KRB 20250916T054639_20250916T055745_T43SCA: lake cloud 26.559126644669846% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:23,739 INFO sailab.pipeline: KRB 20250921T054651_20250921T055533_T43SCA: downloaded data/backfill/KRB/20250921T054651_20250921T055533_T43SCA.tif sha256=8f32d2c9e87db7e15445fcaca4468ac3fea217772c3244cc0b9f5a6ac1e5008c
+2026-11-08 10:46:24,398 INFO sailab.pipeline: KRB 20250921T054651_20250921T055533_T43SCA: insufficient_observation None (lake region (23891 px) borders 107 no-data pixels; it may be cut off)
+2026-11-08 10:46:29,107 INFO sailab.pipeline: KRB 20250923T055251_20250923T055252_T43SCA: downloaded data/backfill/KRB/20250923T055251_20250923T055252_T43SCA.tif sha256=0d974af00d487d25561d4ef2fbc5c31ebdff1e4dcb83d6f304e8fbaecf4e2392
+2026-11-08 10:46:29,771 INFO sailab.pipeline: KRB 20250923T055251_20250923T055252_T43SCA: ok 250.78 (25078 water pixels connected to the centre)
+2026-11-08 10:46:29,776 INFO sailab.pipeline: KRB 20250923T055251_20250923T055252_T43SCA: risk ok baseline=251.71249999999998 score=-0.08006652151744144
+2026-11-08 10:46:29,781 INFO sailab.pipeline: KRB 20250926T054639_20250926T055153_T43SCA: lake cloud 96.63733756975844% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:29,785 INFO sailab.pipeline: KRB 20251001T054651_20251001T055548_T43SCA: lake cloud 38.333537007617416% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:29,790 INFO sailab.pipeline: KRB 20251006T054639_20251006T055533_T43SCA: lake cloud 96.25850340136054% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:33,749 INFO sailab.pipeline: KRB 20251011T054801_20251011T055857_T43SCA: downloaded data/backfill/KRB/20251011T054801_20251011T055857_T43SCA.tif sha256=6e4bda9bfbb6888b26300193106187eead7bd7af0a040e4056d022f167c24deb
+2026-11-08 10:46:34,413 INFO sailab.pipeline: KRB 20251011T054801_20251011T055857_T43SCA: ok 235.14 (23514 water pixels connected to the centre)
+2026-11-08 10:46:34,418 INFO sailab.pipeline: KRB 20251011T054801_20251011T055857_T43SCA: risk ok baseline=254.01666666666665 score=-0.5328767394952216
+2026-11-08 10:46:38,874 INFO sailab.pipeline: KRB 20251013T055251_20251013T055251_T43SCA: downloaded data/backfill/KRB/20251013T055251_20251013T055251_T43SCA.tif sha256=1287624c56d9c28d0c80f3acf802b4f19370b5b7ec7f25aa87876ecf2f36c73a
+2026-11-08 10:46:39,533 INFO sailab.pipeline: KRB 20251013T055251_20251013T055251_T43SCA: insufficient_observation None (lake region (25618 px) borders 2 no-data pixels; it may be cut off)
+2026-11-08 10:46:43,129 INFO sailab.pipeline: KRB 20251016T054729_20251016T055055_T43SCA: downloaded data/backfill/KRB/20251016T054729_20251016T055055_T43SCA.tif sha256=d2c19b3258f097260184dfc3808044865b207a3b8fc1f48409fbffadd175a942
+2026-11-08 10:46:43,763 INFO sailab.pipeline: KRB 20251016T054729_20251016T055055_T43SCA: ok 257.17 (25717 water pixels connected to the centre)
+2026-11-08 10:46:43,768 INFO sailab.pipeline: KRB 20251016T054729_20251016T055055_T43SCA: risk ok baseline=249.29749999999999 score=0.2587540553582798
+2026-11-08 10:46:43,773 INFO sailab.pipeline: KRB 20251021T054911_20251021T054923_T43SCA: lake cloud 88.00969489592244% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:43,778 INFO sailab.pipeline: KRB 20251026T054829_20251026T054830_T43SCA: lake cloud 89.27654894293046% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:43,786 INFO sailab.pipeline: KRB 20251026T054829_20251026T055847_T43SCA: lake cloud 88.73792764773286% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:46:46,847 INFO sailab.pipeline: KRB 20251031T055031_20251031T055031_T43SCA: downloaded data/backfill/KRB/20251031T055031_20251031T055031_T43SCA.tif sha256=56f815e313040aad56584144daf9e98615019e6031a1b033f15ebee7715e164d
+2026-11-08 10:46:47,496 INFO sailab.pipeline: KRB 20251031T055031_20251031T055031_T43SCA: ok 252.77 (25277 water pixels connected to the centre)
+2026-11-08 10:46:47,501 INFO sailab.pipeline: KRB 20251031T055031_20251031T055031_T43SCA: risk ok baseline=250.87199999999999 score=0.071399843892653
+2026-11-08 10:46:51,374 INFO sailab.pipeline: KRB 20251102T055251_20251102T055254_T43SCA: downloaded data/backfill/KRB/20251102T055251_20251102T055254_T43SCA.tif sha256=813309b203f4d857a9fa5b2bdc6b1e7b471d9aabe40a87384363e8b0dac1bede
+2026-11-08 10:46:52,028 INFO sailab.pipeline: KRB 20251102T055251_20251102T055254_T43SCA: insufficient_observation None (lake region (23723 px) borders 400 no-data pixels; it may be cut off)
+2026-11-08 10:46:56,102 INFO sailab.pipeline: KRB 20251105T054929_20251105T055514_T43SCA: downloaded data/backfill/KRB/20251105T054929_20251105T055514_T43SCA.tif sha256=0e789a208599165a0a7f26d1c0d5ffa54460a51693917309d02422ec20346346
+2026-11-08 10:46:56,707 INFO sailab.pipeline: KRB 20251105T054929_20251105T055514_T43SCA: ok 167.82 (16782 water pixels connected to the centre)
+2026-11-08 10:46:56,712 INFO sailab.pipeline: KRB 20251105T054929_20251105T055514_T43SCA: risk ok baseline=269.64 score=-2.205809205282301
+2026-11-08 10:46:56,717 INFO sailab.pipeline: KRB 20251110T055101_20251110T055059_T43SCA: lake cloud 29.836245875595747% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:00,456 INFO sailab.pipeline: KRB 20251115T055019_20251115T055609_T43SCA: downloaded data/backfill/KRB/20251115T055019_20251115T055609_T43SCA.tif sha256=e2c1ec93e13a21329613ebca21e4bec84bd1385118cca5ec71140da123aae06b
+2026-11-08 10:47:01,226 INFO sailab.pipeline: KRB 20251115T055019_20251115T055609_T43SCA: ok 423.91 (42391 water pixels connected to the centre)
+2026-11-08 10:47:01,231 INFO sailab.pipeline: KRB 20251115T055019_20251115T055609_T43SCA: risk ok baseline=235.7 score=2.799101827302398
+2026-11-08 10:47:01,236 INFO sailab.pipeline: KRB 20251120T055141_20251120T055144_T43SCA: lake cloud 19.858242698276914% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:06,142 INFO sailab.pipeline: KRB 20251122T055251_20251122T055254_T43SCA: downloaded data/backfill/KRB/20251122T055251_20251122T055254_T43SCA.tif sha256=adcd20f5c04f8964087f968d63157eb946e1cd1979ed6bd39ec9e660b05802fa
+2026-11-08 10:47:06,901 INFO sailab.pipeline: KRB 20251122T055251_20251122T055254_T43SCA: ok 462.88 (46288 water pixels connected to the centre)
+2026-11-08 10:47:06,906 INFO sailab.pipeline: KRB 20251122T055251_20251122T055254_T43SCA: risk ok baseline=282.7525 score=1.6533222271157695
+2026-11-08 10:47:10,781 INFO sailab.pipeline: KRB 20251125T055049_20251125T055052_T43SCA: downloaded data/backfill/KRB/20251125T055049_20251125T055052_T43SCA.tif sha256=2a4ceb1d02e40255d5cc9451159eda23701612981f2f1ec1deb7ed44ef86f929
+2026-11-08 10:47:11,622 INFO sailab.pipeline: KRB 20251125T055049_20251125T055052_T43SCA: insufficient_observation None (lake region (46554 px) borders 10 no-data pixels; it may be cut off)
+2026-11-08 10:47:15,624 INFO sailab.pipeline: KRB 20251130T055221_20251130T055216_T43SCA: downloaded data/backfill/KRB/20251130T055221_20251130T055216_T43SCA.tif sha256=76ade906bc72df5f7ee97e1590fa2ac97037c6e9c967a89c97c19656e85aa0db
+2026-11-08 10:47:16,373 INFO sailab.pipeline: KRB 20251130T055221_20251130T055216_T43SCA: ok 365.55 (36555 water pixels connected to the centre)
+2026-11-08 10:47:16,378 INFO sailab.pipeline: KRB 20251130T055221_20251130T055216_T43SCA: risk ok baseline=318.778 score=0.37700275716249815
+2026-11-08 10:47:16,383 INFO sailab.pipeline: KRB 20251205T055129_20251205T055124_T43SCA: lake cloud 99.98166931443237% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:20,208 INFO sailab.pipeline: KRB 20251210T055241_20251210T055241_T43SCA: downloaded data/backfill/KRB/20251210T055241_20251210T055241_T43SCA.tif sha256=3fa8dc3b87cc4ee25586f9b9436b68920613aa17cdbb89ff2e1cbb84bf95a374
+2026-11-08 10:47:20,728 INFO sailab.pipeline: KRB 20251210T055241_20251210T055241_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:24,046 INFO sailab.pipeline: KRB 20251212T055251_20251212T055251_T43SCA: downloaded data/backfill/KRB/20251212T055251_20251212T055251_T43SCA.tif sha256=260003c39d3060f389130e2f6274054e9e8ec0e49806ae2e8e5d7ddecdef397e
+2026-11-08 10:47:24,567 INFO sailab.pipeline: KRB 20251212T055251_20251212T055251_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:24,572 INFO sailab.pipeline: KRB 20251215T055229_20251215T055635_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:24,578 INFO sailab.pipeline: KRB 20251220T055251_20251220T055251_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:29,156 INFO sailab.pipeline: KRB 20251225T055149_20251225T055145_T43SCA: downloaded data/backfill/KRB/20251225T055149_20251225T055145_T43SCA.tif sha256=646d1570e626cd2a5c7be40d4dfec71237ec1ec2b89736b3737dc5f721e85b6e
+2026-11-08 10:47:29,673 INFO sailab.pipeline: KRB 20251225T055149_20251225T055145_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:29,678 INFO sailab.pipeline: KRB 20251230T055251_20251230T055247_T43SCA: lake cloud 99.06920852173205% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:29,683 INFO sailab.pipeline: KRB 20260101T055301_20260101T055259_T43SCA: lake cloud 99.99796325715916% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:29,691 INFO sailab.pipeline: KRB 20260104T055139_20260104T055134_T43SCA: lake cloud 12.780561326326938% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:33,643 INFO sailab.pipeline: KRB 20260109T055231_20260109T055226_T43SCA: downloaded data/backfill/KRB/20260109T055231_20260109T055226_T43SCA.tif sha256=e1564069b6fb7c3a06bf31706c37c7dfe1bb539cd567d230ba707232f7d97d33
+2026-11-08 10:47:34,121 INFO sailab.pipeline: KRB 20260109T055231_20260109T055226_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:37,778 INFO sailab.pipeline: KRB 20260114T055059_20260114T055359_T43SCA: downloaded data/backfill/KRB/20260114T055059_20260114T055359_T43SCA.tif sha256=3abc8e8cd13a07a4c1dfd3cde0be3ce46ae3533aa5f931d8c8178753f223c370
+2026-11-08 10:47:38,268 INFO sailab.pipeline: KRB 20260114T055059_20260114T055359_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:38,276 INFO sailab.pipeline: KRB 20260119T055151_20260119T055150_T43SCA: lake cloud 99.9959265143183% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:47:41,955 INFO sailab.pipeline: KRB 20260124T055029_20260124T055029_T43SCA: downloaded data/backfill/KRB/20260124T055029_20260124T055029_T43SCA.tif sha256=648f6534eb576aca397d8c23f0b494bff6550129274eb34683b8a6b38b3e6fa9
+2026-11-08 10:47:42,471 INFO sailab.pipeline: KRB 20260124T055029_20260124T055029_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:46,950 INFO sailab.pipeline: KRB 20260129T055101_20260129T055059_T43SCA: downloaded data/backfill/KRB/20260129T055101_20260129T055059_T43SCA.tif sha256=26ddef933b5c77fc01315055afd7d72525c2c58034a1e510cb7ea000248d5fd1
+2026-11-08 10:47:47,464 INFO sailab.pipeline: KRB 20260129T055101_20260129T055059_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:52,001 INFO sailab.pipeline: KRB 20260203T054939_20260203T054937_T43SCA: downloaded data/backfill/KRB/20260203T054939_20260203T054937_T43SCA.tif sha256=e00954ac880355b45095cc96d8fa143929cebe966e3f001ccc45e06142792f60
+2026-11-08 10:47:52,495 INFO sailab.pipeline: KRB 20260203T054939_20260203T054937_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:56,762 INFO sailab.pipeline: KRB 20260208T055011_20260208T055009_T43SCA: downloaded data/backfill/KRB/20260208T055011_20260208T055009_T43SCA.tif sha256=80b63be2dc7848fbbd3067a3b08542c7b7732250d8599d5b8d9c4f71ea2009cc
+2026-11-08 10:47:57,262 INFO sailab.pipeline: KRB 20260208T055011_20260208T055009_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:47:57,267 INFO sailab.pipeline: KRB 20260213T054839_20260213T054905_T43SCA: lake cloud 12.705201841215528% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:01,261 INFO sailab.pipeline: KRB 20260218T054911_20260218T054913_T43SCA: downloaded data/backfill/KRB/20260218T054911_20260218T054913_T43SCA.tif sha256=784131f527b00661b72989b864d13999304c34f066722d477edb2cdf80250c0b
+2026-11-08 10:48:01,759 INFO sailab.pipeline: KRB 20260218T054911_20260218T054913_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:05,669 INFO sailab.pipeline: KRB 20260223T054739_20260223T055613_T43SCA: downloaded data/backfill/KRB/20260223T054739_20260223T055613_T43SCA.tif sha256=3e8317a3eecdd4b58c8b0c44b3f97a49e851cab7f3c99a4dcc35a1453ec65b34
+2026-11-08 10:48:06,194 INFO sailab.pipeline: KRB 20260223T054739_20260223T055613_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:06,200 INFO sailab.pipeline: KRB 20260228T054801_20260228T054759_T43SCA: lake cloud 38.70422420465192% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:06,205 INFO sailab.pipeline: KRB 20260305T054639_20260305T055828_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:06,214 INFO sailab.pipeline: KRB 20260310T054651_20260310T055548_T43SCA: lake cloud 99.98574280011405% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:06,219 INFO sailab.pipeline: KRB 20260315T054639_20260315T055816_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:10,118 INFO sailab.pipeline: KRB 20260320T054641_20260320T055521_T43SCA: downloaded data/backfill/KRB/20260320T054641_20260320T055521_T43SCA.tif sha256=1bbb1dc73a76496f2ad65a6b418174d335030299c1d921ba16edc572c2ddfe87
+2026-11-08 10:48:10,622 INFO sailab.pipeline: KRB 20260320T054641_20260320T055521_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:14,587 INFO sailab.pipeline: KRB 20260325T054639_20260325T055650_T43SCA: downloaded data/backfill/KRB/20260325T054639_20260325T055650_T43SCA.tif sha256=2ff847ae5add12fb9a034156729be4088726f0afe9d17b2f2f24440b27d8cc2f
+2026-11-08 10:48:15,112 INFO sailab.pipeline: KRB 20260325T054639_20260325T055650_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:15,117 INFO sailab.pipeline: KRB 20260330T054641_20260330T055545_T43SCA: lake cloud 99.51525520387796% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:18,964 INFO sailab.pipeline: KRB 20260401T055301_20260401T055257_T43SCA: downloaded data/backfill/KRB/20260401T055301_20260401T055257_T43SCA.tif sha256=c81e496e6bcae30d7d23d67d863fd48af4ebe6d6ba25541a650e4e9c5012e6c8
+2026-11-08 10:48:19,474 INFO sailab.pipeline: KRB 20260401T055301_20260401T055257_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:19,478 INFO sailab.pipeline: KRB 20260404T054639_20260404T055641_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:19,484 INFO sailab.pipeline: KRB 20260409T054631_20260409T055740_T43SCA: lake cloud 99.22400097763656% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:22,963 INFO sailab.pipeline: KRB 20260414T054639_20260414T055559_T43SCA: downloaded data/backfill/KRB/20260414T054639_20260414T055559_T43SCA.tif sha256=aba8f58def187781af1303e861ff51f31fe36eac7da3a97f7a84e76b417c8775
+2026-11-08 10:48:23,481 INFO sailab.pipeline: KRB 20260414T054639_20260414T055559_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:23,487 INFO sailab.pipeline: KRB 20260419T054641_20260419T055740_T43SCA: lake cloud 99.99796325715916% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:27,236 INFO sailab.pipeline: KRB 20260421T055301_20260421T055649_T43SCA: downloaded data/backfill/KRB/20260421T055301_20260421T055649_T43SCA.tif sha256=4901ee20fdd58b44137f0fa843dbba093c13ac9b53ca61544ef913730a6d378d
+2026-11-08 10:48:27,750 INFO sailab.pipeline: KRB 20260421T055301_20260421T055649_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:27,755 INFO sailab.pipeline: KRB 20260424T054629_20260424T055601_T43SCA: lake cloud 98.85942400912461% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:27,762 INFO sailab.pipeline: KRB 20260429T054641_20260429T055741_T43SCA: lake cloud 25.243390769481444% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:27,767 INFO sailab.pipeline: KRB 20260504T054639_20260504T055559_T43SCA: lake cloud 42.70031365839749% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:31,582 INFO sailab.pipeline: KRB 20260509T054641_20260509T055711_T43SCA: downloaded data/backfill/KRB/20260509T054641_20260509T055711_T43SCA.tif sha256=54810016bae714143cd6c18e98b0d926fffe00110ba3d72e41261ff2f5828458
+2026-11-08 10:48:32,098 INFO sailab.pipeline: KRB 20260509T054641_20260509T055711_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:32,103 INFO sailab.pipeline: KRB 20260511T055251_20260511T055251_T43SCA: lake cloud 83.05022607845534% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:35,753 INFO sailab.pipeline: KRB 20260514T054629_20260514T055558_T43SCA: downloaded data/backfill/KRB/20260514T054629_20260514T055558_T43SCA.tif sha256=ee25d47a6c73b3f063582dedce90f1147dcde60f6d18d02c026adc00fcc7fa7e
+2026-11-08 10:48:36,270 INFO sailab.pipeline: KRB 20260514T054629_20260514T055558_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:36,275 INFO sailab.pipeline: KRB 20260519T054641_20260519T055757_T43SCA: lake cloud 96.82471791111654% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:36,283 INFO sailab.pipeline: KRB 20260524T054629_20260524T055601_T43SCA: lake cloud 30.400423642510898% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:40,166 INFO sailab.pipeline: KRB 20260529T054631_20260529T055704_T43SCA: downloaded data/backfill/KRB/20260529T054631_20260529T055704_T43SCA.tif sha256=a443b5f7851fb6f694f0dcd571a84023dc17ebcdbba84e334c662c975e8d3ff5
+2026-11-08 10:48:40,665 INFO sailab.pipeline: KRB 20260529T054631_20260529T055704_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:44,901 INFO sailab.pipeline: KRB 20260531T055251_20260531T055253_T43SCA: downloaded data/backfill/KRB/20260531T055251_20260531T055253_T43SCA.tif sha256=a5ba25155c4291676dcb46fd07f63af6082e5f71de5da182d90795af90241069
+2026-11-08 10:48:45,428 INFO sailab.pipeline: KRB 20260531T055251_20260531T055253_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:49,033 INFO sailab.pipeline: KRB 20260603T054629_20260603T055602_T43SCA: downloaded data/backfill/KRB/20260603T054629_20260603T055602_T43SCA.tif sha256=b3d0d29189cfafb6b3f2e6f02d1aa2b7f1bec036321f1f0a131f4d75b61f6d16
+2026-11-08 10:48:49,548 INFO sailab.pipeline: KRB 20260603T054629_20260603T055602_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:49,553 INFO sailab.pipeline: KRB 20260608T054641_20260608T055710_T43SCA: lake cloud 12.108436188846797% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,558 INFO sailab.pipeline: KRB 20260613T054639_20260613T055604_T43SCA: lake cloud 66.24098741292924% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,563 INFO sailab.pipeline: KRB 20260618T054641_20260618T055646_T43SCA: lake cloud 70.06395372520265% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,568 INFO sailab.pipeline: KRB 20260620T055251_20260620T055336_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,575 INFO sailab.pipeline: KRB 20260623T054639_20260623T055557_T43SCA: lake cloud 96.4560674569229% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,580 INFO sailab.pipeline: KRB 20260628T054641_20260628T055641_T43SCA: lake cloud 66.66259318098497% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,586 INFO sailab.pipeline: KRB 20260703T054639_20260703T055603_T43SCA: lake cloud 99.84317080125463% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,591 INFO sailab.pipeline: KRB 20260708T054641_20260708T055715_T43SCA: lake cloud 82.31496191290887% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,596 INFO sailab.pipeline: KRB 20260710T055251_20260710T055252_T43SCA: lake cloud 21.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,601 INFO sailab.pipeline: KRB 20260710T055251_20260710T055900_T43SCA: lake cloud 80.23341072956129% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:49,609 INFO sailab.pipeline: KRB 20260713T054639_20260713T055514_T43SCA: lake cloud 98.30746669925455% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:53,304 INFO sailab.pipeline: KRB 20260718T054641_20260718T055712_T43SCA: downloaded data/backfill/KRB/20260718T054641_20260718T055712_T43SCA.tif sha256=673796c82ee494bcd9b99814db6a962150ec89b4e55b1d790418a7b9f86adc22
+2026-11-08 10:48:53,952 INFO sailab.pipeline: KRB 20260718T054641_20260718T055712_T43SCA: ok 237.22 (23722 water pixels connected to the centre)
+2026-11-08 10:48:53,958 INFO sailab.pipeline: KRB 20260718T054641_20260718T055712_T43SCA: risk ok baseline=228.495 score=0.9092861703541085
+2026-11-08 10:48:57,363 INFO sailab.pipeline: KRB 20260720T055251_20260720T055254_T43SCA: downloaded data/backfill/KRB/20260720T055251_20260720T055254_T43SCA.tif sha256=58f48f42925ce43f8b4a3b05cb11adccb35644d03ee3f0bbbc99d9c1079e66c7
+2026-11-08 10:48:57,912 INFO sailab.pipeline: KRB 20260720T055251_20260720T055254_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:48:57,917 INFO sailab.pipeline: KRB 20260723T054639_20260723T055606_T43SCA: lake cloud 84.57574646625118% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:57,923 INFO sailab.pipeline: KRB 20260728T054641_20260728T055709_T43SCA: lake cloud 16.768503808709113% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:57,928 INFO sailab.pipeline: KRB 20260802T054639_20260802T055631_T43SCA: lake cloud 99.55191657501324% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:57,933 INFO sailab.pipeline: KRB 20260807T054641_20260807T055711_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:57,938 INFO sailab.pipeline: KRB 20260809T055251_20260809T055323_T43SCA: lake cloud 95.33382215161514% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:48:57,943 INFO sailab.pipeline: KRB 20260812T054639_20260812T055604_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:01,479 INFO sailab.pipeline: KRB 20260817T054631_20260817T055709_T43SCA: downloaded data/backfill/KRB/20260817T054631_20260817T055709_T43SCA.tif sha256=cb6ddee3722728b3172909de04d533f1ba7f43a07d4a024616af90268cd4b9d2
+2026-11-08 10:49:02,144 INFO sailab.pipeline: KRB 20260817T054631_20260817T055709_T43SCA: ok 256.04 (25604 water pixels connected to the centre)
+2026-11-08 10:49:02,149 INFO sailab.pipeline: KRB 20260817T054631_20260817T055709_T43SCA: risk ok baseline=244.17416666666668 score=0.5888683928860914
+2026-11-08 10:49:06,086 INFO sailab.pipeline: KRB 20260822T054629_20260822T055602_T43SCA: downloaded data/backfill/KRB/20260822T054629_20260822T055602_T43SCA.tif sha256=6274a3224dfc576d7d3f812b6f29e6285f7ce7e23f8d1996560ecdb28be94c8c
+2026-11-08 10:49:06,755 INFO sailab.pipeline: KRB 20260822T054629_20260822T055602_T43SCA: ok 254.37 (25437 water pixels connected to the centre)
+2026-11-08 10:49:06,760 INFO sailab.pipeline: KRB 20260822T054629_20260822T055602_T43SCA: risk ok baseline=245.08692307692309 score=0.47432673142952253
+2026-11-08 10:49:10,379 INFO sailab.pipeline: KRB 20260827T054631_20260827T055705_T43SCA: downloaded data/backfill/KRB/20260827T054631_20260827T055705_T43SCA.tif sha256=0dfa5640125180599209be65cbd5c5bbeb235f208823712287126977413b97bb
+2026-11-08 10:49:11,017 INFO sailab.pipeline: KRB 20260827T054631_20260827T055705_T43SCA: ok 256.97 (25697 water pixels connected to the centre)
+2026-11-08 10:49:11,022 INFO sailab.pipeline: KRB 20260827T054631_20260827T055705_T43SCA: risk ok baseline=245.75 score=0.5915774919914951
+2026-11-08 10:49:11,027 INFO sailab.pipeline: KRB 20260829T055251_20260829T055252_T43SCA: lake cloud 34.67758360829362% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:14,135 INFO sailab.pipeline: KRB 20260901T054639_20260901T055603_T43SCA: downloaded data/backfill/KRB/20260901T054639_20260901T055603_T43SCA.tif sha256=6a050dedca8439c6806aa751f1dd9392d04a2079e2818c81e4b48ffc56e60a1e
+2026-11-08 10:49:14,785 INFO sailab.pipeline: KRB 20260901T054639_20260901T055603_T43SCA: ok 256.69 (25669 water pixels connected to the centre)
+2026-11-08 10:49:14,792 INFO sailab.pipeline: KRB 20260901T054639_20260901T055603_T43SCA: risk ok baseline=251.52599999999998 score=0.5115485109789488
+2026-11-08 10:49:18,666 INFO sailab.pipeline: KRB 20260906T054631_20260906T055705_T43SCA: downloaded data/backfill/KRB/20260906T054631_20260906T055705_T43SCA.tif sha256=b177b68319025779b638a315a9fe768f7057add90d8c68f1de74f4f13c4d8a24
+2026-11-08 10:49:19,329 INFO sailab.pipeline: KRB 20260906T054631_20260906T055705_T43SCA: ok 257.02 (25702 water pixels connected to the centre)
+2026-11-08 10:49:19,334 INFO sailab.pipeline: KRB 20260906T054631_20260906T055705_T43SCA: risk ok baseline=252.38666666666666 score=0.4997149455735076
+2026-11-08 10:49:19,340 INFO sailab.pipeline: KRB 20260911T054639_20260911T055820_T43SCA: lake cloud 99.97352234306896% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:19,345 INFO sailab.pipeline: KRB 20260916T054641_20260916T055710_T43SCA: lake cloud 50.6497209662308% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:19,353 INFO sailab.pipeline: KRB 20260918T055251_20260918T055250_T43SCA: lake cloud 33.97490732820074% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:19,358 INFO sailab.pipeline: KRB 20260921T054639_20260921T055822_T43SCA: lake cloud 40.84687767322498% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:23,079 INFO sailab.pipeline: KRB 20260926T054641_20260926T055712_T43SCA: downloaded data/backfill/KRB/20260926T054641_20260926T055712_T43SCA.tif sha256=1c620f59a8d0e28e516b44e5621d781e056d03c6ba2d724bded81181d8efa49e
+2026-11-08 10:49:23,656 INFO sailab.pipeline: KRB 20260926T054641_20260926T055712_T43SCA: insufficient_observation None (lake region (12495 px) borders 346 no-data pixels; it may be cut off)
+2026-11-08 10:49:23,661 INFO sailab.pipeline: KRB 20261001T054639_20261001T055612_T43SCA: lake cloud 94.41117764471058% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:23,666 INFO sailab.pipeline: KRB 20261006T054711_20261006T055828_T43SCA: lake cloud 99.88186891523077% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:23,670 INFO sailab.pipeline: KRB 20261008T055251_20261008T055250_T43SCA: lake cloud 63.98834983095034% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:23,675 INFO sailab.pipeline: KRB 20261011T054749_20261011T054743_T43SCA: lake cloud 29.243553708908713% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:27,208 INFO sailab.pipeline: KRB 20261016T054821_20261016T054915_T43SCA: downloaded data/backfill/KRB/20261016T054821_20261016T054915_T43SCA.tif sha256=6cdd66e6101040f048ac22554f616ef7c73077010228ad7bd4ca6d42ac24ba88
+2026-11-08 10:49:27,724 INFO sailab.pipeline: KRB 20261016T054821_20261016T054915_T43SCA: insufficient_observation None (centre pixel Pixel(row=253, col=252) is not water (NDWI <= 0.2))
+2026-11-08 10:49:33,050 INFO sailab.pipeline: KRB 20261021T054849_20261021T054910_T43SCA: downloaded data/backfill/KRB/20261021T054849_20261021T054910_T43SCA.tif sha256=d0c3f9fd69a3ccb8d8968cb73843bdb595ed68c22506da97471da6e88858e86f
+2026-11-08 10:49:33,716 INFO sailab.pipeline: KRB 20261021T054849_20261021T054910_T43SCA: ok 275.57 (27557 water pixels connected to the centre)
+2026-11-08 10:49:33,721 INFO sailab.pipeline: KRB 20261021T054849_20261021T054910_T43SCA: risk ok baseline=251.18833333333333 score=1.0249175904896286
+2026-11-08 10:49:33,726 INFO sailab.pipeline: KRB 20261026T054921_20261026T055738_T43SCA: lake cloud 98.86146075196545% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:33,731 INFO sailab.pipeline: KRB 20261028T055241_20261028T055243_T43SCA: lake cloud 43.75738319279808% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:33,736 INFO sailab.pipeline: KRB 20261031T054959_20261031T054954_T43SCA: lake cloud 24.041712493380587% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:49:33,741 INFO sailab.pipeline: KRB 20261105T055021_20261105T055015_T43SCA: lake cloud 99.74337040205303% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:28,363 INFO sailab.pipeline: ATS: 304 scenes listed after 2022-12-31
+2026-11-08 10:52:31,055 INFO sailab.pipeline: ATS 20230105T055231_20230105T055228_T43SCA: downloaded data/backfill/ATS/20230105T055231_20230105T055228_T43SCA.tif sha256=83abefd2122ab55ccbd3160b5a960b94f1050963756fa2b96f93d0c478f960b8
+2026-11-08 10:52:31,258 INFO sailab.pipeline: ATS 20230105T055231_20230105T055228_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:31,263 INFO sailab.pipeline: ATS 20230110T055219_20230110T055214_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,269 INFO sailab.pipeline: ATS 20230115T055201_20230115T055201_T43SCA: lake cloud 74.48373408769449% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,273 INFO sailab.pipeline: ATS 20230120T055149_20230120T055143_T43SCA: lake cloud 71.2871287128713% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,279 INFO sailab.pipeline: ATS 20230125T055121_20230125T055121_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,284 INFO sailab.pipeline: ATS 20230130T055059_20230130T055056_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,288 INFO sailab.pipeline: ATS 20230204T055031_20230204T055032_T43SCA: lake cloud 82.09335219236209% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,292 INFO sailab.pipeline: ATS 20230209T055009_20230209T055524_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,297 INFO sailab.pipeline: ATS 20230214T054931_20230214T054931_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:31,301 INFO sailab.pipeline: ATS 20230219T054859_20230219T055203_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:34,133 INFO sailab.pipeline: ATS 20230224T054821_20230224T054823_T43SCA: downloaded data/backfill/ATS/20230224T054821_20230224T054823_T43SCA.tif sha256=6de5e5c099c813ef3e72d4028179f4b0d367bf251ac919b65d8e14fe3fe6a563
+2026-11-08 10:52:34,304 INFO sailab.pipeline: ATS 20230224T054821_20230224T054823_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:34,309 INFO sailab.pipeline: ATS 20230301T054749_20230301T055132_T43SCA: lake cloud 96.42432814710043% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:36,911 INFO sailab.pipeline: ATS 20230306T054711_20230306T055732_T43SCA: downloaded data/backfill/ATS/20230306T054711_20230306T055732_T43SCA.tif sha256=f167a74705655bca5eb0b8f774a9a2d39d1a70a3ad2721cb1ecb39b62136d7c5
+2026-11-08 10:52:37,151 INFO sailab.pipeline: ATS 20230306T054711_20230306T055732_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:39,047 INFO sailab.pipeline: ATS 20230311T054649_20230311T055115_T43SCA: downloaded data/backfill/ATS/20230311T054649_20230311T055115_T43SCA.tif sha256=32d39c5a3708e9e9f36df22003a0b8df7c3ac314b460a89b291bb76fa0e35eb2
+2026-11-08 10:52:39,278 INFO sailab.pipeline: ATS 20230311T054649_20230311T055115_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:41,328 INFO sailab.pipeline: ATS 20230316T054641_20230316T055547_T43SCA: downloaded data/backfill/ATS/20230316T054641_20230316T055547_T43SCA.tif sha256=292e6ba8d45dbf11d13b31c19dc058b9eff69c8dd834787f08b05c59e253dec9
+2026-11-08 10:52:41,509 INFO sailab.pipeline: ATS 20230316T054641_20230316T055547_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:43,771 INFO sailab.pipeline: ATS 20230321T054639_20230321T055552_T43SCA: downloaded data/backfill/ATS/20230321T054639_20230321T055552_T43SCA.tif sha256=75bc19ac6c4e30d3d4f63f307cf8fd4cd401ad10bce53de3f694f70764477776
+2026-11-08 10:52:43,997 INFO sailab.pipeline: ATS 20230321T054639_20230321T055552_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:44,002 INFO sailab.pipeline: ATS 20230326T054641_20230326T055548_T43SCA: lake cloud 20.11315417256011% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:46,230 INFO sailab.pipeline: ATS 20230331T054639_20230331T055553_T43SCA: downloaded data/backfill/ATS/20230331T054639_20230331T055553_T43SCA.tif sha256=22fbcc6eab6b28d61741ae65d466128c3a0edf6ce19a916b936acb385d26ba6c
+2026-11-08 10:52:46,411 INFO sailab.pipeline: ATS 20230331T054639_20230331T055553_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:46,416 INFO sailab.pipeline: ATS 20230405T054641_20230405T055104_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:46,420 INFO sailab.pipeline: ATS 20230410T054639_20230410T055547_T43SCA: lake cloud 32.56011315417256% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:48,674 INFO sailab.pipeline: ATS 20230415T054641_20230415T055204_T43SCA: downloaded data/backfill/ATS/20230415T054641_20230415T055204_T43SCA.tif sha256=48c233da0472a9198006568fcfb4ccc17b2b9ca04acb4e9e56f4c4b2ae79b564
+2026-11-08 10:52:48,829 INFO sailab.pipeline: ATS 20230415T054641_20230415T055204_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:48,833 INFO sailab.pipeline: ATS 20230420T054639_20230420T055551_T43SCA: lake cloud 85.35219236209335% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:52,075 INFO sailab.pipeline: ATS 20230425T054641_20230425T055530_T43SCA: downloaded data/backfill/ATS/20230425T054641_20230425T055530_T43SCA.tif sha256=382362eca3ffcaaa4d3ec09ec6dd907064b30adb79b2543441a5fff3e7f706f7
+2026-11-08 10:52:52,287 INFO sailab.pipeline: ATS 20230425T054641_20230425T055530_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:54,211 INFO sailab.pipeline: ATS 20230430T054639_20230430T055551_T43SCA: downloaded data/backfill/ATS/20230430T054639_20230430T055551_T43SCA.tif sha256=a5dbef27d62b618279f4734663197ee9f31e61955fb4a469b80e11321cebcde0
+2026-11-08 10:52:54,373 INFO sailab.pipeline: ATS 20230430T054639_20230430T055551_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:52:54,378 INFO sailab.pipeline: ATS 20230505T054641_20230505T055534_T43SCA: lake cloud 61.42008486562942% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:52:57,409 INFO sailab.pipeline: ATS 20230510T054639_20230510T055552_T43SCA: downloaded data/backfill/ATS/20230510T054639_20230510T055552_T43SCA.tif sha256=c51b3d81360bfa078380b494aabffa571a73bbd38652e9566ed132c15c2695b1
+2026-11-08 10:52:57,575 INFO sailab.pipeline: ATS 20230510T054639_20230510T055552_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:00,383 INFO sailab.pipeline: ATS 20230515T054641_20230515T055531_T43SCA: downloaded data/backfill/ATS/20230515T054641_20230515T055531_T43SCA.tif sha256=9e110a774420eafe2d99e0bad2b688ebb3c4cd93dea663431b946d76255d42f7
+2026-11-08 10:53:00,587 INFO sailab.pipeline: ATS 20230515T054641_20230515T055531_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:02,776 INFO sailab.pipeline: ATS 20230520T054639_20230520T055535_T43SCA: downloaded data/backfill/ATS/20230520T054639_20230520T055535_T43SCA.tif sha256=5dbecbaeb25295da210269aae63fe324e6d1c940c14966f6bf46b22a20f127b9
+2026-11-08 10:53:02,942 INFO sailab.pipeline: ATS 20230520T054639_20230520T055535_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:02,946 INFO sailab.pipeline: ATS 20230525T054641_20230525T055359_T43SCA: lake cloud 34.73833097595474% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:02,951 INFO sailab.pipeline: ATS 20230530T054639_20230530T055534_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:05,485 INFO sailab.pipeline: ATS 20230604T054641_20230604T055534_T43SCA: downloaded data/backfill/ATS/20230604T054641_20230604T055534_T43SCA.tif sha256=5d234c1d5917daab6795d64b6d8a5d258a44ab9591d459157096b4ad8ecfc0ba
+2026-11-08 10:53:05,682 INFO sailab.pipeline: ATS 20230604T054641_20230604T055534_T43SCA: ok 97.82 (9782 water pixels connected to the centre)
+2026-11-08 10:53:05,687 INFO sailab.pipeline: ATS 20230604T054641_20230604T055534_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:07,586 INFO sailab.pipeline: ATS 20230609T054639_20230609T055542_T43SCA: downloaded data/backfill/ATS/20230609T054639_20230609T055542_T43SCA.tif sha256=a2700c411e7ca0c2fa90c8796b313362449c78d08ff0f2b4212298155396d713
+2026-11-08 10:53:07,847 INFO sailab.pipeline: ATS 20230609T054639_20230609T055542_T43SCA: ok 103.78 (10378 water pixels connected to the centre)
+2026-11-08 10:53:07,851 INFO sailab.pipeline: ATS 20230609T054639_20230609T055542_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:11,264 INFO sailab.pipeline: ATS 20230614T054641_20230614T055538_T43SCA: downloaded data/backfill/ATS/20230614T054641_20230614T055538_T43SCA.tif sha256=0dbcffaba18e60924b52a4345561d5266e5b3ff643fe467bafa8c5d60da846c4
+2026-11-08 10:53:11,485 INFO sailab.pipeline: ATS 20230614T054641_20230614T055538_T43SCA: ok 104.88 (10488 water pixels connected to the centre)
+2026-11-08 10:53:11,490 INFO sailab.pipeline: ATS 20230614T054641_20230614T055538_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:13,805 INFO sailab.pipeline: ATS 20230619T054639_20230619T055538_T43SCA: downloaded data/backfill/ATS/20230619T054639_20230619T055538_T43SCA.tif sha256=52e49a0a8ae8dc37c13e75f7e6d342921cc930ff0ea07950a17d12de712d68b8
+2026-11-08 10:53:14,033 INFO sailab.pipeline: ATS 20230619T054639_20230619T055538_T43SCA: ok 105.75 (10575 water pixels connected to the centre)
+2026-11-08 10:53:14,038 INFO sailab.pipeline: ATS 20230619T054639_20230619T055538_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:16,458 INFO sailab.pipeline: ATS 20230624T054641_20230624T055540_T43SCA: downloaded data/backfill/ATS/20230624T054641_20230624T055540_T43SCA.tif sha256=60834e2805f49838d473e3ee9383bc2a328dbcc11c14ba5ed2817e27de89c5c2
+2026-11-08 10:53:16,718 INFO sailab.pipeline: ATS 20230624T054641_20230624T055540_T43SCA: ok 105.33 (10533 water pixels connected to the centre)
+2026-11-08 10:53:16,722 INFO sailab.pipeline: ATS 20230624T054641_20230624T055540_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:16,727 INFO sailab.pipeline: ATS 20230629T054639_20230629T055321_T43SCA: lake cloud 56.48656294200849% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:16,735 INFO sailab.pipeline: ATS 20230704T054641_20230704T055539_T43SCA: lake cloud 95.03818953323903% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:16,740 INFO sailab.pipeline: ATS 20230709T054639_20230709T055539_T43SCA: lake cloud 95.86987270155586% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:19,554 INFO sailab.pipeline: ATS 20230714T054641_20230714T055452_T43SCA: downloaded data/backfill/ATS/20230714T054641_20230714T055452_T43SCA.tif sha256=ca138abb004f5792b1eabe68fdb07091507069eab65c4d8e4b150bf2be383ef7
+2026-11-08 10:53:19,785 INFO sailab.pipeline: ATS 20230714T054641_20230714T055452_T43SCA: ok 105.16 (10516 water pixels connected to the centre)
+2026-11-08 10:53:19,790 INFO sailab.pipeline: ATS 20230714T054641_20230714T055452_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:21,713 INFO sailab.pipeline: ATS 20230719T054639_20230719T055539_T43SCA: downloaded data/backfill/ATS/20230719T054639_20230719T055539_T43SCA.tif sha256=48a43e251107d73b26f1dca69805d4edbd4c2c1b00257aa0e91a201b8ef398db
+2026-11-08 10:53:21,971 INFO sailab.pipeline: ATS 20230719T054639_20230719T055539_T43SCA: ok 106.24 (10624 water pixels connected to the centre)
+2026-11-08 10:53:21,975 INFO sailab.pipeline: ATS 20230719T054639_20230719T055539_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:21,980 INFO sailab.pipeline: ATS 20230724T054641_20230724T055535_T43SCA: lake cloud 96.03960396039604% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:21,985 INFO sailab.pipeline: ATS 20230729T054639_20230729T055539_T43SCA: lake cloud 99.96039603960396% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:21,990 INFO sailab.pipeline: ATS 20230803T054641_20230803T055539_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:24,955 INFO sailab.pipeline: ATS 20230808T054639_20230808T055318_T43SCA: downloaded data/backfill/ATS/20230808T054639_20230808T055318_T43SCA.tif sha256=51d1e48e62d2414664e8f45f612cbebcf503141a9fcd16b960f5440ca3d8b6b0
+2026-11-08 10:53:25,178 INFO sailab.pipeline: ATS 20230808T054639_20230808T055318_T43SCA: ok 106.85 (10685 water pixels connected to the centre)
+2026-11-08 10:53:25,183 INFO sailab.pipeline: ATS 20230808T054639_20230808T055318_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:27,211 INFO sailab.pipeline: ATS 20230813T054641_20230813T054844_T43SCA: downloaded data/backfill/ATS/20230813T054641_20230813T054844_T43SCA.tif sha256=2b5c48100e80e87d142080e936054c397b36fc0deadda4e6f88577b703e166e8
+2026-11-08 10:53:27,435 INFO sailab.pipeline: ATS 20230813T054641_20230813T054844_T43SCA: ok 106.35 (10635 water pixels connected to the centre)
+2026-11-08 10:53:27,439 INFO sailab.pipeline: ATS 20230813T054641_20230813T054844_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:27,444 INFO sailab.pipeline: ATS 20230818T054639_20230818T055321_T43SCA: lake cloud 98.38189533239039% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:27,451 INFO sailab.pipeline: ATS 20230823T054641_20230823T055246_T43SCA: lake cloud 37.742574257425744% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:27,459 INFO sailab.pipeline: ATS 20230828T054639_20230828T054756_T43SCA: lake cloud 38.55162659123055% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:27,464 INFO sailab.pipeline: ATS 20230902T054641_20230902T055245_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:27,470 INFO sailab.pipeline: ATS 20230907T054639_20230907T055157_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:30,014 INFO sailab.pipeline: ATS 20230912T054641_20230912T055242_T43SCA: downloaded data/backfill/ATS/20230912T054641_20230912T055242_T43SCA.tif sha256=36ccb41194a394a9830842a6b028cb2cd7b31045e2c5a7e0a02d82e1738840f8
+2026-11-08 10:53:30,262 INFO sailab.pipeline: ATS 20230912T054641_20230912T055242_T43SCA: ok 106.31 (10631 water pixels connected to the centre)
+2026-11-08 10:53:30,266 INFO sailab.pipeline: ATS 20230912T054641_20230912T055242_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:30,271 INFO sailab.pipeline: ATS 20230917T054639_20230917T054755_T43SCA: lake cloud 37.23338048090523% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:30,275 INFO sailab.pipeline: ATS 20230922T054641_20230922T054638_T43SCA: lake cloud 88.77510608203677% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:30,281 INFO sailab.pipeline: ATS 20230927T054639_20230927T055533_T43SCA: lake cloud 20.452616690240454% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:30,286 INFO sailab.pipeline: ATS 20231002T054641_20231002T054642_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:32,730 INFO sailab.pipeline: ATS 20231007T054719_20231007T055725_T43SCA: downloaded data/backfill/ATS/20231007T054719_20231007T055725_T43SCA.tif sha256=0d4ba9f572a289add85c4942aa50ca2b1fcb5871fecbe9fc579f658e9a2fcebe
+2026-11-08 10:53:32,941 INFO sailab.pipeline: ATS 20231007T054719_20231007T055725_T43SCA: ok 106.02 (10602 water pixels connected to the centre)
+2026-11-08 10:53:32,946 INFO sailab.pipeline: ATS 20231007T054719_20231007T055725_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:35,178 INFO sailab.pipeline: ATS 20231012T054751_20231012T054832_T43SCA: downloaded data/backfill/ATS/20231012T054751_20231012T054832_T43SCA.tif sha256=f4542a77f2f3068bec4d7177ca4b7f49a24f4acc20cc51f973a58ebe32cba7fb
+2026-11-08 10:53:35,434 INFO sailab.pipeline: ATS 20231012T054751_20231012T054832_T43SCA: ok 105.85 (10585 water pixels connected to the centre)
+2026-11-08 10:53:35,438 INFO sailab.pipeline: ATS 20231012T054751_20231012T054832_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:35,443 INFO sailab.pipeline: ATS 20231017T054829_20231017T054826_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:35,448 INFO sailab.pipeline: ATS 20231022T054901_20231022T054910_T43SCA: lake cloud 93.34087694483735% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:37,299 INFO sailab.pipeline: ATS 20231027T054929_20231027T054929_T43SCA: downloaded data/backfill/ATS/20231027T054929_20231027T054929_T43SCA.tif sha256=aea51e1b8e29a0ee4cb9dd52912dcba1a42e98671871438ab49c2ede4bcbf9d9
+2026-11-08 10:53:37,519 INFO sailab.pipeline: ATS 20231027T054929_20231027T054929_T43SCA: ok 105.33 (10533 water pixels connected to the centre)
+2026-11-08 10:53:37,524 INFO sailab.pipeline: ATS 20231027T054929_20231027T054929_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:37,529 INFO sailab.pipeline: ATS 20231101T055001_20231101T054956_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:39,690 INFO sailab.pipeline: ATS 20231106T055029_20231106T055026_T43SCA: downloaded data/backfill/ATS/20231106T055029_20231106T055026_T43SCA.tif sha256=3a9d78b8c115ca543196e1fab17e9ac9a806b41c96c7c85f00efcff345d6d3ce
+2026-11-08 10:53:39,932 INFO sailab.pipeline: ATS 20231106T055029_20231106T055026_T43SCA: ok 105.96 (10596 water pixels connected to the centre)
+2026-11-08 10:53:39,939 INFO sailab.pipeline: ATS 20231106T055029_20231106T055026_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:43,128 INFO sailab.pipeline: ATS 20231111T055051_20231111T055051_T43SCA: downloaded data/backfill/ATS/20231111T055051_20231111T055051_T43SCA.tif sha256=07369db44cd0e59f29102f3623165776f2e7dfe57e591f6801c741ec4756ea10
+2026-11-08 10:53:43,371 INFO sailab.pipeline: ATS 20231111T055051_20231111T055051_T43SCA: ok 104.8 (10480 water pixels connected to the centre)
+2026-11-08 10:53:43,376 INFO sailab.pipeline: ATS 20231111T055051_20231111T055051_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:45,700 INFO sailab.pipeline: ATS 20231116T055109_20231116T055536_T43SCA: downloaded data/backfill/ATS/20231116T055109_20231116T055536_T43SCA.tif sha256=f31868716ac0cafb97ea94a7d0637bc90a1013a4ce35659bf106f3f514d031f6
+2026-11-08 10:53:45,925 INFO sailab.pipeline: ATS 20231116T055109_20231116T055536_T43SCA: ok 108.45 (10845 water pixels connected to the centre)
+2026-11-08 10:53:45,930 INFO sailab.pipeline: ATS 20231116T055109_20231116T055536_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:48,233 INFO sailab.pipeline: ATS 20231121T055131_20231121T055132_T43SCA: downloaded data/backfill/ATS/20231121T055131_20231121T055132_T43SCA.tif sha256=664231361f4348822d4a5d49f29c077b691f4194ffa460c2e2e58558d5dcd919
+2026-11-08 10:53:48,526 INFO sailab.pipeline: ATS 20231121T055131_20231121T055132_T43SCA: ok 106.27 (10627 water pixels connected to the centre)
+2026-11-08 10:53:48,534 INFO sailab.pipeline: ATS 20231121T055131_20231121T055132_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:53:48,541 INFO sailab.pipeline: ATS 20231126T055149_20231126T055149_T43SCA: lake cloud 31.038189533239038% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:48,549 INFO sailab.pipeline: ATS 20231201T055201_20231201T055202_T43SCA: lake cloud 88.32248939179632% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:48,555 INFO sailab.pipeline: ATS 20231216T055239_20231216T055239_T43SCA: lake cloud 30.206506364922205% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:50,722 INFO sailab.pipeline: ATS 20231221T055241_20231221T055239_T43SCA: downloaded data/backfill/ATS/20231221T055241_20231221T055239_T43SCA.tif sha256=71a165c00c35e3ec631a448c60995a9ab8cf303ed53afa4bd9ecd9485c31e53d
+2026-11-08 10:53:50,929 INFO sailab.pipeline: ATS 20231221T055241_20231221T055239_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:53,699 INFO sailab.pipeline: ATS 20231226T055249_20231226T055245_T43SCA: downloaded data/backfill/ATS/20231226T055249_20231226T055245_T43SCA.tif sha256=909cefe313c2c4a9046bb0ea036a0d336b5e1d017e9f604512069d6cbd9fc8b6
+2026-11-08 10:53:53,876 INFO sailab.pipeline: ATS 20231226T055249_20231226T055245_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:55,707 INFO sailab.pipeline: ATS 20231231T055241_20231231T055237_T43SCA: downloaded data/backfill/ATS/20231231T055241_20231231T055237_T43SCA.tif sha256=ee8abf4227ef475da57e298c5beb7f51bfb0361c26c4aa76a9e65f4eb00b8da8
+2026-11-08 10:53:55,921 INFO sailab.pipeline: ATS 20231231T055241_20231231T055237_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:55,929 INFO sailab.pipeline: ATS 20240105T055229_20240105T055232_T43SCA: lake cloud 86.33097595473834% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:58,931 INFO sailab.pipeline: ATS 20240110T055211_20240110T055214_T43SCA: downloaded data/backfill/ATS/20240110T055211_20240110T055214_T43SCA.tif sha256=c39028032a36bbf2cef86151d3dbd280340a8d0a2615d1db19ce3f9ecc04d1d9
+2026-11-08 10:53:59,111 INFO sailab.pipeline: ATS 20240110T055211_20240110T055214_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:53:59,116 INFO sailab.pipeline: ATS 20240120T055141_20240120T055138_T43SCA: lake cloud 33.51060820367751% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:59,121 INFO sailab.pipeline: ATS 20240125T055129_20240125T055745_T43SCA: lake cloud 21.035360678925034% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:59,125 INFO sailab.pipeline: ATS 20240130T055101_20240130T055057_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:53:59,130 INFO sailab.pipeline: ATS 20240204T055039_20240204T055035_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:01,575 INFO sailab.pipeline: ATS 20240209T055001_20240209T055004_T43SCA: downloaded data/backfill/ATS/20240209T055001_20240209T055004_T43SCA.tif sha256=13ecbe3eca43ba20bf6f00a196777d3cea3f209397dbb7bea9debcd424d0f0a8
+2026-11-08 10:54:01,741 INFO sailab.pipeline: ATS 20240209T055001_20240209T055004_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:04,804 INFO sailab.pipeline: ATS 20240214T054939_20240214T054937_T43SCA: downloaded data/backfill/ATS/20240214T054939_20240214T054937_T43SCA.tif sha256=5b3a08d7e5be967fff36854df00ed3cde969bbc781aa8a9abfcf030391143cbc
+2026-11-08 10:54:05,031 INFO sailab.pipeline: ATS 20240214T054939_20240214T054937_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:05,036 INFO sailab.pipeline: ATS 20240219T054901_20240219T054912_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:08,022 INFO sailab.pipeline: ATS 20240224T054829_20240224T055837_T43SCA: downloaded data/backfill/ATS/20240224T054829_20240224T055837_T43SCA.tif sha256=de35aa04dc01d00f78976697b2112beac0adcf5be8c43f95303417f3cf1033ae
+2026-11-08 10:54:08,202 INFO sailab.pipeline: ATS 20240224T054829_20240224T055837_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:08,207 INFO sailab.pipeline: ATS 20240229T054751_20240229T054758_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:08,212 INFO sailab.pipeline: ATS 20240305T054719_20240305T055640_T43SCA: lake cloud 71.73408769448373% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:08,218 INFO sailab.pipeline: ATS 20240310T054641_20240310T055834_T43SCA: lake cloud 27.366336633663366% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:11,393 INFO sailab.pipeline: ATS 20240315T054639_20240315T055528_T43SCA: downloaded data/backfill/ATS/20240315T054639_20240315T055528_T43SCA.tif sha256=41a43c60d2ca713ceb890fcf339b1e470d3656919724ae542ba158d6226d6f40
+2026-11-08 10:54:11,560 INFO sailab.pipeline: ATS 20240315T054639_20240315T055528_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:14,707 INFO sailab.pipeline: ATS 20240320T054641_20240320T055810_T43SCA: downloaded data/backfill/ATS/20240320T054641_20240320T055810_T43SCA.tif sha256=23daa5e71027f530eb3b3adb4b46fed77340e89940f2ad7b64de45b478e73920
+2026-11-08 10:54:14,939 INFO sailab.pipeline: ATS 20240320T054641_20240320T055810_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:14,946 INFO sailab.pipeline: ATS 20240325T054639_20240325T054926_T43SCA: lake cloud 21.165487977369164% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:14,952 INFO sailab.pipeline: ATS 20240330T054641_20240330T055233_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:14,960 INFO sailab.pipeline: ATS 20240404T054639_20240404T055528_T43SCA: lake cloud 11.366336633663366% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:17,376 INFO sailab.pipeline: ATS 20240409T054641_20240409T055258_T43SCA: downloaded data/backfill/ATS/20240409T054641_20240409T055258_T43SCA.tif sha256=2b1ebc10ea8863da019a8c494aadb73be0e44b5a988ff2cf7c5b02cf447250f1
+2026-11-08 10:54:17,559 INFO sailab.pipeline: ATS 20240409T054641_20240409T055258_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:17,564 INFO sailab.pipeline: ATS 20240414T054639_20240414T055531_T43SCA: lake cloud 61.012729844413016% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:17,569 INFO sailab.pipeline: ATS 20240419T054641_20240419T055435_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:19,860 INFO sailab.pipeline: ATS 20240424T054639_20240424T055529_T43SCA: downloaded data/backfill/ATS/20240424T054639_20240424T055529_T43SCA.tif sha256=f457dcc441f15e2188db659a77d5aff2fd271c8b95b1d9a566210d32a3066e08
+2026-11-08 10:54:20,045 INFO sailab.pipeline: ATS 20240424T054639_20240424T055529_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:20,051 INFO sailab.pipeline: ATS 20240429T054641_20240429T055337_T43SCA: lake cloud 99.08345120226308% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:20,059 INFO sailab.pipeline: ATS 20240504T054639_20240504T055534_T43SCA: lake cloud 95.004243281471% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:22,368 INFO sailab.pipeline: ATS 20240509T054641_20240509T055101_T43SCA: downloaded data/backfill/ATS/20240509T054641_20240509T055101_T43SCA.tif sha256=3f6eed849a74b972bd5dcd0f831d8697eef64c3e80fcb28e2bdce2d1aed6967a
+2026-11-08 10:54:22,571 INFO sailab.pipeline: ATS 20240509T054641_20240509T055101_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:24,361 INFO sailab.pipeline: ATS 20240514T054639_20240514T055022_T43SCA: downloaded data/backfill/ATS/20240514T054639_20240514T055022_T43SCA.tif sha256=08ec1f570f5404cd7964c4caa0ad54c4080334a123cc1a1b1fca36f528539718
+2026-11-08 10:54:24,525 INFO sailab.pipeline: ATS 20240514T054639_20240514T055022_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:24,530 INFO sailab.pipeline: ATS 20240519T054641_20240519T055422_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:24,535 INFO sailab.pipeline: ATS 20240524T054639_20240524T054929_T43SCA: lake cloud 18.936350777934937% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:28,081 INFO sailab.pipeline: ATS 20240529T055021_20240529T055018_T43SCA: downloaded data/backfill/ATS/20240529T055021_20240529T055018_T43SCA.tif sha256=a18af6168c9f374908333a9c6518a1e6d473b6bfebb0a35135d2fafcf1ede18a
+2026-11-08 10:54:28,295 INFO sailab.pipeline: ATS 20240529T055021_20240529T055018_T43SCA: ok 104.73 (10473 water pixels connected to the centre)
+2026-11-08 10:54:28,299 INFO sailab.pipeline: ATS 20240529T055021_20240529T055018_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:54:28,304 INFO sailab.pipeline: ATS 20240603T054639_20240603T055535_T43SCA: lake cloud 90.41584158415841% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:28,312 INFO sailab.pipeline: ATS 20240608T054641_20240608T054913_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:28,317 INFO sailab.pipeline: ATS 20240613T054639_20240613T055533_T43SCA: lake cloud 44.452616690240454% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:28,323 INFO sailab.pipeline: ATS 20240618T054641_20240618T054935_T43SCA: lake cloud 52.42998585572843% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:28,330 INFO sailab.pipeline: ATS 20240623T054639_20240623T055540_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:30,625 INFO sailab.pipeline: ATS 20240628T054641_20240628T055815_T43SCA: downloaded data/backfill/ATS/20240628T054641_20240628T055815_T43SCA.tif sha256=ba46af1f9e1610aeb4ec9763604e15a5a1c47c85616f89fd2ffccd7a8551a3ed
+2026-11-08 10:54:30,864 INFO sailab.pipeline: ATS 20240628T054641_20240628T055815_T43SCA: ok 106.06 (10606 water pixels connected to the centre)
+2026-11-08 10:54:30,868 INFO sailab.pipeline: ATS 20240628T054641_20240628T055815_T43SCA: risk ok baseline=103.512 score=0.7802611191930451
+2026-11-08 10:54:33,106 INFO sailab.pipeline: ATS 20240703T054639_20240703T055541_T43SCA: downloaded data/backfill/ATS/20240703T054639_20240703T055541_T43SCA.tif sha256=371f61dcfbd8122ba9a24c40316a174f1b2c31722e267fad3c1a51f9e30fe1a3
+2026-11-08 10:54:33,307 INFO sailab.pipeline: ATS 20240703T054639_20240703T055541_T43SCA: ok 106.06 (10606 water pixels connected to the centre)
+2026-11-08 10:54:33,312 INFO sailab.pipeline: ATS 20240703T054639_20240703T055541_T43SCA: risk ok baseline=105.69999999999999 score=0.4714045207910503
+2026-11-08 10:54:33,317 INFO sailab.pipeline: ATS 20240708T054641_20240708T055718_T43SCA: lake cloud 87.42291371994342% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:33,322 INFO sailab.pipeline: ATS 20240713T054639_20240713T055532_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:33,330 INFO sailab.pipeline: ATS 20240718T054641_20240718T055801_T43SCA: lake cloud 46.1951909476662% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:33,334 INFO sailab.pipeline: ATS 20240723T054639_20240723T054932_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:33,339 INFO sailab.pipeline: ATS 20240728T054641_20240728T054755_T43SCA: lake cloud 29.012729844413013% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:33,344 INFO sailab.pipeline: ATS 20240802T054639_20240802T055153_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:36,165 INFO sailab.pipeline: ATS 20240807T054641_20240807T054840_T43SCA: downloaded data/backfill/ATS/20240807T054641_20240807T054840_T43SCA.tif sha256=c0c419f3497cd64273515ba1318783f7e0a729e93569066ea005c5a1ee3cfe50
+2026-11-08 10:54:36,437 INFO sailab.pipeline: ATS 20240807T054641_20240807T054840_T43SCA: ok 107.17 (10717 water pixels connected to the centre)
+2026-11-08 10:54:36,442 INFO sailab.pipeline: ATS 20240807T054641_20240807T054840_T43SCA: risk ok baseline=106.6 score=1.612203461105349
+2026-11-08 10:54:38,967 INFO sailab.pipeline: ATS 20240812T054639_20240812T054752_T43SCA: downloaded data/backfill/ATS/20240812T054639_20240812T054752_T43SCA.tif sha256=7a02bc090a97bfd89c00f0045f5783d25a3d94c9525f7a87fa39ace042870b80
+2026-11-08 10:54:39,193 INFO sailab.pipeline: ATS 20240812T054639_20240812T054752_T43SCA: ok 107.1 (10710 water pixels connected to the centre)
+2026-11-08 10:54:39,198 INFO sailab.pipeline: ATS 20240812T054639_20240812T054752_T43SCA: risk ok baseline=106.78999999999999 score=0.7500975736685316
+2026-11-08 10:54:39,204 INFO sailab.pipeline: ATS 20240817T054641_20240817T055117_T43SCA: lake cloud 99.75671852899576% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,209 INFO sailab.pipeline: ATS 20240822T054639_20240822T054747_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,216 INFO sailab.pipeline: ATS 20240827T054631_20240827T055025_T43SCA: lake cloud 83.84158415841584% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,222 INFO sailab.pipeline: ATS 20240901T054639_20240901T054748_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,227 INFO sailab.pipeline: ATS 20240906T054641_20240906T055027_T43SCA: lake cloud 95.85289957567186% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,231 INFO sailab.pipeline: ATS 20240911T054639_20240911T054749_T43SCA: lake cloud 98.18387553041019% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,236 INFO sailab.pipeline: ATS 20240916T054641_20240916T055020_T43SCA: lake cloud 99.99434229137199% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,241 INFO sailab.pipeline: ATS 20240921T054629_20240921T054925_T43SCA: lake cloud 27.586987270155586% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,246 INFO sailab.pipeline: ATS 20240926T054641_20240926T055127_T43SCA: lake cloud 88.75247524752476% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,251 INFO sailab.pipeline: ATS 20241001T054639_20241001T055527_T43SCA: lake cloud 70.85148514851485% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,255 INFO sailab.pipeline: ATS 20241006T054721_20241006T055638_T43SCA: lake cloud 80.63932107496464% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,260 INFO sailab.pipeline: ATS 20241011T054649_20241011T055447_T43SCA: lake cloud 33.793493635077795% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:39,265 INFO sailab.pipeline: ATS 20241016T054821_20241016T055018_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:41,020 INFO sailab.pipeline: ATS 20241021T054809_20241021T055744_T43SCA: downloaded data/backfill/ATS/20241021T054809_20241021T055744_T43SCA.tif sha256=9358cc9486773ff306a06f66966af02e2d0b6dff989c31d56c5bff43bd1a083c
+2026-11-08 10:54:41,256 INFO sailab.pipeline: ATS 20241021T054809_20241021T055744_T43SCA: ok 106.07 (10607 water pixels connected to the centre)
+2026-11-08 10:54:41,261 INFO sailab.pipeline: ATS 20241021T054809_20241021T055744_T43SCA: risk ok baseline=105.73333333333333 score=0.9365109203745081
+2026-11-08 10:54:41,266 INFO sailab.pipeline: ATS 20241026T054931_20241026T054926_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:43,981 INFO sailab.pipeline: ATS 20241031T054909_20241031T054903_T43SCA: downloaded data/backfill/ATS/20241031T054909_20241031T054903_T43SCA.tif sha256=5ea599036af22a778502293571e2b185a163fbd48e407e18b3cb22f148f606fb
+2026-11-08 10:54:44,235 INFO sailab.pipeline: ATS 20241031T054909_20241031T054903_T43SCA: ok 105.62 (10562 water pixels connected to the centre)
+2026-11-08 10:54:44,239 INFO sailab.pipeline: ATS 20241031T054909_20241031T054903_T43SCA: risk ok baseline=105.8175 score=-0.5836871888312084
+2026-11-08 10:54:46,092 INFO sailab.pipeline: ATS 20241105T055021_20241105T055020_T43SCA: downloaded data/backfill/ATS/20241105T055021_20241105T055020_T43SCA.tif sha256=188cd2b2c80985a4cd4c1547e01029ef78d13291f0ae65a209ffb5ec30f33a3b
+2026-11-08 10:54:46,317 INFO sailab.pipeline: ATS 20241105T055021_20241105T055020_T43SCA: ok 105.86 (10586 water pixels connected to the centre)
+2026-11-08 10:54:46,322 INFO sailab.pipeline: ATS 20241105T055021_20241105T055020_T43SCA: risk ok baseline=106.37 score=-0.3346055251525655
+2026-11-08 10:54:46,327 INFO sailab.pipeline: ATS 20241110T054949_20241110T054948_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:46,332 INFO sailab.pipeline: ATS 20241115T055111_20241115T055105_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:46,340 INFO sailab.pipeline: ATS 20241120T055039_20241120T055706_T43SCA: lake cloud 70.998585572843% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:48,716 INFO sailab.pipeline: ATS 20241125T055151_20241125T055152_T43SCA: downloaded data/backfill/ATS/20241125T055151_20241125T055152_T43SCA.tif sha256=27f0916b479522ee0746ffe1a41d5bf7d72b4f663873a152ad57fa44ce84e533
+2026-11-08 10:54:48,922 INFO sailab.pipeline: ATS 20241125T055151_20241125T055152_T43SCA: ok 104.58 (10458 water pixels connected to the centre)
+2026-11-08 10:54:48,929 INFO sailab.pipeline: ATS 20241125T055151_20241125T055152_T43SCA: risk ok baseline=106.268 score=-1.2601331669972926
+2026-11-08 10:54:48,936 INFO sailab.pipeline: ATS 20241130T055109_20241130T055108_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:54:51,325 INFO sailab.pipeline: ATS 20241205T055221_20241205T055223_T43SCA: downloaded data/backfill/ATS/20241205T055221_20241205T055223_T43SCA.tif sha256=eb32ed38710cbb9fdb1b294869c21a258fadc872b55bcdddf51042125f0f3b75
+2026-11-08 10:54:51,590 INFO sailab.pipeline: ATS 20241205T055221_20241205T055223_T43SCA: insufficient_observation None (lake region (10474 px) borders 8 no-data pixels; it may be cut off)
+2026-11-08 10:54:54,070 INFO sailab.pipeline: ATS 20241210T055139_20241210T055139_T43SCA: downloaded data/backfill/ATS/20241210T055139_20241210T055139_T43SCA.tif sha256=3565e8552510bc038424c734eae07f6e4be4d708cc1188fd85f18d7c2cf25dc0
+2026-11-08 10:54:54,241 INFO sailab.pipeline: ATS 20241210T055139_20241210T055139_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:57,380 INFO sailab.pipeline: ATS 20241215T055241_20241215T055240_T43SCA: downloaded data/backfill/ATS/20241215T055241_20241215T055240_T43SCA.tif sha256=ef7cb2349343ac34f17d9d2b619f9bcb092405ffad4c0071baa04727fd3f69cc
+2026-11-08 10:54:57,597 INFO sailab.pipeline: ATS 20241215T055241_20241215T055240_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:54:59,557 INFO sailab.pipeline: ATS 20241220T055149_20241220T055214_T43SCA: downloaded data/backfill/ATS/20241220T055149_20241220T055214_T43SCA.tif sha256=b5cbaf7bda07b2ada6a63090bd4249686272cb70569606595e13c12096a2dd12
+2026-11-08 10:54:59,731 INFO sailab.pipeline: ATS 20241220T055149_20241220T055214_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:02,246 INFO sailab.pipeline: ATS 20241225T055241_20241225T055244_T43SCA: downloaded data/backfill/ATS/20241225T055241_20241225T055244_T43SCA.tif sha256=e6f89630afef35162b173da4fe5c9a8cec595ae0c7aa62891d0563316a6d61ac
+2026-11-08 10:55:02,405 INFO sailab.pipeline: ATS 20241225T055241_20241225T055244_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:04,515 INFO sailab.pipeline: ATS 20241230T055149_20241230T055144_T43SCA: downloaded data/backfill/ATS/20241230T055149_20241230T055144_T43SCA.tif sha256=c15b0ea9aab4ac718b3ae2b4bf2dcf199503db44d321233295a032332fda78b3
+2026-11-08 10:55:04,737 INFO sailab.pipeline: ATS 20241230T055149_20241230T055144_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:04,744 INFO sailab.pipeline: ATS 20250104T055231_20250104T055231_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:07,169 INFO sailab.pipeline: ATS 20250109T055129_20250109T055124_T43SCA: downloaded data/backfill/ATS/20250109T055129_20250109T055124_T43SCA.tif sha256=f50ce25a03b5918cf95c8d06317c11aec7703e53f62d3391574228fd4df007d1
+2026-11-08 10:55:07,336 INFO sailab.pipeline: ATS 20250109T055129_20250109T055124_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:10,375 INFO sailab.pipeline: ATS 20250114T055211_20250114T055205_T43SCA: downloaded data/backfill/ATS/20250114T055211_20250114T055205_T43SCA.tif sha256=3b4d1488173f3254da43da7a65cee4c865263e5539e7ac98aac212ba71d35eb8
+2026-11-08 10:55:10,549 INFO sailab.pipeline: ATS 20250114T055211_20250114T055205_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:10,553 INFO sailab.pipeline: ATS 20250119T055049_20250119T055355_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:13,506 INFO sailab.pipeline: ATS 20250124T055201_20250124T055156_T43SCA: downloaded data/backfill/ATS/20250124T055201_20250124T055156_T43SCA.tif sha256=2bd524cc2477c9b220c4c7f906f0b16cbc033afda2521e22be3dc29530a3878a
+2026-11-08 10:55:13,700 INFO sailab.pipeline: ATS 20250124T055201_20250124T055156_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:13,705 INFO sailab.pipeline: ATS 20250129T055009_20250129T055010_T43SCA: lake cloud 99.97736916548797% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:15,913 INFO sailab.pipeline: ATS 20250203T055101_20250203T055104_T43SCA: downloaded data/backfill/ATS/20250203T055101_20250203T055104_T43SCA.tif sha256=892cccca291e800c9ad5271de7c086e12fa87b9400f58b24b17d988e20228be4
+2026-11-08 10:55:16,073 INFO sailab.pipeline: ATS 20250203T055101_20250203T055104_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:16,078 INFO sailab.pipeline: ATS 20250208T054919_20250208T055601_T43SCA: lake cloud 15.190947666195191% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:16,082 INFO sailab.pipeline: ATS 20250213T055001_20250213T055001_T43SCA: lake cloud 14.183875530410184% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:18,959 INFO sailab.pipeline: ATS 20250218T054819_20250218T055515_T43SCA: downloaded data/backfill/ATS/20250218T054819_20250218T055515_T43SCA.tif sha256=01890525b41cd4d4c40acdfbf9526ba3feb3ee1745c76a3e7e1cac03975cc2a4
+2026-11-08 10:55:19,131 INFO sailab.pipeline: ATS 20250218T054819_20250218T055515_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:21,290 INFO sailab.pipeline: ATS 20250223T054851_20250223T054923_T43SCA: downloaded data/backfill/ATS/20250223T054851_20250223T054923_T43SCA.tif sha256=fabf666b25466ac119f984cd9b6860c7b7a9dce3de008eb6a1d66edd5d0039e3
+2026-11-08 10:55:21,497 INFO sailab.pipeline: ATS 20250223T054851_20250223T054923_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:21,502 INFO sailab.pipeline: ATS 20250228T054659_20250228T055547_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:23,658 INFO sailab.pipeline: ATS 20250305T054741_20250305T055749_T43SCA: downloaded data/backfill/ATS/20250305T054741_20250305T055749_T43SCA.tif sha256=0a0dc3cf09f9e02b65fecce23642a023de9c252828f0e30c1f006bca0255b3bb
+2026-11-08 10:55:23,830 INFO sailab.pipeline: ATS 20250305T054741_20250305T055749_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:23,837 INFO sailab.pipeline: ATS 20250310T054639_20250310T055536_T43SCA: lake cloud 58.28005657708628% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:23,843 INFO sailab.pipeline: ATS 20250315T054701_20250315T055546_T43SCA: lake cloud 15.145685997171146% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:25,776 INFO sailab.pipeline: ATS 20250320T054639_20250320T055120_T43SCA: downloaded data/backfill/ATS/20250320T054639_20250320T055120_T43SCA.tif sha256=3964b86c8cd271136cd990c9a3077dae5321ad8e70be6d72f2836aba881ed507
+2026-11-08 10:55:25,946 INFO sailab.pipeline: ATS 20250320T054639_20250320T055120_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:25,951 INFO sailab.pipeline: ATS 20250325T054701_20250325T055545_T43SCA: lake cloud 99.8019801980198% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:25,958 INFO sailab.pipeline: ATS 20250327T055251_20250327T055245_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:25,963 INFO sailab.pipeline: ATS 20250330T054639_20250330T055531_T43SCA: lake cloud 18.031117397454032% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:25,968 INFO sailab.pipeline: ATS 20250404T054701_20250404T055734_T43SCA: lake cloud 60.88260254596888% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:25,973 INFO sailab.pipeline: ATS 20250409T054639_20250409T055532_T43SCA: lake cloud 99.88118811881188% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:27,791 INFO sailab.pipeline: ATS 20250414T054701_20250414T055906_T43SCA: downloaded data/backfill/ATS/20250414T054701_20250414T055906_T43SCA.tif sha256=893a2db70c29ccebc9e92f26e416ea16babd55f9fc3a6a5f4553a885e0623f06
+2026-11-08 10:55:27,999 INFO sailab.pipeline: ATS 20250414T054701_20250414T055906_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:28,004 INFO sailab.pipeline: ATS 20250416T055251_20250416T055250_T43SCA: lake cloud 99.93776520509194% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:28,009 INFO sailab.pipeline: ATS 20250419T054639_20250419T055532_T43SCA: lake cloud 99.97171145685998% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:30,604 INFO sailab.pipeline: ATS 20250424T054701_20250424T055205_T43SCA: downloaded data/backfill/ATS/20250424T054701_20250424T055205_T43SCA.tif sha256=6e69b824a013ee72c9ce992aedcbce052713159d88c5b787135128ec3d8c588d
+2026-11-08 10:55:30,782 INFO sailab.pipeline: ATS 20250424T054701_20250424T055205_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:33,376 INFO sailab.pipeline: ATS 20250429T054639_20250429T055535_T43SCA: downloaded data/backfill/ATS/20250429T054639_20250429T055535_T43SCA.tif sha256=cf898ea6755d35787e1055d046077168bb3b42f0089d3ef9e056709b96ae9615
+2026-11-08 10:55:33,528 INFO sailab.pipeline: ATS 20250429T054639_20250429T055535_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:36,061 INFO sailab.pipeline: ATS 20250504T054701_20250504T055522_T43SCA: downloaded data/backfill/ATS/20250504T054701_20250504T055522_T43SCA.tif sha256=74de09b5828802baf743391f4544366463ae1537a6c27ed0ed62fdba5493337c
+2026-11-08 10:55:36,263 INFO sailab.pipeline: ATS 20250504T054701_20250504T055522_T43SCA: ok 0.14 (14 water pixels connected to the centre)
+2026-11-08 10:55:36,268 INFO sailab.pipeline: ATS 20250504T054701_20250504T055522_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:55:38,958 INFO sailab.pipeline: ATS 20250506T055251_20250506T055250_T43SCA: downloaded data/backfill/ATS/20250506T055251_20250506T055250_T43SCA.tif sha256=d76a2d384174382261e48bc07a2c00c1976493070b26c7f3cf8287fd34255d55
+2026-11-08 10:55:39,140 INFO sailab.pipeline: ATS 20250506T055251_20250506T055250_T43SCA: ok 27.14 (2714 water pixels connected to the centre)
+2026-11-08 10:55:39,145 INFO sailab.pipeline: ATS 20250506T055251_20250506T055250_T43SCA: risk ok baseline=52.435 score=-0.34202631284279034
+2026-11-08 10:55:39,150 INFO sailab.pipeline: ATS 20250509T054639_20250509T055509_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:41,033 INFO sailab.pipeline: ATS 20250514T054651_20250514T055605_T43SCA: downloaded data/backfill/ATS/20250514T054651_20250514T055605_T43SCA.tif sha256=57e7cc1a4fb394fef567dd56b604282b4afd9c4e4f65cf01b7dbeb710917d616
+2026-11-08 10:55:41,214 INFO sailab.pipeline: ATS 20250514T054651_20250514T055605_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:55:41,219 INFO sailab.pipeline: ATS 20250519T054639_20250519T055748_T43SCA: lake cloud 10.63083451202263% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:41,226 INFO sailab.pipeline: ATS 20250524T054701_20250524T055534_T43SCA: lake cloud 22.896746817538897% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:43,372 INFO sailab.pipeline: ATS 20250526T055251_20250526T055254_T43SCA: downloaded data/backfill/ATS/20250526T055251_20250526T055254_T43SCA.tif sha256=0bcabe9e1b79d006a59612d71cd2a219a8cf4d801cc82afc2b839fa32ecd6aca
+2026-11-08 10:55:43,622 INFO sailab.pipeline: ATS 20250526T055251_20250526T055254_T43SCA: ok 105.24 (10524 water pixels connected to the centre)
+2026-11-08 10:55:43,627 INFO sailab.pipeline: ATS 20250526T055251_20250526T055254_T43SCA: risk ok baseline=44.00333333333334 score=1.127831998525218
+2026-11-08 10:55:43,632 INFO sailab.pipeline: ATS 20250529T054639_20250529T055506_T43SCA: lake cloud 99.98302687411598% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:43,637 INFO sailab.pipeline: ATS 20250603T054701_20250603T055609_T43SCA: lake cloud 97.32390381895333% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:43,642 INFO sailab.pipeline: ATS 20250608T054639_20250608T055529_T43SCA: lake cloud 99.67751060820368% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:43,650 INFO sailab.pipeline: ATS 20250613T054701_20250613T055615_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:43,655 INFO sailab.pipeline: ATS 20250615T055251_20250615T055251_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:46,724 INFO sailab.pipeline: ATS 20250618T054639_20250618T055812_T43SCA: downloaded data/backfill/ATS/20250618T054639_20250618T055812_T43SCA.tif sha256=ac06213d662d00018bb173979eedc5f1c111a2652760d9321f95c0a606952480
+2026-11-08 10:55:46,946 INFO sailab.pipeline: ATS 20250618T054639_20250618T055812_T43SCA: ok 105.41 (10541 water pixels connected to the centre)
+2026-11-08 10:55:46,952 INFO sailab.pipeline: ATS 20250618T054639_20250618T055812_T43SCA: risk ok baseline=103.93666666666667 score=0.475189048838946
+2026-11-08 10:55:49,455 INFO sailab.pipeline: ATS 20250623T054701_20250623T055806_T43SCA: downloaded data/backfill/ATS/20250623T054701_20250623T055806_T43SCA.tif sha256=cba3464245f70a292bf8e3cd4c0e16dc6827720a08eb36e666f7956166e689cd
+2026-11-08 10:55:49,721 INFO sailab.pipeline: ATS 20250623T054701_20250623T055806_T43SCA: ok 105.49 (10549 water pixels connected to the centre)
+2026-11-08 10:55:49,726 INFO sailab.pipeline: ATS 20250623T054701_20250623T055806_T43SCA: risk ok baseline=104.14714285714285 score=0.4655205117783316
+2026-11-08 10:55:49,732 INFO sailab.pipeline: ATS 20250628T054639_20250628T055536_T43SCA: lake cloud 69.95190947666195% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:52,107 INFO sailab.pipeline: ATS 20250703T054701_20250703T055606_T43SCA: downloaded data/backfill/ATS/20250703T054701_20250703T055606_T43SCA.tif sha256=4445e096631da426a990fdaa3d823e5143bd9c1206f871486653115bbbf9a437
+2026-11-08 10:55:52,331 INFO sailab.pipeline: ATS 20250703T054701_20250703T055606_T43SCA: ok 105.75 (10575 water pixels connected to the centre)
+2026-11-08 10:55:52,336 INFO sailab.pipeline: ATS 20250703T054701_20250703T055606_T43SCA: risk ok baseline=105.82 score=-0.1209776977185377
+2026-11-08 10:55:55,446 INFO sailab.pipeline: ATS 20250705T055301_20250705T055255_T43SCA: downloaded data/backfill/ATS/20250705T055301_20250705T055255_T43SCA.tif sha256=0ae4961d2fbe9cfe724ead1937b6f84c4765b2f24562e0fdce392376b8028686
+2026-11-08 10:55:55,667 INFO sailab.pipeline: ATS 20250705T055301_20250705T055255_T43SCA: ok 106.24 (10624 water pixels connected to the centre)
+2026-11-08 10:55:55,672 INFO sailab.pipeline: ATS 20250705T055301_20250705T055255_T43SCA: risk ok baseline=105.8025 score=0.9235117819293749
+2026-11-08 10:55:55,681 INFO sailab.pipeline: ATS 20250708T054639_20250708T055511_T43SCA: lake cloud 61.67468175388967% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:57,588 INFO sailab.pipeline: ATS 20250713T054701_20250713T055806_T43SCA: downloaded data/backfill/ATS/20250713T054701_20250713T055806_T43SCA.tif sha256=eed74cca7a4a8d1c2548c770926b0ccc13d645e8b382e3bdc61cfda3f5549fe6
+2026-11-08 10:55:57,840 INFO sailab.pipeline: ATS 20250713T054701_20250713T055806_T43SCA: ok 87.42 (8742 water pixels connected to the centre)
+2026-11-08 10:55:57,846 INFO sailab.pipeline: ATS 20250713T054701_20250713T055806_T43SCA: risk ok baseline=105.89 score=-40.63513779978785
+2026-11-08 10:55:59,686 INFO sailab.pipeline: ATS 20250718T054639_20250718T055750_T43SCA: downloaded data/backfill/ATS/20250718T054639_20250718T055750_T43SCA.tif sha256=faf18eb2c6d8c82e957997afc6312579c8ff92bda8f008c708fd3a21e06ff560
+2026-11-08 10:55:59,894 INFO sailab.pipeline: ATS 20250718T054639_20250718T055750_T43SCA: ok 106.29 (10629 water pixels connected to the centre)
+2026-11-08 10:55:59,899 INFO sailab.pipeline: ATS 20250718T054639_20250718T055750_T43SCA: risk ok baseline=102.81166666666667 score=0.4606272299525075
+2026-11-08 10:55:59,907 INFO sailab.pipeline: ATS 20250723T054701_20250723T055803_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:59,912 INFO sailab.pipeline: ATS 20250725T055301_20250725T055256_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:55:59,917 INFO sailab.pipeline: ATS 20250728T054639_20250728T055531_T43SCA: lake cloud 42.45544554455446% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:02,312 INFO sailab.pipeline: ATS 20250802T054701_20250802T055801_T43SCA: downloaded data/backfill/ATS/20250802T054701_20250802T055801_T43SCA.tif sha256=0a41a0e3798ab5e87c613ecc3ae3f4211a52c4332a24ec7c5affc1f8f8acc558
+2026-11-08 10:56:02,537 INFO sailab.pipeline: ATS 20250802T054701_20250802T055801_T43SCA: ok 106.09 (10609 water pixels connected to the centre)
+2026-11-08 10:56:02,542 INFO sailab.pipeline: ATS 20250802T054701_20250802T055801_T43SCA: risk ok baseline=106.86749999999999 score=-2.0937816401854072
+2026-11-08 10:56:04,498 INFO sailab.pipeline: ATS 20250807T054639_20250807T055535_T43SCA: downloaded data/backfill/ATS/20250807T054639_20250807T055535_T43SCA.tif sha256=e54c00f17f2dbeb744fb5117ca9839a5ad39f1a27a0217f0391dc0bf1996fcdb
+2026-11-08 10:56:04,749 INFO sailab.pipeline: ATS 20250807T054639_20250807T055535_T43SCA: ok 105.89 (10589 water pixels connected to the centre)
+2026-11-08 10:56:04,754 INFO sailab.pipeline: ATS 20250807T054639_20250807T055535_T43SCA: risk ok baseline=106.712 score=-1.7355527553546595
+2026-11-08 10:56:06,839 INFO sailab.pipeline: ATS 20250812T054701_20250812T055542_T43SCA: downloaded data/backfill/ATS/20250812T054701_20250812T055542_T43SCA.tif sha256=5f97ab8c04b40c9b681532c951df2f3251a1677955af2db6f3a124948a535cc0
+2026-11-08 10:56:07,061 INFO sailab.pipeline: ATS 20250812T054701_20250812T055542_T43SCA: ok 106.12 (10612 water pixels connected to the centre)
+2026-11-08 10:56:07,066 INFO sailab.pipeline: ATS 20250812T054701_20250812T055542_T43SCA: risk ok baseline=106.575 score=-0.841914368253547
+2026-11-08 10:56:07,071 INFO sailab.pipeline: ATS 20250814T055251_20250814T055250_T43SCA: lake cloud 71.5077793493635% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:07,076 INFO sailab.pipeline: ATS 20250817T054639_20250817T055749_T43SCA: lake cloud 37.199434229137196% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:09,307 INFO sailab.pipeline: ATS 20250822T054701_20250822T055800_T43SCA: downloaded data/backfill/ATS/20250822T054701_20250822T055800_T43SCA.tif sha256=975b7493fd03091c54cbccde057656bb2bb79b8dd8efb233b0cfaea2d5334372
+2026-11-08 10:56:09,572 INFO sailab.pipeline: ATS 20250822T054701_20250822T055800_T43SCA: ok 106.18 (10618 water pixels connected to the centre)
+2026-11-08 10:56:09,577 INFO sailab.pipeline: ATS 20250822T054701_20250822T055800_T43SCA: risk ok baseline=106.51 score=-0.6316247388455419
+2026-11-08 10:56:12,179 INFO sailab.pipeline: ATS 20250827T054639_20250827T055535_T43SCA: downloaded data/backfill/ATS/20250827T054639_20250827T055535_T43SCA.tif sha256=c3ad55a80a94988798e713e98f971c557fbd85184df7118180c60064e6aa7767
+2026-11-08 10:56:12,408 INFO sailab.pipeline: ATS 20250827T054639_20250827T055535_T43SCA: ok 106.14 (10614 water pixels connected to the centre)
+2026-11-08 10:56:12,413 INFO sailab.pipeline: ATS 20250827T054639_20250827T055535_T43SCA: risk ok baseline=106.46875 score=-0.6607003495202313
+2026-11-08 10:56:14,237 INFO sailab.pipeline: ATS 20250901T054651_20250901T055758_T43SCA: downloaded data/backfill/ATS/20250901T054651_20250901T055758_T43SCA.tif sha256=887d38231d3b9cc8e589023307dbb2e5e37908eb83381a4c3ece80b2c5f10e60
+2026-11-08 10:56:14,462 INFO sailab.pipeline: ATS 20250901T054651_20250901T055758_T43SCA: ok 106.3 (10630 water pixels connected to the centre)
+2026-11-08 10:56:14,467 INFO sailab.pipeline: ATS 20250901T054651_20250901T055758_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:56:14,472 INFO sailab.pipeline: ATS 20250903T055251_20250903T055425_T43SCA: lake cloud 93.07496463932108% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:14,479 INFO sailab.pipeline: ATS 20250906T054639_20250906T055529_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:14,485 INFO sailab.pipeline: ATS 20250916T054639_20250916T055745_T43SCA: lake cloud 75.5021216407355% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:16,791 INFO sailab.pipeline: ATS 20250921T054651_20250921T055533_T43SCA: downloaded data/backfill/ATS/20250921T054651_20250921T055533_T43SCA.tif sha256=3cafa3b885f588994ebd5c47aac3eb5858ee69f0258d9c3e3f6c27dbe52ad635
+2026-11-08 10:56:17,054 INFO sailab.pipeline: ATS 20250921T054651_20250921T055533_T43SCA: ok 106.2 (10620 water pixels connected to the centre)
+2026-11-08 10:56:17,058 INFO sailab.pipeline: ATS 20250921T054651_20250921T055533_T43SCA: risk ok baseline=106.305 score=-14.849242404910463
+2026-11-08 10:56:17,063 INFO sailab.pipeline: ATS 20250923T055251_20250923T055252_T43SCA: lake cloud 20.15841584158416% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:17,072 INFO sailab.pipeline: ATS 20250926T054639_20250926T055153_T43SCA: lake cloud 95.06647807637907% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:17,077 INFO sailab.pipeline: ATS 20251001T054651_20251001T055548_T43SCA: lake cloud 82.44978783592644% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:17,082 INFO sailab.pipeline: ATS 20251006T054639_20251006T055533_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:19,906 INFO sailab.pipeline: ATS 20251011T054801_20251011T055857_T43SCA: downloaded data/backfill/ATS/20251011T054801_20251011T055857_T43SCA.tif sha256=5d1b3302463ee9edee6650adfd82b0994ad06e13d68f9e7c8b928ceae490c40e
+2026-11-08 10:56:20,136 INFO sailab.pipeline: ATS 20251011T054801_20251011T055857_T43SCA: ok 104.78 (10478 water pixels connected to the centre)
+2026-11-08 10:56:20,141 INFO sailab.pipeline: ATS 20251011T054801_20251011T055857_T43SCA: risk ok baseline=105.77799999999999 score=-3.2608459422683316
+2026-11-08 10:56:22,577 INFO sailab.pipeline: ATS 20251013T055251_20251013T055251_T43SCA: downloaded data/backfill/ATS/20251013T055251_20251013T055251_T43SCA.tif sha256=aa85321dd6dd498b56b8130d3ebdb17711006c3f146fbc8ed3fcf8e4ab76ffed
+2026-11-08 10:56:22,889 INFO sailab.pipeline: ATS 20251013T055251_20251013T055251_T43SCA: ok 105.73 (10573 water pixels connected to the centre)
+2026-11-08 10:56:22,894 INFO sailab.pipeline: ATS 20251013T055251_20251013T055251_T43SCA: risk ok baseline=105.61166666666666 score=0.2410769284587203
+2026-11-08 10:56:24,734 INFO sailab.pipeline: ATS 20251016T054729_20251016T055055_T43SCA: downloaded data/backfill/ATS/20251016T054729_20251016T055055_T43SCA.tif sha256=fb0b5ba18c6fefdc7db808b1ab4e0d3c8141d98e471c3c9e76b15caca74d9a13
+2026-11-08 10:56:25,019 INFO sailab.pipeline: ATS 20251016T054729_20251016T055055_T43SCA: ok 105.99 (10599 water pixels connected to the centre)
+2026-11-08 10:56:25,028 INFO sailab.pipeline: ATS 20251016T054729_20251016T055055_T43SCA: risk ok baseline=105.62857142857143 score=0.8026180123575221
+2026-11-08 10:56:25,033 INFO sailab.pipeline: ATS 20251021T054911_20251021T054923_T43SCA: lake cloud 28.073550212164072% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:25,038 INFO sailab.pipeline: ATS 20251026T054829_20251026T055847_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:28,239 INFO sailab.pipeline: ATS 20251031T055031_20251031T055031_T43SCA: downloaded data/backfill/ATS/20251031T055031_20251031T055031_T43SCA.tif sha256=5408f10b554249420b91e6fa79a70626f7db7b1af9fe1dd8d650bc96f60a8687
+2026-11-08 10:56:28,472 INFO sailab.pipeline: ATS 20251031T055031_20251031T055031_T43SCA: ok 104.89 (10489 water pixels connected to the centre)
+2026-11-08 10:56:28,478 INFO sailab.pipeline: ATS 20251031T055031_20251031T055031_T43SCA: risk ok baseline=105.67375 score=-1.7973786780799834
+2026-11-08 10:56:30,529 INFO sailab.pipeline: ATS 20251102T055251_20251102T055254_T43SCA: downloaded data/backfill/ATS/20251102T055251_20251102T055254_T43SCA.tif sha256=c728e4ea06a7ad48f8aae8ced2979345abe488da3ca5291896649841ccb019b6
+2026-11-08 10:56:30,828 INFO sailab.pipeline: ATS 20251102T055251_20251102T055254_T43SCA: ok 105.46 (10546 water pixels connected to the centre)
+2026-11-08 10:56:30,833 INFO sailab.pipeline: ATS 20251102T055251_20251102T055254_T43SCA: risk ok baseline=105.98666666666666 score=-0.3810440575012695
+2026-11-08 10:56:32,678 INFO sailab.pipeline: ATS 20251105T054929_20251105T055514_T43SCA: downloaded data/backfill/ATS/20251105T054929_20251105T055514_T43SCA.tif sha256=db7eaa62a8a4125c70cec1c51b79f5fc6d789d73a9319ab78e49f7ecbc19733b
+2026-11-08 10:56:32,931 INFO sailab.pipeline: ATS 20251105T054929_20251105T055514_T43SCA: ok 103.63 (10363 water pixels connected to the centre)
+2026-11-08 10:56:32,936 INFO sailab.pipeline: ATS 20251105T054929_20251105T055514_T43SCA: risk ok baseline=105.91142857142857 score=-1.7860685635023203
+2026-11-08 10:56:32,943 INFO sailab.pipeline: ATS 20251110T055101_20251110T055059_T43SCA: lake cloud 72.58274398868458% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:35,007 INFO sailab.pipeline: ATS 20251115T055019_20251115T055609_T43SCA: downloaded data/backfill/ATS/20251115T055019_20251115T055609_T43SCA.tif sha256=928a5ea92a53af18a6f3c3703b0ff5d38cb9e804874964e31d10cfccf89642a5
+2026-11-08 10:56:35,348 INFO sailab.pipeline: ATS 20251115T055019_20251115T055609_T43SCA: ok 105.94 (10594 water pixels connected to the centre)
+2026-11-08 10:56:35,359 INFO sailab.pipeline: ATS 20251115T055019_20251115T055609_T43SCA: risk ok baseline=105.62625 score=0.21917842684326178
+2026-11-08 10:56:35,367 INFO sailab.pipeline: ATS 20251120T055141_20251120T055144_T43SCA: lake cloud 96.66760961810466% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:37,792 INFO sailab.pipeline: ATS 20251122T055251_20251122T055254_T43SCA: downloaded data/backfill/ATS/20251122T055251_20251122T055254_T43SCA.tif sha256=a99e0b3e6114ee0cbbf30f56e7601943dcb0d7ccb0de2766ccf6bd9a5fd35b44
+2026-11-08 10:56:38,048 INFO sailab.pipeline: ATS 20251122T055251_20251122T055254_T43SCA: ok 110.55 (11055 water pixels connected to the centre)
+2026-11-08 10:56:38,053 INFO sailab.pipeline: ATS 20251122T055251_20251122T055254_T43SCA: risk ok baseline=105.66111111111111 score=3.639984974075266
+2026-11-08 10:56:40,951 INFO sailab.pipeline: ATS 20251125T055049_20251125T055052_T43SCA: downloaded data/backfill/ATS/20251125T055049_20251125T055052_T43SCA.tif sha256=13afd9c83be13f091715523d0a0a7503cc4d9f21830a2d3da58e571af1953ca9
+2026-11-08 10:56:41,249 INFO sailab.pipeline: ATS 20251125T055049_20251125T055052_T43SCA: ok 106.1 (10610 water pixels connected to the centre)
+2026-11-08 10:56:41,255 INFO sailab.pipeline: ATS 20251125T055049_20251125T055052_T43SCA: risk ok baseline=106.14999999999999 score=-0.025019954420888873
+2026-11-08 10:56:46,291 INFO sailab.pipeline: ATS 20251130T055221_20251130T055216_T43SCA: downloaded data/backfill/ATS/20251130T055221_20251130T055216_T43SCA.tif sha256=17215c9b534d0763e2a8cae3fd3ceb063c78eb202ddcaf6904b4f6a949ddcf2b
+2026-11-08 10:56:46,731 INFO sailab.pipeline: ATS 20251130T055221_20251130T055216_T43SCA: insufficient_observation None (lake region (10685 px) borders 4 no-data pixels; it may be cut off)
+2026-11-08 10:56:46,754 INFO sailab.pipeline: ATS 20251205T055129_20251205T055124_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:49,676 INFO sailab.pipeline: ATS 20251210T055241_20251210T055241_T43SCA: downloaded data/backfill/ATS/20251210T055241_20251210T055241_T43SCA.tif sha256=aa9a6956d8c8821fa43793459847a2443c2536e7b6ba88b7553cedad45e75f78
+2026-11-08 10:56:49,902 INFO sailab.pipeline: ATS 20251210T055241_20251210T055241_T43SCA: ok 63.84 (6384 water pixels connected to the centre)
+2026-11-08 10:56:49,909 INFO sailab.pipeline: ATS 20251210T055241_20251210T055241_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:56:53,608 INFO sailab.pipeline: ATS 20251212T055251_20251212T055251_T43SCA: downloaded data/backfill/ATS/20251212T055251_20251212T055251_T43SCA.tif sha256=53086e429cb7c4d5d39fc9b110c64db240a60aa126f692db38099030d439f2a6
+2026-11-08 10:56:53,879 INFO sailab.pipeline: ATS 20251212T055251_20251212T055251_T43SCA: ok 77.12 (7712 water pixels connected to the centre)
+2026-11-08 10:56:53,887 INFO sailab.pipeline: ATS 20251212T055251_20251212T055251_T43SCA: risk insufficient history baseline=None score=None
+2026-11-08 10:56:53,905 INFO sailab.pipeline: ATS 20251215T055229_20251215T055635_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:53,916 INFO sailab.pipeline: ATS 20251220T055251_20251220T055251_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:56,623 INFO sailab.pipeline: ATS 20251225T055149_20251225T055145_T43SCA: downloaded data/backfill/ATS/20251225T055149_20251225T055145_T43SCA.tif sha256=83e76887d80272145b4c44aa4fde1bd5d20eba57102b0d34a53788c3d58bde92
+2026-11-08 10:56:56,936 INFO sailab.pipeline: ATS 20251225T055149_20251225T055145_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:56:56,942 INFO sailab.pipeline: ATS 20251230T055251_20251230T055247_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:56,949 INFO sailab.pipeline: ATS 20260101T055301_20260101T055259_T43SCA: lake cloud 70.18953323903818% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:56,960 INFO sailab.pipeline: ATS 20260104T055139_20260104T055134_T43SCA: lake cloud 16.639321074964638% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:56:59,891 INFO sailab.pipeline: ATS 20260109T055231_20260109T055226_T43SCA: downloaded data/backfill/ATS/20260109T055231_20260109T055226_T43SCA.tif sha256=342f720c5a9af9083cb5e631ac7b327cd8a9f7f5644e60a011cf742350132c11
+2026-11-08 10:57:00,113 INFO sailab.pipeline: ATS 20260109T055231_20260109T055226_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:02,556 INFO sailab.pipeline: ATS 20260114T055059_20260114T055359_T43SCA: downloaded data/backfill/ATS/20260114T055059_20260114T055359_T43SCA.tif sha256=2e566804916168f82774b4821bd6ce435ea8edb70b5ea6c6aed93751465d07b9
+2026-11-08 10:57:02,759 INFO sailab.pipeline: ATS 20260114T055059_20260114T055359_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:02,771 INFO sailab.pipeline: ATS 20260119T055151_20260119T055150_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:04,619 INFO sailab.pipeline: ATS 20260124T055029_20260124T055029_T43SCA: downloaded data/backfill/ATS/20260124T055029_20260124T055029_T43SCA.tif sha256=fdffd40b431c9cd34d767845b0153acfcbefb207f93bc877b0557ddda7a34158
+2026-11-08 10:57:04,857 INFO sailab.pipeline: ATS 20260124T055029_20260124T055029_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:04,867 INFO sailab.pipeline: ATS 20260129T055101_20260129T055059_T43SCA: lake cloud 36.271570014144274% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:04,878 INFO sailab.pipeline: ATS 20260203T054939_20260203T054937_T43SCA: lake cloud 11.015558698727016% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:07,881 INFO sailab.pipeline: ATS 20260208T055011_20260208T055009_T43SCA: downloaded data/backfill/ATS/20260208T055011_20260208T055009_T43SCA.tif sha256=ea2b3bdca42909c1c1ae4a9a79ebd3a88e6f40feefc7a6756cbc77b5a585e86b
+2026-11-08 10:57:08,082 INFO sailab.pipeline: ATS 20260208T055011_20260208T055009_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:08,089 INFO sailab.pipeline: ATS 20260213T054839_20260213T054905_T43SCA: lake cloud 24.56011315417256% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:10,118 INFO sailab.pipeline: ATS 20260218T054911_20260218T054913_T43SCA: downloaded data/backfill/ATS/20260218T054911_20260218T054913_T43SCA.tif sha256=99482994100eec27f87c3b1b632c11591b67a5718ef67cdaaddaff0c4e8c4b96
+2026-11-08 10:57:10,299 INFO sailab.pipeline: ATS 20260218T054911_20260218T054913_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:12,471 INFO sailab.pipeline: ATS 20260223T054739_20260223T055613_T43SCA: downloaded data/backfill/ATS/20260223T054739_20260223T055613_T43SCA.tif sha256=78ccf5750d210680e4bf1d1b18b0e8d2e6336d13ca21585e1d70efae80204461
+2026-11-08 10:57:12,749 INFO sailab.pipeline: ATS 20260223T054739_20260223T055613_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:14,541 INFO sailab.pipeline: ATS 20260228T054801_20260228T054759_T43SCA: downloaded data/backfill/ATS/20260228T054801_20260228T054759_T43SCA.tif sha256=4b82535ffeb0c22ac1a4432beb216a38e42ab35c850967d8bd7c36a4c0ca64b9
+2026-11-08 10:57:14,732 INFO sailab.pipeline: ATS 20260228T054801_20260228T054759_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:14,739 INFO sailab.pipeline: ATS 20260305T054639_20260305T055828_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:14,747 INFO sailab.pipeline: ATS 20260310T054651_20260310T055548_T43SCA: lake cloud 86.23479490806224% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:14,764 INFO sailab.pipeline: ATS 20260315T054639_20260315T055816_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:17,031 INFO sailab.pipeline: ATS 20260320T054641_20260320T055521_T43SCA: downloaded data/backfill/ATS/20260320T054641_20260320T055521_T43SCA.tif sha256=cab92d1da53afebfd5fef343a26ba67f8d7ab6b5ca6f2dee67ad048f547158fe
+2026-11-08 10:57:17,249 INFO sailab.pipeline: ATS 20260320T054641_20260320T055521_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:19,300 INFO sailab.pipeline: ATS 20260325T054639_20260325T055650_T43SCA: downloaded data/backfill/ATS/20260325T054639_20260325T055650_T43SCA.tif sha256=41ea57a95a6a096a1a20032ce958e78a6a955344c1c95d7996248f6ec823fc76
+2026-11-08 10:57:19,598 INFO sailab.pipeline: ATS 20260325T054639_20260325T055650_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:19,607 INFO sailab.pipeline: ATS 20260330T054641_20260330T055545_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:21,758 INFO sailab.pipeline: ATS 20260401T055301_20260401T055257_T43SCA: downloaded data/backfill/ATS/20260401T055301_20260401T055257_T43SCA.tif sha256=6a2016cf45957f6bca9aa47ec8e3a3f3a9e6ad6da60011b390c0df11a052ea21
+2026-11-08 10:57:21,969 INFO sailab.pipeline: ATS 20260401T055301_20260401T055257_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:21,977 INFO sailab.pipeline: ATS 20260404T054639_20260404T055641_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:21,991 INFO sailab.pipeline: ATS 20260409T054631_20260409T055740_T43SCA: lake cloud 60.22065063649222% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:24,334 INFO sailab.pipeline: ATS 20260414T054639_20260414T055559_T43SCA: downloaded data/backfill/ATS/20260414T054639_20260414T055559_T43SCA.tif sha256=fbcbac64cd970e2d56e88d07854bc80ec73057df9cfb9b36c8e841ee26baf9c8
+2026-11-08 10:57:24,696 INFO sailab.pipeline: ATS 20260414T054639_20260414T055559_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:24,702 INFO sailab.pipeline: ATS 20260419T054641_20260419T055740_T43SCA: lake cloud 99.85855728429986% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:24,712 INFO sailab.pipeline: ATS 20260421T055301_20260421T055649_T43SCA: lake cloud 17.01838755304102% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:24,721 INFO sailab.pipeline: ATS 20260424T054629_20260424T055601_T43SCA: lake cloud 99.99434229137199% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:24,730 INFO sailab.pipeline: ATS 20260429T054641_20260429T055741_T43SCA: lake cloud 42.01980198019802% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:24,741 INFO sailab.pipeline: ATS 20260504T054639_20260504T055559_T43SCA: lake cloud 99.82461103253182% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:27,642 INFO sailab.pipeline: ATS 20260509T054641_20260509T055711_T43SCA: downloaded data/backfill/ATS/20260509T054641_20260509T055711_T43SCA.tif sha256=322ef261a96ae400c55d37039b84db2ed0328fa1da132514169e8fe5c9a545a8
+2026-11-08 10:57:27,917 INFO sailab.pipeline: ATS 20260509T054641_20260509T055711_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:30,887 INFO sailab.pipeline: ATS 20260511T055251_20260511T055251_T43SCA: downloaded data/backfill/ATS/20260511T055251_20260511T055251_T43SCA.tif sha256=161741c9460ad348bb1bfdb98e91d3cf0e856794132771b2e2d73375b3e83956
+2026-11-08 10:57:31,068 INFO sailab.pipeline: ATS 20260511T055251_20260511T055251_T43SCA: insufficient_observation None (centre pixel Pixel(row=152, col=151) is not water (NDWI <= 0.2))
+2026-11-08 10:57:31,073 INFO sailab.pipeline: ATS 20260514T054629_20260514T055558_T43SCA: lake cloud 36.067892503536065% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:31,081 INFO sailab.pipeline: ATS 20260519T054641_20260519T055757_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:31,086 INFO sailab.pipeline: ATS 20260524T054629_20260524T055601_T43SCA: lake cloud 96.35643564356435% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:34,097 INFO sailab.pipeline: ATS 20260529T054631_20260529T055704_T43SCA: downloaded data/backfill/ATS/20260529T054631_20260529T055704_T43SCA.tif sha256=14c217b1c3428be27ea08a63e9dd9b8ec0c9e220e60aa93ecd3e1c84723b8f6b
+2026-11-08 10:57:34,380 INFO sailab.pipeline: ATS 20260529T054631_20260529T055704_T43SCA: ok 104.49 (10449 water pixels connected to the centre)
+2026-11-08 10:57:34,386 INFO sailab.pipeline: ATS 20260529T054631_20260529T055704_T43SCA: risk ok baseline=59.3125 score=0.8385137131629102
+2026-11-08 10:57:36,306 INFO sailab.pipeline: ATS 20260531T055251_20260531T055253_T43SCA: downloaded data/backfill/ATS/20260531T055251_20260531T055253_T43SCA.tif sha256=3c565b88aa3507672d1645512a8f059915d9418a597c4da82460969e2fd0df6c
+2026-11-08 10:57:36,556 INFO sailab.pipeline: ATS 20260531T055251_20260531T055253_T43SCA: ok 104.99 (10499 water pixels connected to the centre)
+2026-11-08 10:57:36,566 INFO sailab.pipeline: ATS 20260531T055251_20260531T055253_T43SCA: risk ok baseline=68.348 score=0.7206438217552926
+2026-11-08 10:57:38,470 INFO sailab.pipeline: ATS 20260603T054629_20260603T055602_T43SCA: downloaded data/backfill/ATS/20260603T054629_20260603T055602_T43SCA.tif sha256=96578c9e2816cce5bc95fdfe63f3e58d69bce4181a1a7823c5f62ef1015c4cf8
+2026-11-08 10:57:38,751 INFO sailab.pipeline: ATS 20260603T054629_20260603T055602_T43SCA: ok 104.92 (10492 water pixels connected to the centre)
+2026-11-08 10:57:38,764 INFO sailab.pipeline: ATS 20260603T054629_20260603T055602_T43SCA: risk ok baseline=104.315 score=0.22303929585306742
+2026-11-08 10:57:41,626 INFO sailab.pipeline: ATS 20260608T054641_20260608T055710_T43SCA: downloaded data/backfill/ATS/20260608T054641_20260608T055710_T43SCA.tif sha256=5d2f77e6509e1c72926b97c768c1ea80e27feac4491a120223a2ed5a8c5c4e90
+2026-11-08 10:57:42,009 INFO sailab.pipeline: ATS 20260608T054641_20260608T055710_T43SCA: ok 105.33 (10533 water pixels connected to the centre)
+2026-11-08 10:57:42,016 INFO sailab.pipeline: ATS 20260608T054641_20260608T055710_T43SCA: risk ok baseline=104.38222222222223 score=0.37235834985033306
+2026-11-08 10:57:42,022 INFO sailab.pipeline: ATS 20260613T054639_20260613T055604_T43SCA: lake cloud 13.748231966053748% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:42,029 INFO sailab.pipeline: ATS 20260618T054641_20260618T055646_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:42,039 INFO sailab.pipeline: ATS 20260620T055251_20260620T055336_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:42,046 INFO sailab.pipeline: ATS 20260623T054639_20260623T055557_T43SCA: lake cloud 30.925035360678926% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:44,086 INFO sailab.pipeline: ATS 20260628T054641_20260628T055641_T43SCA: downloaded data/backfill/ATS/20260628T054641_20260628T055641_T43SCA.tif sha256=8e62bb51b6d0eeeab1b24e9fab8507b3a02487d1e31e553d4d1c8ce3948954fe
+2026-11-08 10:57:44,394 INFO sailab.pipeline: ATS 20260628T054641_20260628T055641_T43SCA: ok 105.82 (10582 water pixels connected to the centre)
+2026-11-08 10:57:44,400 INFO sailab.pipeline: ATS 20260628T054641_20260628T055641_T43SCA: risk ok baseline=104.477 score=0.5553232876862134
+2026-11-08 10:57:44,406 INFO sailab.pipeline: ATS 20260703T054639_20260703T055603_T43SCA: lake cloud 38.925035360678926% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:44,414 INFO sailab.pipeline: ATS 20260708T054641_20260708T055715_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:46,431 INFO sailab.pipeline: ATS 20260710T055251_20260710T055900_T43SCA: downloaded data/backfill/ATS/20260710T055251_20260710T055900_T43SCA.tif sha256=41448a26a6c80ce4e665f6215db5875acf959c20ec93da764caae5c15c8a79c3
+2026-11-08 10:57:46,741 INFO sailab.pipeline: ATS 20260710T055251_20260710T055900_T43SCA: ok 104.9 (10490 water pixels connected to the centre)
+2026-11-08 10:57:46,748 INFO sailab.pipeline: ATS 20260710T055251_20260710T055900_T43SCA: risk ok baseline=103.30857142857143 score=0.22677651654904799
+2026-11-08 10:57:46,757 INFO sailab.pipeline: ATS 20260713T054639_20260713T055514_T43SCA: lake cloud 88.27722772277228% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:48,612 INFO sailab.pipeline: ATS 20260718T054641_20260718T055712_T43SCA: downloaded data/backfill/ATS/20260718T054641_20260718T055712_T43SCA.tif sha256=7ca9af3006a2aff6b25da9ffdc26c007224e762a1dfb53a8e738eaa224e0b9f0
+2026-11-08 10:57:48,943 INFO sailab.pipeline: ATS 20260718T054641_20260718T055712_T43SCA: ok 105.82 (10582 water pixels connected to the centre)
+2026-11-08 10:57:48,951 INFO sailab.pipeline: ATS 20260718T054641_20260718T055712_T43SCA: risk ok baseline=103.5075 score=0.35460394987457566
+2026-11-08 10:57:51,053 INFO sailab.pipeline: ATS 20260720T055251_20260720T055254_T43SCA: downloaded data/backfill/ATS/20260720T055251_20260720T055254_T43SCA.tif sha256=2a5c072f203467659cbe434d0f17975394ed91a799aec977f060290be431c049
+2026-11-08 10:57:51,330 INFO sailab.pipeline: ATS 20260720T055251_20260720T055254_T43SCA: ok 105.7 (10570 water pixels connected to the centre)
+2026-11-08 10:57:51,337 INFO sailab.pipeline: ATS 20260720T055251_20260720T055254_T43SCA: risk ok baseline=103.76444444444445 score=0.31479189151361375
+2026-11-08 10:57:51,345 INFO sailab.pipeline: ATS 20260723T054639_20260723T055606_T43SCA: lake cloud 84.15841584158416% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:54,311 INFO sailab.pipeline: ATS 20260728T054641_20260728T055709_T43SCA: downloaded data/backfill/ATS/20260728T054641_20260728T055709_T43SCA.tif sha256=7d6d418a9a401ac08b731aa30a0f5accbf4723b8152adefc6a1384cba0de8eb5
+2026-11-08 10:57:54,662 INFO sailab.pipeline: ATS 20260728T054641_20260728T055709_T43SCA: ok 105.61 (10561 water pixels connected to the centre)
+2026-11-08 10:57:54,672 INFO sailab.pipeline: ATS 20260728T054641_20260728T055709_T43SCA: risk ok baseline=103.958 score=0.28339802675666453
+2026-11-08 10:57:54,681 INFO sailab.pipeline: ATS 20260802T054639_20260802T055631_T43SCA: lake cloud 28.786421499292786% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:54,690 INFO sailab.pipeline: ATS 20260807T054641_20260807T055711_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:54,698 INFO sailab.pipeline: ATS 20260809T055251_20260809T055323_T43SCA: lake cloud 83.65487977369166% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:54,705 INFO sailab.pipeline: ATS 20260812T054639_20260812T055604_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:57:57,435 INFO sailab.pipeline: ATS 20260817T054631_20260817T055709_T43SCA: downloaded data/backfill/ATS/20260817T054631_20260817T055709_T43SCA.tif sha256=13ad296c65c96ef24ab3973463f88c7718e7d7f92621269536d0c076500aeec5
+2026-11-08 10:57:57,761 INFO sailab.pipeline: ATS 20260817T054631_20260817T055709_T43SCA: ok 105.84 (10584 water pixels connected to the centre)
+2026-11-08 10:57:57,770 INFO sailab.pipeline: ATS 20260817T054631_20260817T055709_T43SCA: risk ok baseline=106.43222222222222 score=-1.2385238464108441
+2026-11-08 10:58:00,026 INFO sailab.pipeline: ATS 20260822T054629_20260822T055602_T43SCA: downloaded data/backfill/ATS/20260822T054629_20260822T055602_T43SCA.tif sha256=6f573d0385a068abac615332e7b80524d2e2959aeb8445766ec3ae57238d5ba8
+2026-11-08 10:58:00,314 INFO sailab.pipeline: ATS 20260822T054629_20260822T055602_T43SCA: ok 106.14 (10614 water pixels connected to the centre)
+2026-11-08 10:58:00,322 INFO sailab.pipeline: ATS 20260822T054629_20260822T055602_T43SCA: risk ok baseline=106.373 score=-0.4772904698641417
+2026-11-08 10:58:02,771 INFO sailab.pipeline: ATS 20260827T054631_20260827T055705_T43SCA: downloaded data/backfill/ATS/20260827T054631_20260827T055705_T43SCA.tif sha256=063c250f1a8c3cc48c9dfdc11849c779351a22f03dc293cf173d9f726073d369
+2026-11-08 10:58:03,077 INFO sailab.pipeline: ATS 20260827T054631_20260827T055705_T43SCA: ok 105.9 (10590 water pixels connected to the centre)
+2026-11-08 10:58:03,084 INFO sailab.pipeline: ATS 20260827T054631_20260827T055705_T43SCA: risk ok baseline=106.35181818181819 score=-0.9645598868154962
+2026-11-08 10:58:03,092 INFO sailab.pipeline: ATS 20260829T055251_20260829T055252_T43SCA: lake cloud 19.111739745403113% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,100 INFO sailab.pipeline: ATS 20260901T054639_20260901T055603_T43SCA: lake cloud 35.62093352192362% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,107 INFO sailab.pipeline: ATS 20260906T054631_20260906T055705_T43SCA: lake cloud 33.58981612446959% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,116 INFO sailab.pipeline: ATS 20260911T054639_20260911T055820_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,124 INFO sailab.pipeline: ATS 20260916T054641_20260916T055710_T43SCA: lake cloud 76.79207920792079% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,132 INFO sailab.pipeline: ATS 20260918T055251_20260918T055250_T43SCA: lake cloud 74.17821782178218% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,138 INFO sailab.pipeline: ATS 20260921T054639_20260921T055822_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,151 INFO sailab.pipeline: ATS 20260926T054641_20260926T055712_T43SCA: lake cloud 11.43988684582744% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,158 INFO sailab.pipeline: ATS 20261001T054639_20261001T055612_T43SCA: lake cloud 98.35360678925035% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,165 INFO sailab.pipeline: ATS 20261006T054711_20261006T055828_T43SCA: lake cloud 99.99434229137199% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,172 INFO sailab.pipeline: ATS 20261008T055251_20261008T055250_T43SCA: lake cloud 38.285714285714285% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,179 INFO sailab.pipeline: ATS 20261011T054749_20261011T054743_T43SCA: lake cloud 93.1994342291372% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:03,187 INFO sailab.pipeline: ATS 20261016T054821_20261016T054915_T43SCA: lake cloud 76.31117397454031% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:05,582 INFO sailab.pipeline: ATS 20261021T054849_20261021T054910_T43SCA: downloaded data/backfill/ATS/20261021T054849_20261021T054910_T43SCA.tif sha256=5901b047a50e158bf9fbdaf44eceb8fdf5ee10cbf2e0b43d1761ead32e101f6c
+2026-11-08 10:58:05,892 INFO sailab.pipeline: ATS 20261021T054849_20261021T054910_T43SCA: ok 104.77 (10477 water pixels connected to the centre)
+2026-11-08 10:58:05,898 INFO sailab.pipeline: ATS 20261021T054849_20261021T054910_T43SCA: risk ok baseline=105.58666666666666 score=-1.6860004524324186
+2026-11-08 10:58:05,906 INFO sailab.pipeline: ATS 20261026T054921_20261026T055738_T43SCA: lake cloud 99.99434229137199% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:05,919 INFO sailab.pipeline: ATS 20261028T055241_20261028T055243_T43SCA: lake cloud 90.08203677510608% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:05,928 INFO sailab.pipeline: ATS 20261031T054959_20261031T054954_T43SCA: lake cloud 54.285714285714285% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:05,936 INFO sailab.pipeline: ATS 20261105T055021_20261105T055015_T43SCA: lake cloud 100.0% > 10.0% limit -> radar; optical-only build, recorded but not measured
+2026-11-08 10:58:05,945 INFO sailab.pipeline: run 2 finished: RunResult(run_id=2, lakes_processed=2, scenes_recorded=611, scenes_downloaded=254, measurements=254, risk_scores=104, errors=None, notes=[])
+2026-11-08 10:58:05,945 INFO run_once: summary: run_id=2 lakes=2 scenes_recorded=611 downloaded=254 measurements=254 risk_scores=104
+2026-11-08 10:58:05,945 INFO run_once: run OK

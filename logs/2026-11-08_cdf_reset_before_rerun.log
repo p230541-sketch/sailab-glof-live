@@ -1,0 +1,6 @@
+reset_at: 2026-11-08T11:23:08+00:00
+why: checks C, D (SCL band) and F added; the 254 backfill images were 5-band, so the backfill is re-run with 6-band downloads.
+archived copy of the database before reset: data/archive_v1/sailab_glof_v1_before_CDF.db ; 5-band images: data/archive_v1/backfill_5band/
+rows before: {'lake': 2, 'scene': 611, 'measurement': 254, 'risk_score': 104, 'run_log': 2}
+rows after:  {'lake': 2, 'scene': 0, 'measurement': 0, 'risk_score': 0, 'run_log': 2}
+kept: lake rows, and run_log rows 1 (failed sign-in run) and 2 (first backfill) as history

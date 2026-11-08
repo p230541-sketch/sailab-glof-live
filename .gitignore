@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Service-account keys must never be committed
+*.json.key
+*service-account*.json
+ee-key*.json
+# Backfill rasters stay local (hundreds of MB); proof is the sha256 in logs/runs and re-downloadability
+data/backfill/
+# Archived first backfill (5-band, before checks C/D/F), kept locally for comparison
+data/archive_v1/

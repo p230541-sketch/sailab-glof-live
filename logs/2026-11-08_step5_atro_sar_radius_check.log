@@ -1,0 +1,12 @@
+started_at: 2026-11-07T20:23:37+00:00
+Atro Sar, scene 2026-07-18, growth limit = radius + 400 m (so the limit never binds before the window edge)
+  radius   800 m -> insufficient_observation  extent None  (lake region (7651 px) borders 49 no-data pixels; it may be cut off)
+  radius  1200 m -> insufficient_observation  extent None  (lake region (9952 px) borders 60 no-data pixels; it may be cut off)
+  radius  1500 m -> ok                        extent 105.82  (10582 water pixels connected to the centre)
+  radius  2000 m -> ok                        extent 105.82  (10582 water pixels connected to the centre)
+  radius  2500 m -> ok                        extent 105.82  (10582 water pixels connected to the centre)
+Same 1500 m window, varying only the growth distance limit:
+  growth limit  1200 m -> ok 98.47 (9847 water pixels connected to the centre)
+  growth limit  1500 m -> ok 105.82 (10582 water pixels connected to the centre)
+  growth limit  1900 m -> ok 105.82 (10582 water pixels connected to the centre)
+  growth limit  2500 m -> ok 105.82 (10582 water pixels connected to the centre)

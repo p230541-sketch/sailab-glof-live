@@ -1,0 +1,47 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.7, pytest-9.1.1, pluggy-1.7.0 -- /home/rayannn/Documents/SAILAB_FYP1_FINAL/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/rayannn/Documents/SAILAB_FYP1_FINAL
+collecting ... collected 39 items
+
+tests/test_acquisition.py::test_TC_ACQ_06_optical_or_radar PASSED        [  2%]
+tests/test_acquisition.py::test_TC_ACQ_04_resume_after_a_crash PASSED    [  5%]
+tests/test_db.py::test_connect_creates_all_five_tables PASSED            [  7%]
+tests/test_db.py::test_rows_survive_closing_and_reopening_the_file PASSED [ 10%]
+tests/test_db.py::test_seed_inserts_the_two_lakes_with_the_exact_given_coordinates PASSED [ 12%]
+tests/test_db.py::test_seeding_twice_does_not_duplicate PASSED           [ 15%]
+tests/test_db.py::test_seeding_refuses_to_overwrite_a_changed_coordinate PASSED [ 17%]
+tests/test_db.py::test_duplicate_lake_code_is_rejected PASSED            [ 20%]
+tests/test_db.py::test_foreign_keys_are_enforced PASSED                  [ 23%]
+tests/test_db.py::test_insert_scene_records_download_time_and_nullable_cloud PASSED [ 25%]
+tests/test_db.py::test_insert_scene_rejects_unknown_source_and_bad_date PASSED [ 28%]
+tests/test_db.py::test_measurement_status_and_extent_must_agree PASSED   [ 30%]
+tests/test_db.py::test_one_measurement_per_scene PASSED                  [ 33%]
+tests/test_db.py::test_get_extent_history_uses_pass_date_skips_failures_and_sorts PASSED [ 35%]
+tests/test_db.py::test_get_extent_history_can_exclude_the_measurement_being_scored PASSED [ 38%]
+tests/test_db.py::test_history_from_the_database_reproduces_TC_BAS_01 PASSED [ 41%]
+tests/test_db.py::test_insert_risk_score_insufficient_history_stores_nulls PASSED [ 43%]
+tests/test_db.py::test_insert_risk_score_rejects_unknown_status_and_method PASSED [ 46%]
+tests/test_db.py::test_run_log_start_and_finish_clean PASSED             [ 48%]
+tests/test_db.py::test_run_log_keeps_the_real_error_text PASSED          [ 51%]
+tests/test_db.py::test_run_log_cannot_be_finished_twice_or_if_missing PASSED [ 53%]
+tests/test_flood_path.py::test_TC_FLD_01_the_flood_path_never_goes_uphill PASSED [ 56%]
+tests/test_flood_path.py::test_flood_path_stops_at_a_pit PASSED          [ 58%]
+tests/test_flood_path.py::test_flood_path_continues_across_a_flat_plateau PASSED [ 61%]
+tests/test_measurement.py::test_TC_MEA_01_water_index_separates_water_from_land PASSED [ 64%]
+tests/test_measurement.py::test_TC_MEA_05_boundary_rule_stops_the_river_leaking_in PASSED [ 66%]
+tests/test_measurement.py::test_otsu_threshold_matches_scikit_image_reference PASSED [ 69%]
+tests/test_network.py::test_TC_NET_01_tarjan_finds_the_bridges PASSED    [ 71%]
+tests/test_network.py::test_bridges_match_networkx_reference_on_random_graphs PASSED [ 74%]
+tests/test_risk.py::test_TC_BAS_01_seasonal_baseline_and_deviation_score PASSED [ 76%]
+tests/test_risk.py::test_TC_BAS_03_insufficient_history_gives_no_score PASSED [ 79%]
+tests/test_terrain.py::test_TC_TER_01_a_single_pit_fills_to_its_surrounding_ring PASSED [ 82%]
+tests/test_terrain.py::test_TC_TER_02_a_pit_fills_only_to_its_own_ring_not_the_far_boundary PASSED [ 84%]
+tests/test_terrain.py::test_fill_sinks_matches_a_trusted_reference_on_random_terrain PASSED [ 87%]
+tests/test_terrain.py::test_TC_TER_04_a_tie_between_neighbours_picks_the_first_one_found PASSED [ 89%]
+tests/test_terrain.py::test_TC_TER_05_a_true_pit_with_no_filling_stops_immediately PASSED [ 92%]
+tests/test_terrain.py::test_TC_TER_06_the_trace_finds_an_exit_two_flat_cells_away PASSED [ 94%]
+tests/test_terrain.py::test_TC_TER_07_a_flat_with_no_exit_anywhere_still_stops_cleanly PASSED [ 97%]
+tests/test_terrain.py::test_TC_TER_03_the_2D_trace_reaches_the_edge_after_filling PASSED [100%]
+
+============================== 39 passed in 0.72s ==============================

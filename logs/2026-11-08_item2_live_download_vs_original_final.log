@@ -1,0 +1,14 @@
+started_at: 2026-11-07T20:17:06+00:00
+signed in as: sailab-glof-bot@kaarigar-507118.iam.gserviceaccount.com
+
+KRB: scene 20260718T054641_20260718T055712_T43SCA (2026-07-18T05:58:59+00:00, tile cloud 0.77%)
+  ours:     EPSG:32643 505x507 transform (10.0, 0.0, 382100.0, 0.0, -10.0, 4084970.0) bands ('B2', 'B3', 'B4', 'B8', 'B11')
+  original: EPSG:32643 505x507 transform (10.0, 0.0, 382100.0, 0.0, -10.0, 4084970.0) bands ('B2', 'B3', 'B4', 'B8', 'B11')
+  pixel values differing: 0 of 1280175  -> IDENTICAL
+
+ATS: scene 20260718T054641_20260718T055712_T43SCA (2026-07-18T05:58:59+00:00, tile cloud 0.77%)
+  ours:     EPSG:32643 163x163 transform (10.0, 0.0, 378540.0, 0.0, -10.0, 4057110.0) bands ('B2', 'B3', 'B4', 'B8', 'B11')
+  original: EPSG:32643 163x163 transform (10.0, 0.0, 378540.0, 0.0, -10.0, 4057110.0) bands ('B2', 'B3', 'B4', 'B8', 'B11')
+  pixel values differing: 0 of 132845  -> IDENTICAL
+
+finished_at: 2026-11-07T20:17:18+00:00

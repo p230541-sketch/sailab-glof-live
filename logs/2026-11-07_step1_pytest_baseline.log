@@ -1,0 +1,29 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.7, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/rayannn/Documents/SAILAB_FYP1_FINAL
+plugins: anyio-4.13.0, typeguard-4.4.2
+collecting ... collected 20 items
+
+tests/test_acquisition.py::test_TC_ACQ_06_optical_or_radar PASSED        [  5%]
+tests/test_acquisition.py::test_TC_ACQ_04_resume_after_a_crash PASSED    [ 10%]
+tests/test_flood_path.py::test_TC_FLD_01_the_flood_path_never_goes_uphill PASSED [ 15%]
+tests/test_flood_path.py::test_flood_path_stops_at_a_pit PASSED          [ 20%]
+tests/test_flood_path.py::test_flood_path_continues_across_a_flat_plateau PASSED [ 25%]
+tests/test_measurement.py::test_TC_MEA_01_water_index_separates_water_from_land PASSED [ 30%]
+tests/test_measurement.py::test_TC_MEA_05_boundary_rule_stops_the_river_leaking_in PASSED [ 35%]
+tests/test_measurement.py::test_otsu_threshold_matches_scikit_image_reference PASSED [ 40%]
+tests/test_network.py::test_TC_NET_01_tarjan_finds_the_bridges PASSED    [ 45%]
+tests/test_network.py::test_bridges_match_networkx_reference_on_random_graphs PASSED [ 50%]
+tests/test_risk.py::test_TC_BAS_01_seasonal_baseline_and_deviation_score PASSED [ 55%]
+tests/test_risk.py::test_TC_BAS_03_insufficient_history_gives_no_score PASSED [ 60%]
+tests/test_terrain.py::test_TC_TER_01_a_single_pit_fills_to_its_surrounding_ring PASSED [ 65%]
+tests/test_terrain.py::test_TC_TER_02_a_pit_fills_only_to_its_own_ring_not_the_far_boundary PASSED [ 70%]
+tests/test_terrain.py::test_fill_sinks_matches_a_trusted_reference_on_random_terrain PASSED [ 75%]
+tests/test_terrain.py::test_TC_TER_04_a_tie_between_neighbours_picks_the_first_one_found PASSED [ 80%]
+tests/test_terrain.py::test_TC_TER_05_a_true_pit_with_no_filling_stops_immediately PASSED [ 85%]
+tests/test_terrain.py::test_TC_TER_06_the_trace_finds_an_exit_two_flat_cells_away PASSED [ 90%]
+tests/test_terrain.py::test_TC_TER_07_a_flat_with_no_exit_anywhere_still_stops_cleanly PASSED [ 95%]
+tests/test_terrain.py::test_TC_TER_03_the_2D_trace_reaches_the_edge_after_filling PASSED [100%]
+
+============================== 20 passed in 1.04s ==============================
