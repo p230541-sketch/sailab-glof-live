@@ -53,7 +53,8 @@ def test_dashboard_shows_the_real_counts(client):
     assert "Lakes monitored 2 " in text
     assert "Scenes recorded 5 5 optical, 0 radar" in text
     assert "40% 2 of 5 optical scenes" in text                       # too cloudy: 2 of 5 OPTICAL scenes
-    assert "Usable measurements 2 2 of 3 optical + 0 of 0 radar passed every check" in text
+    assert ("Usable measurements 2 2 of 3 measurement attempts passed every check (optical 2 of 3, radar 0 of 0). "
+            "Not a scene count: the 2 too-cloudy optical scenes were never measured.") in text
     assert "Days since a usable measurement 120 Karambar Lake, optical, 12 Jul 2026" in text
     assert "Optical: 250.00 ha on 12 Jul 2026, 120 days ago" in text
     assert "Radar: No usable measurement yet" in text                # no radar rows: said in words
@@ -238,7 +239,7 @@ def test_dashboard_shows_radar_separately_and_cloud_share_is_optical_only(radar_
     text = visible_text(radar_client.get("/").text)
     assert "Scenes recorded 7 5 optical, 2 radar" in text
     assert "40% 2 of 5 optical scenes" in text                      # unchanged by the radar scenes
-    assert "Usable measurements 3 2 of 3 optical + 1 of 2 radar passed every check" in text
+    assert "Usable measurements 3 3 of 5 measurement attempts passed every check (optical 2 of 3, radar 1 of 2)." in text
     assert "Days since a usable measurement 10 Karambar Lake, radar, 30 Oct 2026" in text
     assert "Radar: 260.00 ha on 30 Oct 2026, 10 days ago" in text
     assert "Optical: 250.00 ha on 12 Jul 2026, 120 days ago" in text  # optical value not replaced by radar

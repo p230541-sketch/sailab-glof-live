@@ -47,7 +47,7 @@ The run history is public: open the **Actions** tab of this repository. Each bot
 |---|---|---|
 | 2026-11-08 12:00 | manual (setup test) | success, no new scene |
 | 2026-11-08 19:01 | manual (after pinning Ubuntu 24.04) | success, no new scene |
-| **2026-11-08 21:31** | **schedule** (the 18:00 UTC slot, started 3.5 h late by GitHub) | **success**, 171 tests passed, no new scene since 2026-11-05; bot commit `5872d48`, `run_log` row 6 |
+| **2026-11-08 21:31** | **schedule** (the 18:00 UTC slot, started 3.5 h late by GitHub) | **success**, 171 tests passed in 6.13 s (`logs/2026-11-08_scheduled_run_6_github_test_step.log`, from GitHub's job log), no new scene since 2026-11-05; bot commit `5872d48`, `run_log` row 6 |
 | 2026-11-09 12:09 | manual (checking radar on GitHub) | success, no new scene; bot commit `21ad8a6`, `run_log` row 8 |
 
 Manual runs do not count as automatic. GitHub can start scheduled runs late or skip them, so the

@@ -34,7 +34,9 @@
     <div class="note">{{ d.totals.too_cloudy }} of {{ d.totals.optical_scenes }} optical scenes: over 10% cloud on the lake</div></div>
   <div class="card kpi"><div class="label">Usable measurements</div>
     <div class="value">{{ d.totals.optical_ok + d.totals.radar_ok }}</div>
-    <div class="note">{{ d.totals.optical_ok }} of {{ d.totals.optical_measurements }} optical + {{ d.totals.radar_ok }} of {{ d.totals.radar_measurements }} radar passed every check</div></div>
+    <div class="note">{{ d.totals.optical_ok + d.totals.radar_ok }} of {{ d.totals.optical_measurements + d.totals.radar_measurements }} measurement attempts passed every check
+      (optical {{ d.totals.optical_ok }} of {{ d.totals.optical_measurements }}, radar {{ d.totals.radar_ok }} of {{ d.totals.radar_measurements }}).
+      Not a scene count: the {{ d.totals.too_cloudy }} too-cloudy optical scenes were never measured.</div></div>
   <div class="card kpi"><div class="label">Days since a usable measurement</div>
     <div class="value">{% if d.freshest %}{{ d.freshest.days_since_any_ok }}{% else %}—{% endif %}</div>
     <div class="note">{% if d.freshest %}{% set fs = d.freshest.summary %}{{ d.freshest.name }},

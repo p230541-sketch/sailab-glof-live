@@ -1,0 +1,25 @@
+Source: GitHub API, GET repos/rayannkhn/sailab-glof-live/actions/jobs/128868466284/logs
+Run 42525620352 (event: schedule, created 2026-11-08T21:31:20Z, conclusion: success), job run-pipeline.
+Fetched 2026-11-09T15:20:23Z. Excerpt: the test-suite step only (21:31:52-21:32:00 UTC), unchanged lines.
+
+2026-11-08T21:31:52.6648852Z ##[group]Run python -m pytest tests/ -q
+2026-11-08T21:31:52.6649222Z [36;1mpython -m pytest tests/ -q[0m
+2026-11-08T21:31:52.6668328Z shell: /usr/bin/bash -e ***0***
+2026-11-08T21:31:52.6668594Z env:
+2026-11-08T21:31:52.6668893Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-08T21:31:52.6669303Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+2026-11-08T21:31:52.6669707Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-08T21:31:52.6670083Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-08T21:31:52.6670434Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+2026-11-08T21:31:52.6670783Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+2026-11-08T21:31:52.6671093Z ##[endgroup]
+2026-11-08T21:31:55.4943527Z ........................................................................ [ 42%]
+2026-11-08T21:31:58.1486253Z ........................................................................ [ 84%]
+2026-11-08T21:31:59.8751742Z ...........................                                              [100%]
+2026-11-08T21:31:59.8752383Z =============================== warnings summary ===============================
+2026-11-08T21:31:59.8753135Z ../../../../../opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/fastapi/testclient.py:1
+2026-11-08T21:31:59.8754521Z   /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+2026-11-08T21:31:59.8755707Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-11-08T21:31:59.8756081Z 
+2026-11-08T21:31:59.8756362Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+2026-11-08T21:31:59.8757263Z 171 passed, 1 warning in 6.13s

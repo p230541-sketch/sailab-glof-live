@@ -22,6 +22,7 @@ and the code comments/log messages that make claims, was checked against a file,
 | Live check: 42 scenes found, 12 measured, all identical | `logs/2026-11-08_gui_live_check_new_scenes_vs_backfill.log` |
 | Live check outcomes and timings (11 s, 32 s) | `logs/2026-11-09_gui_live_check_outcomes_evidence.md` |
 | Failure messages for usage limit / key / other errors | `tests/test_webapp_live.py::test_failure_explanations_are_chosen_from_the_real_error` |
+| "171 tests passed" in scheduled run 6 (closed after this sweep, 15:20 UTC): `171 passed, 1 warning in 6.13s` | `logs/2026-11-08_scheduled_run_6_github_test_step.log`, fetched from GitHub's job-log API (`gh run view --log` had returned nothing) |
 | Scheduled runs: 1 | `gh run list` (4 runs; 1 with event "schedule", 2026-11-08 21:31 UTC) |
 
 ## Found wrong or unbacked in this sweep, and fixed
@@ -36,8 +37,6 @@ and the code comments/log messages that make claims, was checked against a file,
 6. **694 vs 406 were not defined anywhere in the docs.** README now has a side-by-side table.
 
 ## Still not backed from this repository
-- **"171 tests passed" in scheduled run 6**: GitHub returned an empty log to `gh run view --log` from here; check it
-  in the Actions tab (run 42525620352, "Run tests" step).
 - **"Karambar measured about 10 % below its published area"**: from the earlier project; marked as such in the README.
 - **Scheduled runs 2 and 3**: cannot exist before 2026-11-09 18:00 UTC and 2026-11-10 18:00 UTC.
 - **`data/scenes/` commit step**: correct in code, never yet exercised on GitHub (no scheduled run has found a new scene).

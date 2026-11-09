@@ -64,8 +64,10 @@ def main() -> int:
     check("Dashboard", "Too cloudy", dash, f"{round(100 * n_cloudy / n_opt)}% {n_cloudy} of {n_opt} optical scenes",
           "not_downloaded scenes / optical scenes")
     check("Dashboard", "Usable measurements", dash,
-          f"Usable measurements {m['optical'][1] + m['radar'][1]} {m['optical'][1]} of {m['optical'][0]} optical + "
-          f"{m['radar'][1]} of {m['radar'][0]} radar passed every check", "measurement.status = ok, by sensor")
+          f"Usable measurements {m['optical'][1] + m['radar'][1]} {m['optical'][1] + m['radar'][1]} of "
+          f"{m['optical'][0] + m['radar'][0]} measurement attempts passed every check (optical {m['optical'][1]} of "
+          f"{m['optical'][0]}, radar {m['radar'][1]} of {m['radar'][0]}). Not a scene count: the {n_cloudy} too-cloudy "
+          f"optical scenes were never measured.", "measurement rows by sensor and status; not_downloaded scenes")
     run = q("SELECT * FROM run_log ORDER BY id DESC LIMIT 1")
     check("Dashboard", "Last pipeline run", dash,
           "Last pipeline run " + datetime.fromisoformat(run["started_at"]).astimezone(PKT).strftime("%d %b %Y, %H:%M PKT"),
