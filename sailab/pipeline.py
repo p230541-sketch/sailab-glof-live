@@ -65,7 +65,8 @@ OPTICAL_CLOUD_LIMIT_PERCENT = 10.0
 # Evidence: logs/2026-11-09_radar_slope_mask_original_karambar.log
 RADAR_SLOPE_LIMIT_DEG = 10.0
 # Radar risk scoring is OFF (decided with the project owner, 2026-11-09). Validation against optical within
-# 3 days: mean absolute difference 6.0% on 30 summer pairs (logs/2026-11-09_radar_validation.log), but 28 of
+# 3 days: Karambar +5.2%, Atro Sar -6.4% on 16 independent summer optical scenes from 2 lakes
+# (logs/2026-11-09_radar_validation.log, ..._independence.log), but 28 of
 # 361 usable radar values, mostly April-June (snowmelt: wet snow is as dark as water), are clearly wrong, and
 # they produced the largest radar "anomalies" (e.g. +50.3, -7.4). Until a melt-season check is tested on the
 # stored data, radar is measured and shown, but never scored. _score() still keeps sensors apart if this is

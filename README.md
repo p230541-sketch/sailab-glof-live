@@ -144,14 +144,28 @@ Code: `sailab/radar.py` (using the unchanged `otsu_threshold` and `region_grow`)
   **975.88 ha** (the documented 975.9 ha). The picture (`logs/2026-11-09_radar_leak_where.png`) shows
   why: Otsu over the whole window splits bright mountain faces from everything else (cut-off −9.5 dB),
   so the flat valley floor counts as water. A slope mask on its own did not fix it.
-- **The fix:** drop pixels steeper than **10°** (from the Copernicus 30 m DEM, slope computed by our
-  own code), **then** run Otsu over the remaining flat ground, where it separates lake (≈ −20 dB) from
-  valley floor (≈ −15 dB). On the original file: **267.52 ha**, no leak
-  (`logs/2026-11-09_radar_slope_mask_original_karambar.log`). The 10° limit was fixed **before**
-  validation. Unmasked, the leak still reaches the window edge and is refused (a test keeps this visible).
-- **Validation against optical** (radar and optical of the same lake within 3 days, 30 summer pairs,
-  `logs/2026-11-09_radar_validation.log`): mean absolute difference **6.0 %**. Karambar radar reads
-  higher (mean +5.4 %, worst +13.0 %); Atro Sar radar reads lower (mean −6.4 %, worst −9.6 %).
+- **The mitigation:** drop pixels steeper than **10°** (from the Copernicus 30 m DEM, slope computed by
+  our own code), **then** run Otsu over the remaining flat ground, where it separates lake (≈ −20 dB)
+  from valley floor (≈ −15 dB). On the original file the leak is gone: **267.52 ha**
+  (`logs/2026-11-09_radar_slope_mask_original_karambar.log`). Unmasked, the leak still reaches the
+  window edge and is refused (a test keeps this visible).
+- **How 10° was chosen (honestly):** 5°, 10°, 15° and 20° were tried on the **one** original radar file
+  (Karambar; there was no original Atro Sar radar file) and gave 258.7–281.6 ha; 10° was picked as the
+  middle of that stable range. So it is **not independent of that file**. It was not fitted to optical
+  (5° would have been closer to optical) and it was fixed before any comparison with optical.
+- **The original SAR file's date is not recorded**, so its 267.52 ha cannot be compared with any
+  dated optical value (e.g. 237.2 ha on 18 July): the lake varies about 237–257 ha across a summer.
+- **Validation against optical, on scenes the 10° limit was not chosen on:** radar and optical of the
+  same lake within 3 days (`logs/2026-11-09_radar_validation.log`,
+  `logs/2026-11-09_radar_validation_independence.log`). 30 radar passes, but only **16 independent
+  optical scenes** (Karambar 7, Atro Sar 9), from **2 lakes, summer only (June–September), 2023–2026**.
+  One value per optical scene: Karambar radar **+5.2 %**, Atro Sar radar **−6.4 %**.
+- **What this does and does not show:** a mitigation that worked on these two lakes in summer, **not a
+  validated general fix**. The offsets are lake-specific and of opposite sign, so two lakes say nothing
+  about a third.
+- **Open question:** why Karambar radar reads high and Atro Sar radar reads low is **unexplained**. A
+  plausible cause is shoreline terrain (how the 30 m DEM and the 10° mask cut the shore) or water
+  turbidity/surface roughness; **untested**.
 - **Why radar is not risk-scored:** 28 of 361 usable radar values are clearly wrong, mostly in
   **April–June**: wet snow during melt is as dark as water on radar, so the lake seems to vanish
   (Karambar 0.2 ha) or flood outward (403.9 ha). Those errors produced the largest radar "anomalies"
@@ -213,8 +227,8 @@ scheduled runs are committed to `data/scenes/`.
 | The original Atro Sar file (76.51 ha) is **cut off** by its window | `tests/test_pipeline.py::test_real_atro_sar_original_file_is_flagged_as_cut_off_by_the_window` |
 | Cloud measured over the lake differs from the tile value in many scenes (Atro Sar: 7 of 17 decisions differ) | `logs/2026-11-08_step4_live_find_new_scenes.log` |
 | A failed run is recorded, not hidden | `run_log` row 1; `logs/runs/2026-11-08T103538Z_backfill.log` |
-| The radar failure reproduces (975.88 ha) and the slope-mask fix gives 267.52 ha on the same original file | `tests/test_radar.py`, `logs/2026-11-09_radar_slope_mask_original_karambar.log` |
-| Radar vs optical within 3 days: 6.0 % mean absolute difference on 30 pairs | `logs/2026-11-09_radar_validation.log` |
+| The radar failure reproduces (975.88 ha), and with the slope mask the leak is gone (267.52 ha) on the same original file | `tests/test_radar.py`, `logs/2026-11-09_radar_slope_mask_original_karambar.log` |
+| Radar vs optical within 3 days: Karambar +5.2 %, Atro Sar −6.4 %, on 16 independent summer optical scenes from 2 lakes | `logs/2026-11-09_radar_validation.log`, `logs/2026-11-09_radar_validation_independence.log` |
 
 **About the tests (193, all passing):** most use small synthetic grids with hand-calculated expected
 answers — they prove the algorithms compute correctly, **not** real-world accuracy. Two use the
@@ -232,8 +246,9 @@ tests inherited from the earlier project pass unchanged.
    the dangerous ones (e.g. Shisper, formed around 2018–19).
 3. **Cloud:** 58 % of optical scenes were too cloudy over the lake. Radar fills those dates with
    measurements, but radar is **not risk-scored**, so risk scores still come from clear optical days only.
-12. **Radar snowmelt errors:** about 8 % of usable radar values (mostly April–June) are clearly wrong;
-    winter radar values are unvalidated; each lake has a consistent radar–optical offset of about ±6 %.
+12. **Radar:** a mitigation validated on only 2 lakes in summer (16 independent scenes), with
+    unexplained lake-specific offsets (+5.2 %, −6.4 %); about 8 % of usable radar values (mostly
+    April–June snowmelt) are clearly wrong; winter radar values are unvalidated; radar is not scored.
 4. **Blind in winter:** frozen or snow-covered lakes are refused (correctly), so there are few or no
    measurements from roughly November to May. Scheduled runs before spring may produce no `ok` area.
 5. **Under-detection:** the NDWI cut-off of 0.2 misses real water on some days. Known and **not

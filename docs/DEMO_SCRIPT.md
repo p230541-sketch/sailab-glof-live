@@ -36,9 +36,11 @@ the live check, and its three possible outcomes are planned below.
 - "How the latest score was made": "The score is a deviation from the same month in earlier years, here −0.96.
   It is not a danger level or a probability."
 - Radar triangles and the radar image: "Sentinel-1 radar sees through cloud. Our first radar method leaked
-  into the valley and measured 975.9 ha; removing steep ground before thresholding fixed it. Against optical
-  within 3 days radar agrees to about 6% on 30 pairs. In snowmelt season wet snow looks like water, so radar
-  is measured and shown but not risk-scored."
+  into the valley and measured 975.9 ha. Removing steep ground before thresholding removed the leak on that file.
+  The 10-degree limit was chosen on that one file, so we then checked it on scenes it was not chosen on: against
+  near-same-day optical, radar reads 5% high at Karambar and 6% low at Atro Sar, on 16 summer scenes from 2 lakes.
+  That is a mitigation for these two lakes in summer, not a general fix, and why the two lakes differ is still
+  open. In snowmelt season wet snow looks like water, so radar is measured and shown but not risk-scored."
 - Dashed panels: "Dam, terrain and weather are part of the design but not of this build, so they say so."
 
 ## 3. Live check (1 to 2 min): the one real-time step
@@ -79,6 +81,8 @@ Only say "N scheduled runs" with the number you counted the evening before.
 - **"Why are scores so few?"** A score needs 5 earlier values for that month from 2 years; winter months rarely have any.
 - **"What happens in the monsoon?"** Optical is blind under cloud (58% of scenes). Radar measures through cloud
   (within about 6% of optical), but is not risk-scored because of snowmelt errors.
+- **"Is the radar problem solved?"** For these two lakes in summer the leak is gone; it is not validated for other
+  lakes or seasons, and the 10-degree limit was chosen on the one original radar file.
 - **"Why not score radar?"** About 8% of radar values, mostly April-June, are clearly wrong (wet snow), and they made the
   largest false anomalies. Fixing that needs spring ground truth we do not have.
 - **"Is the 10% cloud limit calibrated?"** No, it is a judgement from one month of data; it is documented as such.

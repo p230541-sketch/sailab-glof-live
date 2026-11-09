@@ -1,0 +1,9 @@
+How independent are the 30 radar/optical pairs (+-3 days)?
+
+ATS: 17 pairs, but only 9 distinct optical scenes; years {2023: 2, 2024: 2, 2025: 2, 2026: 3}; months {6: 1, 7: 2, 8: 6}
+  one value per optical scene (radar passes paired to the same optical scene averaged): mean -6.4%, mean absolute 6.4%, n = 9
+
+KRB: 13 pairs, but only 7 distinct optical scenes; years {2023: 3, 2024: 1, 2025: 2, 2026: 1}; months {7: 1, 8: 6}
+  one value per optical scene (radar passes paired to the same optical scene averaged): mean +5.2%, mean absolute 5.2%, n = 7
+
+TOTAL: 30 pairs from 2 lakes; 16 distinct optical scenes; all in June-September; the radar method's slope limit was chosen on one Karambar file before any of these were compared.
