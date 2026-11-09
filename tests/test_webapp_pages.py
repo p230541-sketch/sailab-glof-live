@@ -157,6 +157,45 @@ def test_extent_chart_with_nothing_usable_says_so():
     assert "No usable measurement in this period" in svg
 
 
+def _ok(day: str, ha: float, sensor: str) -> dict:
+    return {"acquired_at": day, "measurement_status": "ok", "extent_ha": ha, "baseline_ha": None,
+            "deviation_score": None, "sensor": sensor, "too_cloudy": False,
+            "source": "sentinel-1" if sensor == "radar" else "sentinel-2"}
+
+
+def _axis_labels(svg: str) -> list[float]:
+    return [float(v) for v in re.findall(r'text-anchor="end" class="axis">(-?\d+)</text>', svg)]
+
+
+def test_far_off_radar_values_do_not_stretch_the_axis_but_are_still_shown():
+    """Karambar case: optical ~255 ha, two radar errors (0.2 and 404 ha). The axis follows the optical
+    values and the near radar values; the two errors are hollow markers at the edges, counted on the chart."""
+    hist = [_ok("2026-07-01", 250.0, "optical"), _ok("2026-07-10", 257.0, "optical"),
+            _ok("2026-07-05", 262.0, "radar"), _ok("2026-07-15", 0.2, "radar"), _ok("2026-07-20", 404.0, "radar")]
+    svg = charts.extent_chart(hist, date(2026, 6, 1), date(2026, 8, 31))
+    labels = _axis_labels(svg)
+    assert min(labels) > 200 and max(labels) < 300, labels
+    assert svg.count('class="pt"') == 2                              # both optical dots, drawn normally
+    assert svg.count('class="pt-radar"') == 1                        # the near radar value, drawn normally
+    assert svg.count('off-scale"') == 2                              # the two errors: not hidden
+    assert "0.20 ha (off the scale, below the axis)" in svg and "404.00 ha (off the scale, above the axis)" in svg
+    assert "2 radar values off the scale" in svg
+
+
+def test_optical_values_always_set_the_axis():
+    """An optical value is never pinned to an edge, however far it is from the others."""
+    hist = [_ok("2026-07-01", 250.0, "optical"), _ok("2026-07-10", 60.0, "optical"), _ok("2026-07-05", 255.0, "radar")]
+    svg = charts.extent_chart(hist, date(2026, 6, 1), date(2026, 8, 31))
+    assert "off-scale" not in svg and min(_axis_labels(svg)) < 60
+
+
+def test_radar_only_period_uses_all_radar_values():
+    """With no optical value in the period there is nothing to compare against, so nothing is pinned."""
+    hist = [_ok("2026-03-01", 255.0, "radar"), _ok("2026-03-13", 20.0, "radar")]
+    svg = charts.extent_chart(hist, date(2026, 2, 1), date(2026, 4, 30))
+    assert "off-scale" not in svg and svg.count('class="pt-radar"') == 2
+
+
 def test_location_map_places_both_lakes():
     svg = charts.location_map([
         {"code": "KRB", "name": "Karambar Lake", "centre_lon": 73.7053229, "centre_lat": 36.880833, "data_gap": True, "link": "/lakes/KRB"},

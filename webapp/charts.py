@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from html import escape
+import statistics
 from math import cos, radians
 
 OPTICAL = "#1e4e8c"
@@ -16,6 +17,11 @@ GRID = "#e3e8ec"
 AXIS_TEXT = "#5b6470"
 TICK_COLOURS = {"ok": OPTICAL, "insufficient_observation": "#b08a2e", "too_cloudy": "#a7b0ba"}
 MAX_LINE_GAP_DAYS = 45      # points further apart than this are not joined (a winter gap is not a trend)
+# The y axis is set by every optical value and baseline (the scored sensor), plus radar values within this
+# fraction of the optical median. In summer radar agrees with optical to about 6%, so 25% only leaves out
+# clear radar errors (wet snow in spring, leaks). Those are not hidden: they are drawn as hollow markers
+# pinned to the top or bottom edge, with their real value in the tooltip, and counted on the chart.
+RADAR_AXIS_FRACTION = 0.25
 
 
 def _d(value: str | date) -> date:
@@ -57,13 +63,24 @@ def extent_chart(history: list[dict], start: date, end: date, width: int = 760, 
 
     parts = [f'<svg class="chart" viewBox="0 0 {width} {height}" role="img" aria-label="lake extent chart">']
     if ok:
-        values = [r["extent_ha"] for r in ok] + [r["baseline_ha"] for r in ok if r["baseline_ha"] is not None]
+        optical = [r["extent_ha"] for r in ok if (r.get("sensor") or "optical") == "optical"]
+        median = statistics.median(optical or [r["extent_ha"] for r in ok])
+
+        def sets_axis(r: dict) -> bool:
+            return ((r.get("sensor") or "optical") != "radar" or not optical
+                    or abs(r["extent_ha"] - median) <= RADAR_AXIS_FRACTION * median)
+
+        values = ([r["extent_ha"] for r in ok if sets_axis(r)]
+                  + [r["baseline_ha"] for r in ok if r["baseline_ha"] is not None])
         lo, hi = min(values), max(values)
         pad = max((hi - lo) * 0.15, 1.0)
         lo, hi = lo - pad, hi + pad
 
+        def on_scale(r: dict) -> bool:   # only values outside the drawn axis are pinned to an edge
+            return lo <= r["extent_ha"] <= hi
+
         def y(v: float) -> float:
-            return plot_bottom - (v - lo) / (hi - lo) * (plot_bottom - top)
+            return plot_bottom - (min(max(v, lo), hi) - lo) / (hi - lo) * (plot_bottom - top)
 
         for i in range(5):
             v = lo + (hi - lo) * i / 4
@@ -72,7 +89,7 @@ def extent_chart(history: list[dict], start: date, end: date, width: int = 760, 
         for sensor, colour in (("optical", OPTICAL), ("radar", RADAR)):
             series = [r for r in ok if (r.get("sensor") or "optical") == sensor]
             for a, b in zip(series, series[1:]):
-                if (_d(b["acquired_at"]) - _d(a["acquired_at"])).days <= MAX_LINE_GAP_DAYS:
+                if (_d(b["acquired_at"]) - _d(a["acquired_at"])).days <= MAX_LINE_GAP_DAYS and on_scale(a) and on_scale(b):
                     parts.append(f'<line class="join-{sensor}" x1="{x(_d(a["acquired_at"])):.1f}" y1="{y(a["extent_ha"]):.1f}" '
                                  f'x2="{x(_d(b["acquired_at"])):.1f}" y2="{y(b["extent_ha"]):.1f}" stroke="{colour}" '
                                  f'stroke-width="1.3"/>')
@@ -85,12 +102,24 @@ def extent_chart(history: list[dict], start: date, end: date, width: int = 760, 
             label = f'{r["acquired_at"][:10]} {sensor}: {r["extent_ha"]:.2f} ha'
             if r["deviation_score"] is not None:
                 label += f', {sensor} baseline {r["baseline_ha"]:.2f} ha, score {r["deviation_score"]:+.2f}'
-            if sensor == "radar":
+            if not on_scale(r):
+                above = r["extent_ha"] > hi
+                edge = top + 5 if above else plot_bottom - 5
+                tip = (f"{cx:.1f},{edge - 4.5:.1f} {cx - 4.2:.1f},{edge + 3.3:.1f} {cx + 4.2:.1f},{edge + 3.3:.1f}" if above
+                       else f"{cx:.1f},{edge + 4.5:.1f} {cx - 4.2:.1f},{edge - 3.3:.1f} {cx + 4.2:.1f},{edge - 3.3:.1f}")
+                parts.append(f'<polygon class="pt-radar off-scale" points="{tip}" fill="#ffffff" stroke="{RADAR}" '
+                             f'stroke-width="1.3"><title>{escape(label)} (off the scale, {"above" if above else "below"} '
+                             f'the axis)</title></polygon>')
+            elif sensor == "radar":
                 parts.append(f'<polygon class="pt-radar" points="{cx:.1f},{cy - 4.5:.1f} {cx - 4.2:.1f},{cy + 3.3:.1f} '
                              f'{cx + 4.2:.1f},{cy + 3.3:.1f}" fill="{RADAR}"><title>{escape(label)}</title></polygon>')
             else:
                 parts.append(f'<circle class="pt" cx="{cx:.1f}" cy="{cy:.1f}" r="3.6" fill="{OPTICAL}">'
                              f'<title>{escape(label)}</title></circle>')
+        off = sum(not on_scale(r) for r in ok)
+        if off:
+            parts.append(f'<text x="{width - right}" y="{top - 4}" text-anchor="end" class="axis off-scale-note">'
+                         f'{off} radar value{"s" if off != 1 else ""} off the scale: hollow markers at the edge</text>')
     else:
         parts.append(f'<text x="{width / 2}" y="{(top + plot_bottom) / 2}" text-anchor="middle" class="empty">'
                      f'No usable measurement in this period</text>')

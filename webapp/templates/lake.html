@@ -50,7 +50,8 @@
     {% if d.chart %}{{ d.chart | safe }}{% else %}<p>No scenes recorded for this lake yet.</p>{% endif %}
     <p class="footnote">{{ d.chart_start | date }} to {{ d.chart_end | date }}: {{ d.ok_in_range }} usable optical and {{ d.radar_ok_in_range }} usable radar measurements.
       Points more than 45 days apart are not joined: a gap is a gap, not a trend. Optical and radar are never joined or averaged:
-      they measure the lake slightly differently.</p>
+      they measure the lake slightly differently. The vertical scale follows the optical values; a radar value more than 25% away from the
+      optical median (a clear radar error, such as wet snow in spring) is drawn as a hollow triangle at the top or bottom edge, with its real value on hover.</p>
   </section>
 
   <section class="card">
