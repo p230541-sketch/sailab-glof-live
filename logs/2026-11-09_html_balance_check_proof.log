@@ -1,0 +1,36 @@
+checked 2026-11-09T15:12:58Z
+
+== 1. original bug re-introduced: stray </div> after the three not-built panels in lake.html
+FAILED tests/test_webapp_pages.py::test_lake_page_score_and_its_inputs
+FAILED tests/test_webapp_pages.py::test_lake_page_observation_log_has_every_scene_newest_first
+FAILED tests/test_webapp_pages.py::test_lake_page_marks_unbuilt_panels
+FAILED tests/test_webapp_pages.py::test_a_lake_with_no_data_says_so
+FAILED tests/test_webapp_pages.py::test_missing_image_file_is_reported_not_faked
+FAILED tests/test_webapp_pages.py::test_image_is_rendered_from_the_stored_file
+FAILED tests/test_webapp_pages.py::test_pages_load_nothing_from_the_internet[/lakes/KRB]
+FAILED tests/test_webapp_pages.py::test_pages_load_nothing_from_the_internet[/lakes/ATS]
+FAILED tests/test_webapp_pages.py::test_lake_page_draws_radar_as_triangles_and_labels_its_rows
+FAILED tests/test_webapp_pages.py::test_every_page_has_balanced_html[/lakes/KRB]
+FAILED tests/test_webapp_pages.py::test_every_page_has_balanced_html[/lakes/ATS]
+FAILED tests/test_webapp_pages.py::test_every_page_has_balanced_html[/lakes/KRB?range=12m]
+FAILED tests/test_webapp_pages.py::test_every_page_has_balanced_html[/lakes/KRB?range=24m]
+FAILED tests/test_webapp_pages.py::test_every_page_has_balanced_html[/lakes/KRB?page=2]
+FAILED tests/test_webapp_pages.py::test_the_structure_check_runs_on_real_pages
+FAILED tests/test_webapp_pages.py::test_observation_log_is_inside_the_main_layout
+FAILED tests/test_webapp_previews.py::test_real_pages_do_not_carry_the_preview_banner
+17 failed, 199 passed, 1 warning in 11.74s
+
+== 2. new bug planted only in the live page's FAILED-check branch (an extra </div> inside {% elif st.status == 'failed' %})
+ERROR    sailab.pipeline:pipeline.py:322 run 3 failed: EarthEngineError: Earth Engine memory capacity exceeded.
+_____ test_failed_page_leads_with_the_plain_line_and_keeps_the_exact_error _____
+source_db = PosixPath('/tmp/pytest-of-rayannn/pytest-180/test_failed_page_leads_with_th0/source.db')
+tmp_path = PosixPath('/tmp/pytest-of-rayannn/pytest-180/test_failed_page_leads_with_th0')
+    def test_failed_page_leads_with_the_plain_line_and_keeps_the_exact_error(source_db, tmp_path):
+ERROR    sailab.pipeline:pipeline.py:322 run 3 failed: EarthEngineError: Too many concurrent aggregations.
+FAILED tests/test_webapp_live.py::test_a_failure_shows_the_real_error_and_is_recorded
+FAILED tests/test_webapp_live.py::test_a_crash_outside_the_pipeline_is_shown_too
+FAILED tests/test_webapp_live.py::test_failed_page_leads_with_the_plain_line_and_keeps_the_exact_error
+3 failed, 213 passed, 1 warning in 11.29s
+
+== 3. both restored
+216 passed, 1 warning in 10.74s

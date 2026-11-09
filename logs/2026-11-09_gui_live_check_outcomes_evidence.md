@@ -38,3 +38,9 @@ fail at the connection level (not a typed-in message). Artifacts copied from tha
 The "page shows" line above quoted the explanatory paragraph by mistake (both start with "Result"). The result banner is:
 - Not captured from the page in this run. The template text for status no_new_scene (webapp/templates/live.html line 38) is: "No new scene for either lake since the newest one already stored. Earth Engine answered normally; Sentinel-2 passes about every 2 to 5 days and new scenes take some hours to appear."
 - That this banner is actually rendered for that status is checked by tests/test_webapp_live.py::test_no_new_scene_says_so (passing). The run itself (status no_new_scene, run_log row 9, 11 s) is recorded above.
+
+## Network-cut outcome, re-run 2026-11-09 15:16 UTC
+Same method (port 8001, HTTPS_PROXY to a closed local port), fresh working copy. Result on the page: "The check could
+not complete. Could not reach Google's servers…", stopped after **23 s**, run 9 of that working copy, 0 lakes processed,
+nothing recorded. Screenshot: `docs/screenshots/2026-11-09/live_check_failed_no_network.png`. The failure time varies
+(32 s on 8 Nov, 23 s today), so the demo docs now say 20-35 s.

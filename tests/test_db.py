@@ -220,3 +220,10 @@ def test_run_log_cannot_be_finished_twice_or_if_missing(conn):
         db.finish_run_log(conn, run_id, 5, 5)
     with pytest.raises(ValueError):
         db.finish_run_log(conn, 12345, 0, 0)
+
+
+@pytest.mark.parametrize("lon, lat", [(73.7, 95.0), (73.7, -90.5), (181.0, 36.9), (-180.5, 36.9)])
+def test_out_of_range_coordinates_are_refused(conn, lon, lat):
+    """Added after mutation D7 (latitude limit widened to ±180) survived the whole suite: nothing tested it."""
+    with pytest.raises(ValueError, match="coordinates out of range"):
+        db.insert_lake(conn, "BAD", "Bad lake", lon, lat, 1000.0)

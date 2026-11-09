@@ -266,38 +266,37 @@ def test_radar_image_outline_matches_the_measurement(tmp_path):
 
 
 # --- page structure (added 2026-11-09 after a stray </div> pushed the observation log out of the layout) ---
-VOID = {"img", "br", "input", "link", "meta", "hr", "line", "rect", "circle", "polygon", "polyline", "path"}
+from html_check import unbalanced_tags  # noqa: E402  (also applied to every HTML response by conftest.py)
 
 
-def unbalanced_tags(html: str) -> list:
-    from html.parser import HTMLParser
-
-    class Check(HTMLParser):
-        def __init__(self):
-            super().__init__()
-            self.stack, self.problems = [], []
-
-        def handle_starttag(self, tag, attrs):
-            if tag not in VOID:
-                self.stack.append(tag)
-
-        def handle_endtag(self, tag):
-            if tag in VOID:
-                return
-            if self.stack and self.stack[-1] == tag:
-                self.stack.pop()
-            else:
-                self.problems.append((tag, self.getpos()[0], self.stack[-1] if self.stack else None))
-
-    c = Check()
-    c.feed(html)
-    return c.problems + [("unclosed", t) for t in c.stack]
+PAGE_URLS = ["/", "/lakes/KRB", "/lakes/ATS", "/lakes/KRB?range=12m", "/lakes/KRB?range=24m", "/lakes/KRB?page=2",
+             "/lakes/XXX", "/live", "/preview/confirm-advisory", "/preview/delivery-status", "/preview/risk-threshold",
+             "/preview/nope"]
 
 
-@pytest.mark.parametrize("url", ["/", "/lakes/KRB", "/lakes/ATS", "/live", "/preview/confirm-advisory",
-                                 "/preview/delivery-status", "/preview/risk-threshold"])
+@pytest.mark.parametrize("url", PAGE_URLS)
 def test_every_page_has_balanced_html(radar_client, url):
     assert unbalanced_tags(radar_client.get(url).text) == []
+
+
+def test_every_html_route_is_in_the_page_list(radar_client):
+    """A new HTML page must be added to PAGE_URLS, or this fails: no page can escape the structure check."""
+    import re as _re
+    html_routes = {r.path for r in radar_client.app.routes
+                   if "GET" in getattr(r, "methods", set()) and getattr(r, "response_class", None) is not None
+                   and getattr(r.response_class, "__name__", "") == "HTMLResponse"}
+    covered = {p for p in html_routes for u in PAGE_URLS
+               if _re.fullmatch(_re.sub(r"\{[^}]+\}", "[^/?]+", p), u.split("?")[0])}
+    assert html_routes and covered == html_routes, html_routes - covered
+
+
+def test_the_structure_check_runs_on_real_pages(radar_client):
+    """Guards the guard: the conftest wrapper must actually see the pages, and must reject a broken one."""
+    from conftest import HTML_PAGES_CHECKED
+    before = len(HTML_PAGES_CHECKED)
+    radar_client.get("/lakes/KRB")
+    assert len(HTML_PAGES_CHECKED) == before + 1
+    assert unbalanced_tags("<main><div></div></div><h2>x</h2></main>") != []
 
 
 def test_observation_log_is_inside_the_main_layout(radar_client):

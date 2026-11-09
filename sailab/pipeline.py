@@ -342,7 +342,7 @@ def _process_scene(conn, client, lake, scene, data_dir: Path, repo_root: Path, r
     if sensor == "radar":
         db.insert_scene(conn, lake["id"], "sentinel-2", scene.acquired_at, scene.lake_cloud_percent, skipped_path)
         result.scenes_recorded += 1
-        log.info("%s %s: lake cloud %s%% > %s%% limit -> radar; optical-only build, recorded but not measured",
+        log.info("%s %s: lake cloud %s%% > %s%% limit: too cloudy for optical, recorded but not downloaded (radar passes are listed separately)",
                  lake["code"], scene.scene_id, scene.lake_cloud_percent, OPTICAL_CLOUD_LIMIT_PERCENT)
         return
 

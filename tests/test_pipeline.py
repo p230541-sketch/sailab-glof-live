@@ -409,6 +409,25 @@ def test_check_F_needs_5_same_month_values_from_2_years(repo, history, expected_
         assert (r["baseline_ha"], r["deviation_score"]) == (None, None)
 
 
+def test_a_value_from_the_same_day_is_not_part_of_the_baseline(repo):
+    """Two scenes can share a date (e.g. Karambar, 26 Oct 2025). Only values from STRICTLY earlier days may
+    form the baseline. Here 4 earlier July values + 1 stored on the scene's own day: with the same-day value
+    wrongly included there would be 5 and a score; correctly there are 4, so insufficient_history.
+    (Added after mutation P1, '<' changed to '<=', survived the whole suite.)"""
+    _, db_path = repo
+    conn = db.connect(db_path)
+    for day in ("2024-07-10", "2024-07-20", "2025-07-05", "2025-07-15", "2026-07-18"):
+        sid = db.insert_scene(conn, 1, "sentinel-2", day, 5.0, f"history/{day}.tif")
+        db.insert_measurement(conn, sid, 1, "optical", 0.2, "ok")
+    conn.close()
+
+    result = run(repo, FakeClient({"KRB": [scene("KRB", "2026-07-18", 2.0)]}, ignore_since=True))
+
+    assert result.errors is None
+    [r] = rows(db_path, "SELECT * FROM risk_score")
+    assert r["status"] == "insufficient_history"
+
+
 # --- checks C and D: snow/ice and cloud touching the lake ------------------------------------------
 @pytest.mark.parametrize("scl, expected_status, reason", [
     (None, "ok", None),                                          # clean scene: measured, 0.25 ha

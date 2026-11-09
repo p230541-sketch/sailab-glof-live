@@ -58,8 +58,8 @@ measured with its area. If one was measured, open that lake's page: the new poin
 In November to May a measured area is unlikely; a refusal is the honest, expected result.
 
 ### Outcome C: "The check could not complete" (no internet, a usage limit, or a key problem)
-**It takes about 30 to 35 seconds to fail with no internet**, because Google's libraries retry. Do not click again.
-Say during the wait: "If the network is down, the client retries for about half a minute before giving up."
+**It takes about 20 to 35 seconds to fail with no internet** (32 s and 23 s in two real tests), because Google's libraries retry. Do not click again.
+Say during the wait: "If the network is down, the client retries for up to about half a minute before giving up."
 When the red box appears, read its first sentence aloud, then:
 "Nothing was invented: the pages still show the last stored data, and the failure is itself recorded in the run log.
 Here is the same button run successfully on 8 November." Open
@@ -86,6 +86,12 @@ Only say "N scheduled runs" with the number you counted the evening before.
 - **"Why not score radar?"** 29 of 361 usable radar values (8%) are clearly wrong by a stated rule (more than 15% from
   the lake's optical median; `logs/2026-11-09_radar_error_count.log`). 16 of them are in April-June (wet snow), 10 in
   February-March, and they made the largest false anomalies. Fixing that needs spring ground truth we do not have.
+- **"Is the slope mask verified?"** The slope code gives exactly the same numbers as numpy, and on 98-99% of pixels
+  the same 10-degree decision as Google Earth Engine's own slope. But the radar area is sensitive to the slope near
+  the shore: with Earth Engine's slope, Atro Sar summer areas drop about 3-4%. Whether 10 degrees is the right limit
+  needs a surveyed shoreline we do not have (`logs/2026-11-09_slope_reference_check.log`).
+- **"Are the tests real?"** We broke 35 lines in the new code on purpose; the tests caught all 35. The first time, 2
+  slipped through, and we added tests for both (`logs/2026-11-09_mutation_check_new_modules_run1.log`).
 - **"Is the 10% cloud limit calibrated?"** No, it is a judgement from one month of data; it is documented as such.
 - **"Did the system run since 2023?"** No. Historical images were processed once by hand (the backfill) so the baseline has
   history; the automatic nightly schedule was set up on 8 November 2026. Before the defence, look up the date of the

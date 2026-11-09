@@ -1,0 +1,74 @@
+baseline (no mutation): 205 passed, 1 warning in 9.71s
+R1  CAUGHT   sailab/radar.py                  slope mask inverted (keeps steep, drops flat)  (3s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R2  CAUGHT   sailab/radar.py                  slope mask computed but never applied  (3s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R3  CAUGHT   sailab/radar.py                  water = brighter than Otsu instead of darker  (3s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R4  CAUGHT   sailab/radar.py                  x-gradient forgets the 2-cell spacing (slope overstated)  (4s)
+      FAILED tests/test_radar.py::test_slope_of_a_plane_rising_1_m_per_10_m_cell - ...
+R5  CAUGHT   sailab/radar.py                  slope ignores the north-south gradient  (4s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R6  CAUGHT   sailab/radar.py                  cut-off-by-no-data check removed  (4s)
+      FAILED tests/test_radar.py::test_without_the_slope_mask_the_valley_floor_floods_in
+R7  CAUGHT   sailab/radar.py                  centre-must-be-water check removed  (4s)
+      FAILED tests/test_radar.py::test_a_centre_that_is_not_dark_is_refused - Asser...
+R8  CAUGHT   sailab/radar.py                  m² to ha conversion wrong  (4s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+P1  CAUGHT   sailab/pipeline.py               same-day values leak into the baseline  (4s)
+      FAILED tests/test_pipeline.py::test_a_value_from_the_same_day_is_not_part_of_the_baseline
+P2  CAUGHT   sailab/pipeline.py               check F: 'or' weakened to 'and'  (4s)
+      FAILED tests/test_pipeline.py::test_check_F_needs_5_same_month_values_from_2_years[history0-insufficient_history]
+P3  CAUGHT   sailab/pipeline.py               check C: snow-cover limit doubled  (4s)
+      FAILED tests/test_pipeline.py::test_checks_C_and_D[snow_majority-insufficient_observation-of the lake circle is snow/ice]
+P4  CAUGHT   sailab/pipeline.py               check D (cloud touching the lake) removed  (4s)
+      FAILED tests/test_pipeline.py::test_checks_C_and_D[cloud_touching_lake-insufficient_observation-check D]
+P5  CAUGHT   sailab/pipeline.py               radar risk scoring switched back on  (4s)
+      FAILED tests/test_pipeline_radar.py::test_radar_measurements_get_no_risk_score_while_scoring_is_off
+P6  CAUGHT   sailab/pipeline.py               next search starts a day late (scenes missed)  (3s)
+      FAILED tests/test_pipeline.py::test_a_second_run_does_not_duplicate_anything
+P7  CAUGHT   sailab/pipeline.py               duplicate optical scene not skipped  (3s)
+      FAILED tests/test_pipeline.py::test_a_second_run_does_not_duplicate_anything
+P7b CAUGHT   sailab/pipeline.py               duplicate radar scene not skipped  (4s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_already_stored_is_not_downloaded_again
+P8  CAUGHT   sailab/pipeline.py               baseline mixes optical and radar history  (4s)
+      FAILED tests/test_pipeline_radar.py::test_if_radar_scoring_is_switched_on_it_uses_radar_history_only
+P9  CAUGHT   sailab/pipeline.py               missing-SCL-band guard removed  (4s)
+      FAILED tests/test_pipeline.py::test_a_file_without_the_SCL_band_is_an_error_not_a_silent_skip
+D1  CAUGHT   sailab/db.py                     'ok' allowed without an area  (2s)
+      FAILED tests/test_db.py::test_measurement_status_and_extent_must_agree - Fail...
+D2  CAUGHT   sailab/db.py                     refused measurement allowed to carry a number  (2s)
+      FAILED tests/test_db.py::test_measurement_status_and_extent_must_agree - Fail...
+D3  CAUGHT   sailab/db.py                     history includes refused measurements  (2s)
+      FAILED tests/test_db.py::test_get_extent_history_uses_pass_date_skips_failures_and_sorts
+D4  CAUGHT   sailab/db.py                     sensor filter ignored in history  (4s)
+      FAILED tests/test_pipeline_radar.py::test_if_radar_scoring_is_switched_on_it_uses_radar_history_only
+D5  CAUGHT   sailab/db.py                     exclusion inverted  (2s)
+      FAILED tests/test_db.py::test_get_extent_history_uses_pass_date_skips_failures_and_sorts
+D6  CAUGHT   sailab/db.py                     history returned newest first  (2s)
+      FAILED tests/test_db.py::test_get_extent_history_uses_pass_date_skips_failures_and_sorts
+D7  SURVIVED sailab/db.py                     latitude range check widened  (11s)
+      205 passed, 1 warning in 9.88s
+D8  CAUGHT   sailab/db.py                     seed guard never refuses changed lake values  (2s)
+      FAILED tests/test_db.py::test_seeding_refuses_to_overwrite_a_changed_coordinate
+E1  CAUGHT   sailab/earth_engine_client.py    UTM zone off by one  (3s)
+      FAILED tests/test_earth_engine_client.py::test_utm_epsg[73.7053229-36.880833-32643]
+E2  CAUGHT   sailab/earth_engine_client.py    UTM hemisphere swapped  (3s)
+      FAILED tests/test_earth_engine_client.py::test_utm_epsg[73.7053229-36.880833-32643]
+E3  CAUGHT   sailab/earth_engine_client.py    no-data pixels counted as clear  (2s)
+      FAILED tests/test_earth_engine_client.py::test_lake_cloud_percent_leaves_no_data_out_of_the_fraction
+E4  CAUGHT   sailab/earth_engine_client.py    cloud as a fraction, not a percent  (2s)
+      FAILED tests/test_earth_engine_client.py::test_lake_cloud_percent_counts_only_inside_the_circle
+E5  CAUGHT   sailab/earth_engine_client.py    date range shifted (re-lists old day, misses last day)  (2s)
+      FAILED tests/test_earth_engine_client.py::test_query_dates_are_strictly_after_since_and_include_until
+E6  CAUGHT   sailab/earth_engine_client.py    empty optical date range sent to Earth Engine  (3s)
+      FAILED tests/test_earth_engine_client.py::test_a_period_already_covered_returns_nothing_without_asking_earth_engine
+E7  CAUGHT   sailab/earth_engine_client.py    cloud shadow not counted as cloud  (2s)
+      FAILED tests/test_earth_engine_client.py::test_lake_cloud_percent_counts_only_inside_the_circle
+E8  CAUGHT   sailab/earth_engine_client.py    SCL band no longer downloaded  (2s)
+      FAILED tests/test_earth_engine_client.py::test_download_params_match_the_manual_export
+E9  CAUGHT   sailab/earth_engine_client.py    downloaded file's projection not checked  (3s)
+      FAILED tests/test_earth_engine_client.py::test_check_downloaded_window_rejects_the_wrong_file[kwargs0-crs]
+
+34 of 35 mutations caught. Survived: D7
+exit 1

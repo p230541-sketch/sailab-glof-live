@@ -1,0 +1,42 @@
+checked 2026-11-09T15:10:58+00:00
+Earth Engine: signed in as sailab-glof-bot@kaarigar-507118.iam.gserviceaccount.com
+
+KRB: data/dem/KRB_dem.tif (sha256 f37595992b48a7c0…), grid (507, 505)
+  A numpy.gradient (same file): 247710 pixels compared; |difference| median 0.0000 deg, 95th pct 0.0000, max 0.0000
+    same side of 10 deg: 100.00% of pixels (ours steep 69.2%, reference steep 69.2%)
+  B Earth Engine ee.Terrain.slope (30 m, then resampled): 247710 pixels compared; |difference| median 0.4612 deg, 95th pct 2.9431, max 31.7885
+    same side of 10 deg: 97.82% of pixels (ours steep 69.2%, reference steep 69.3%)
+
+ATS: data/dem/ATS_dem.tif (sha256 a35c1523d2808390…), grid (305, 304)
+  A numpy.gradient (same file): 88972 pixels compared; |difference| median 0.0000 deg, 95th pct 0.0000, max 0.0000
+    same side of 10 deg: 100.00% of pixels (ours steep 82.4%, reference steep 82.4%)
+  B Earth Engine ee.Terrain.slope (30 m, then resampled): 88972 pixels compared; |difference| median 0.6342 deg, 95th pct 3.9863, max 23.7164
+    same side of 10 deg: 98.92% of pixels (ours steep 82.4%, reference steep 83.1%)
+
+Effect on the measured area: same radar file, our slope vs Earth Engine's slope, both with the 10 deg mask
+  KRB 2026-01-06: stored 251.52 ha | ours 251.52 ha | Earth Engine slope 241.96 ha | -3.80%
+  KRB 2026-03-08: stored 293.74 ha | ours 293.74 ha | Earth Engine slope 285.88 ha | -2.68%
+  KRB 2026-05-06: stored 0.21 ha | ours 0.21 ha | Earth Engine slope insufficient_observation | n/a
+  KRB 2026-06-24: stored 258.53 ha | ours 258.53 ha | Earth Engine slope 258.27 ha | -0.10%
+  KRB 2026-07-24: stored 259.67 ha | ours 259.67 ha | Earth Engine slope 259.55 ha | -0.05%
+  KRB 2026-08-18: stored 262.27 ha | ours 262.27 ha | Earth Engine slope 261.28 ha | -0.38%
+  ATS 2026-01-06: stored 98.95 ha | ours 98.95 ha | Earth Engine slope 86.25 ha | -12.83%
+  ATS 2026-02-12: stored 106.53 ha | ours 106.53 ha | Earth Engine slope 91.92 ha | -13.71%
+  ATS 2026-04-25: stored 34.03 ha | ours 34.03 ha | Earth Engine slope 0.09 ha | -99.74%
+  ATS 2026-06-12: stored 97.64 ha | ours 97.64 ha | Earth Engine slope insufficient_observation | n/a
+  ATS 2026-07-13: stored 99.26 ha | ours 99.26 ha | Earth Engine slope 95.64 ha | -3.65%
+  ATS 2026-08-17: stored 99.62 ha | ours 99.62 ha | Earth Engine slope 96.76 ha | -2.87%
+
+CONCLUSION (written by hand after the run above)
+- The slope CODE is verified: identical to numpy.gradient on both real DEM windows (max difference 0.0000 deg).
+- Against an independent ALGORITHM (Earth Engine's ee.Terrain.slope on the native 30 m DEM), the 10-deg mask puts
+  97.8 % (Karambar) and 98.9 % (Atro Sar) of pixels on the same side. The disagreement is not random noise for the
+  lake: it sits along the shore, next to steep ground.
+- The measured AREA is sensitive to that: Karambar summer passes change by -0.05 % to -0.4 %; Atro Sar summer passes
+  by -2.9 % to -3.7 %, and one Atro Sar summer pass (2026-06-12) is refused with Earth Engine's slope; winter and
+  spring passes change by 3 % to 14 % (and one spring value, already wrong, collapses further).
+- So: the implementation is right, but the radar area depends on how slope is computed near the shoreline, more at
+  the smaller Atro Sar. This is one plausible contributor to the unexplained lake-specific radar offsets
+  (Karambar +5.2 %, Atro Sar -6.4 %); untested as an explanation.
+- Not checkable here: whether 10 deg is the right limit. That needs ground truth (a surveyed or high-resolution
+  dated shoreline), which this project does not have.

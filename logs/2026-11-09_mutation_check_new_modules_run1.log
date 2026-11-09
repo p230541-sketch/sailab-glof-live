@@ -1,0 +1,27 @@
+baseline (no mutation): 204 passed, 1 warning in 11.36s
+R1  CAUGHT   sailab/radar.py                  slope mask inverted (keeps steep, drops flat)  (4s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R2  CAUGHT   sailab/radar.py                  slope mask computed but never applied  (4s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R3  CAUGHT   sailab/radar.py                  water = brighter than Otsu instead of darker  (5s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R4  CAUGHT   sailab/radar.py                  x-gradient forgets the 2-cell spacing (slope overstated)  (5s)
+      FAILED tests/test_radar.py::test_slope_of_a_plane_rising_1_m_per_10_m_cell - ...
+R5  CAUGHT   sailab/radar.py                  slope ignores the north-south gradient  (5s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+R6  CAUGHT   sailab/radar.py                  cut-off-by-no-data check removed  (4s)
+      FAILED tests/test_radar.py::test_without_the_slope_mask_the_valley_floor_floods_in
+R7  CAUGHT   sailab/radar.py                  centre-must-be-water check removed  (4s)
+      FAILED tests/test_radar.py::test_a_centre_that_is_not_dark_is_refused - Asser...
+R8  CAUGHT   sailab/radar.py                  m² to ha conversion wrong  (3s)
+      FAILED tests/test_pipeline_radar.py::test_a_radar_pass_is_downloaded_measured_and_stored_as_radar
+P1  SURVIVED sailab/pipeline.py               same-day values leak into the baseline  (11s)
+      204 passed, 1 warning in 10.06s
+P2  CAUGHT   sailab/pipeline.py               check F: 'or' weakened to 'and'  (4s)
+      FAILED tests/test_pipeline.py::test_check_F_needs_5_same_month_values_from_2_years[history0-insufficient_history]
+P3  CAUGHT   sailab/pipeline.py               check C: snow-cover limit doubled  (4s)
+      FAILED tests/test_pipeline.py::test_checks_C_and_D[snow_majority-insufficient_observation-of the lake circle is snow/ice]
+P4  CAUGHT   sailab/pipeline.py               check D (cloud touching the lake) removed  (4s)
+      FAILED tests/test_pipeline.py::test_checks_C_and_D[cloud_touching_lake-insufficient_observation-check D]
+P5: original text found 2 times in sailab/pipeline.py; fix the mutation list
+exit 1

@@ -168,7 +168,8 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
         return render(request, "lake.html", code, d)
 
     # Design previews: static templates with the design's own sample data. They read nothing from the
-    # database, and the app has no POST/PUT/DELETE route at all, so nothing on them can act.
+    # database. The app's only non-GET route is POST /live/check (it writes to the working copy only; a test
+    # checks this), so nothing on the previews can act.
     previews = {"confirm-advisory": ("preview_confirm_advisory.html", "p-confirm"),
                 "delivery-status": ("preview_delivery_status.html", "p-delivery"),
                 "risk-threshold": ("preview_risk_threshold.html", "p-threshold")}

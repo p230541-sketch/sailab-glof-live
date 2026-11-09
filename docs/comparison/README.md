@@ -1,7 +1,8 @@
 # Built screens vs the reference designs (2026-11-08)
 
 Each image in this folder puts a reference design (left) next to the built screen (right), both at
-1600 px wide. The built screens show real data from `sailab_glof.db`; the references show the design's
+1600 px wide. **The images are from 8 November, before radar was added (9 November).** The current
+screens, with radar, are in `docs/screenshots/2026-11-09/`; the table below describes the current state. The built screens show real data from `sailab_glof.db`; the references show the design's
 sample data.
 
 ## Matched from the references
@@ -20,7 +21,7 @@ sample data.
 | "2 advisories need your review", bell with badge, Advisories menu | "No usable observation in 7 days for 2 of 2 lakes" banner; previews in their own section | Alerting is not built; the banner states a real fact from the data. |
 | OpenStreetMap basemap with rivers | Plain latitude/longitude grid with the real lake positions | A basemap needs an internet connection; only the live check may use the network. |
 | "Ranked by risk" | "Lakes" in database order | Deviation scores are not danger levels, so ranking by them would mislead. |
-| Sentinel-1 radar points, "no usable observation" band | Only Sentinel-2 points; every scene shown as a tick (measured / refused / too cloudy) | Radar is not built; gaps are shown as the real scenes that caused them. |
+| Sentinel-1 radar points, "no usable observation" band | Since 9 Nov: Sentinel-2 dots and Sentinel-1 triangles, never joined to each other; two tick strips showing every optical and radar scene; a "Radar not scored" chip; radar values far off the optical scale drawn as hollow triangles at the edge | Radar is measured and shown but not risk-scored (snowmelt errors). Gaps are shown as the real scenes that caused them, not as a band. |
 | Dam and glacier, terrain, weather values | Same panels, dashed, "No data: not part of this build" | Agreed with the project owner: keep the design intent visible without inventing values. |
 | "Sample data" chip in the header | "Data: commit …, copied …" chip | Shows exactly which published database state is on screen. |
 | Sign-in screen | No sign-in | Agreed with the project owner: no real accounts exist, so a login would only look like security. |

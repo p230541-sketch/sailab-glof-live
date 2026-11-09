@@ -44,3 +44,29 @@ def conn(source_db):
     c.row_factory = sqlite3.Row
     yield c
     c.close()
+
+
+# --- every HTML page any test renders must be balanced ---------------------------------------------
+HTML_PAGES_CHECKED: list[str] = []
+
+
+@pytest.fixture(autouse=True)
+def _check_every_html_response(monkeypatch):
+    """Wraps the test client so that every text/html response, from every test, in every state the test sets
+    up (failed live check, empty lake, paged log, ...), is checked for unbalanced tags. A template mistake
+    then fails the test that rendered it, instead of waiting to be noticed on a screenshot."""
+    from starlette.testclient import TestClient
+
+    from html_check import unbalanced_tags
+
+    original = TestClient.request
+
+    def request(self, method, url, *args, **kwargs):
+        response = original(self, method, url, *args, **kwargs)
+        if response.headers.get("content-type", "").startswith("text/html"):
+            problems = unbalanced_tags(response.text)
+            assert problems == [], f"{method} {url}: unbalanced HTML {problems[:5]}"
+            HTML_PAGES_CHECKED.append(f"{method} {url}")
+        return response
+
+    monkeypatch.setattr(TestClient, "request", request)

@@ -20,7 +20,7 @@ Every night at **23:00 Pakistan time (18:00 UTC)**, GitHub Actions
 ([`.github/workflows/daily_run.yml`](.github/workflows/daily_run.yml)) does the following with no
 human involved:
 
-1. Installs the pinned packages and runs the **full test suite** (204 tests). If any test fails, the
+1. Installs the pinned packages and runs the **full test suite** (216 tests). If any test fails, the
    pipeline does not run, so broken code can never write to the database.
 2. Signs in to Google Earth Engine with a **service-account key** stored as an encrypted GitHub
    secret (no browser, no person).
@@ -164,13 +164,23 @@ Code: `sailab/radar.py` (using the unchanged `otsu_threshold` and `region_grow`)
 - **What this does and does not show:** a mitigation that worked on these two lakes in summer, **not a
   validated general fix**. The offsets are lake-specific and of opposite sign, so two lakes say nothing
   about a third.
+- **Slope code checked against two references** (`scripts/check_slope_reference.py` →
+  `logs/2026-11-09_slope_reference_check.log`): identical to `numpy.gradient` on both DEM windows (max
+  difference 0.0000°); against Earth Engine's own `ee.Terrain.slope` (computed on the native 30 m DEM),
+  97.8 % (Karambar) and 98.9 % (Atro Sar) of pixels fall on the same side of 10°. **But the area is
+  sensitive to the slope source near the shore:** with Earth Engine's slope, Karambar summer areas change
+  by under 0.4 %, Atro Sar summer areas by about −3 to −4 % (one summer pass becomes a refusal), and winter
+  values by up to −14 %. Whether 10° is the *right* limit cannot be checked without a dated, surveyed
+  shoreline, which this project does not have.
 - **Open question:** why Karambar radar reads high and Atro Sar radar reads low is **unexplained**. A
   plausible cause is shoreline terrain (how the 30 m DEM and the 10° mask cut the shore) or water
   turbidity/surface roughness; **untested**.
 - **Why radar is not risk-scored:** **29 of 361** usable radar values (8.0 %) are clearly wrong by a
   stated rule: more than 15 % away from that lake's median optical area (just beyond the largest summer
   radar–optical difference, +13.0 %; a judgement, not calibrated; 20 % gives 23, 25 % gives 15).
-  `scripts/count_radar_errors.py` → `logs/2026-11-09_radar_error_count.log`. **16 of the 29 are in
+  `scripts/count_radar_errors.py` → `logs/2026-11-09_radar_error_count.log`. (An earlier count with
+  hand-set summer ranges, Karambar 230–300 ha and Atro Sar 90–110 ha, gave 18 + 10 = 28:
+  `logs/2026-11-09_radar_validation.log`. The two rules agree on 8 %.) **16 of the 29 are in
   April–June**, where wet snow during melt is as dark as water on radar, so the lake seems to vanish
   (Karambar 0.2 ha) or flood outward (403.9 ha). Those errors produced the largest radar "anomalies"
   (e.g. +50.3, −7.4). A melt-season check needs ground truth we do not have (optical is also blind in
@@ -196,6 +206,20 @@ backfill (run 7); run 8 found nothing new:
 | Radar passes (2023-01 → 2026-10) | 220 | 220 |
 | Radar measured `ok` / `insufficient_observation` | 190 / 30 | 171 / 49 |
 | Radar risk scores | none (not scored) | none (not scored) |
+
+**Measurement counts, defined side by side** (both numbers are correct; they count different things):
+
+| | Optical | Radar | Total |
+|---|---|---|---|
+| Scenes recorded (`scene` rows) | 611 | 440 | **1,051** |
+| Too cloudy: recorded, not downloaded, **no measurement row** | 357 | 0 | 357 |
+| **Measurement rows written** (`measurement` rows, every status) | 254 | 440 | **694** |
+| of which refused (`insufficient_observation`) | 209 | 79 | 288 |
+| of which **usable** (`ok`, passed every check) | 45 | 361 | **406** |
+
+So "694" is every measurement attempt stored, and "406" is the usable subset (406 + 288 = 694). Only the
+45 usable optical values are risk-scored (radar is not scored). The Dashboard's "Usable measurements" tile
+shows 406 and both parts of 694.
 
 So **58 % of all scenes (357 of 611) were too cloudy over the lake** for optical measurement — the
 cloud problem the project's radar fallback is meant to solve, measured with our own data.
@@ -235,11 +259,14 @@ far, so this step has not yet run on GitHub and the folder does not exist.
 | A failed run is recorded, not hidden | `run_log` row 1; `logs/runs/2026-11-08T103538Z_backfill.log` |
 | The radar failure reproduces (975.88 ha), and with the slope mask the leak is gone (267.52 ha) on the same original file | `tests/test_radar.py`, `logs/2026-11-09_radar_slope_mask_original_karambar.log` |
 | 29 of 361 usable radar values are clearly wrong (more than 15 % from the lake's optical median), 16 of them April–June | `scripts/count_radar_errors.py`, `logs/2026-11-09_radar_error_count.log` |
+| The tests catch deliberate bugs in the new modules: 35 one-line mutations in `db.py`, `pipeline.py`, `radar.py`, `earth_engine_client.py`, **all caught**; 2 survived the first run (same-day value in the baseline; latitude limit) and tests were added for both | `scripts/mutation_check.py`, `logs/2026-11-09_mutation_check_new_modules_run1.log` (what survived), `..._run4_final.log` (35 of 35) |
+| Every HTML page any test renders is checked for unbalanced tags; the original stray `</div>` now fails 17 tests (2 before), and a bug planted in the live page's failed state fails 3 | `tests/conftest.py`, `tests/html_check.py`, `logs/2026-11-09_html_balance_check_proof.log` |
+| Our slope code equals `numpy.gradient`; 98–99 % of pixels agree with Earth Engine's slope on the 10° mask | `logs/2026-11-09_slope_reference_check.log` |
 | Radar vs optical within 3 days: Karambar +5.2 %, Atro Sar −6.4 %, on 16 independent summer optical scenes from 2 lakes | `logs/2026-11-09_radar_validation.log`, `logs/2026-11-09_radar_validation_independence.log` |
 
-**About the tests (204, all passing):** most use small synthetic grids with hand-calculated expected
-answers — they prove the algorithms compute correctly, **not** real-world accuracy. Two use the
-project's original real GeoTIFFs (`tests/data/`, incl. the original Karambar SAR file). The Earth Engine tests replace Earth Engine with a
+**About the tests (216, all passing):** most use small synthetic grids with hand-calculated expected
+answers — they prove the algorithms compute correctly, **not** real-world accuracy. Four use the
+project's three original real GeoTIFFs in `tests/data/` (Karambar and Atro Sar Sentinel-2, Karambar SAR). The Earth Engine tests replace Earth Engine with a
 mock (stated in the test file); the real connection is proven only by the live-run logs. The 20
 tests inherited from the earlier project pass unchanged.
 
@@ -285,13 +312,15 @@ the Live check button.
 - **Working copy:** at start-up the app copies `sailab_glof.db` to `.webapp/` and shows which commit it
   came from. It never writes to the published file, so it cannot collide with the nightly bot's commits.
 - **Live check:** one button runs the real pipeline for both lakes, writing to the working copy only.
-  Tested for real: no new scene (about 10 s), network cut (fails after about 33 s with a plain-language
+  Tested for real: no new scene (about 10 s), network cut (fails after about 20-35 s, 32 s and 23 s in two real tests, with a plain-language
   error), and a copy rewound to 2026-08-15 (42 scenes found, 12 measured; every row and every file
   identical to the backfill: `logs/2026-11-08_gui_live_check_new_scenes_vs_backfill.log`).
 - **Design previews** (Confirm advisory, Delivery status, Risk threshold): the design's own sample data,
   watermarked, every control disabled. `POST /live/check` is the only route in the app that changes anything.
 - The screens next to the reference designs, and why they differ: `docs/comparison/`.
-- What to click and say in a demo, including if the live check fails: `docs/DEMO_SCRIPT.md`.
+- What to click and say in a demo: `docs/DEMO_SCRIPT.md`; if the live check fails: `docs/LIVE_CHECK_FALLBACK.md`.
+- Odds of a usable optical scene in a November demo: none for either lake in any year on record
+  (`logs/2026-11-09_live_demo_lake_odds.md`).
 
 ## Repository layout
 
@@ -311,8 +340,11 @@ scripts/
   init_db.py               create the database and seed the two lakes
   verify_gui_numbers.py    check every number on the two real screens against the database
   validate_radar.py        compare radar with optical measured within 3 days
+  count_radar_errors.py    count clearly wrong radar values with a stated rule
+  mutation_check.py        break one line at a time in the new modules and check the tests fail
+  check_slope_reference.py compare our slope code with two independent references
 docs/                      reference designs, side-by-side comparison, demo script
-tests/                     204 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
+tests/                     216 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
 data/dem/                  Copernicus DEM windows for the radar slope mask
 logs/                      verification logs; logs/runs/ has one log per pipeline run
 sailab_glof.db             the database (open with DB Browser for SQLite)
