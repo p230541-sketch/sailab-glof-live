@@ -39,10 +39,16 @@ human involved:
 The run history is public: open the **Actions** tab of this repository. Each bot commit
 ("Automated run: <UTC time> (success|failure)") contains that run's log.
 
-⏳ **Scheduled runs so far:** none yet. The two GitHub runs so far (2026-11-08 12:00 and 19:01 UTC)
-were **triggered by hand** to test the setup; they do not count as automatic runs. The first scheduled
-slot (2026-11-08 18:00 UTC) had not run as of 20:21 UTC that evening; GitHub can delay or skip
-scheduled runs, so the Actions tab is the record of which ones actually happened.
+⏳ **Scheduled runs so far: 1** (of the 3 on different days needed).
+
+| Date (UTC) | Trigger | Result |
+|---|---|---|
+| 2026-11-08 12:00 | manual (setup test) | success, no new scene |
+| 2026-11-08 19:01 | manual (after pinning Ubuntu 24.04) | success, no new scene |
+| **2026-11-08 21:31** | **schedule** (the 18:00 UTC slot, started 3.5 h late by GitHub) | **success**, 171 tests passed, no new scene since 2026-11-05; bot commit `5872d48`, `run_log` row 6 |
+
+Manual runs do not count as automatic. GitHub can start scheduled runs late or skip them, so the
+Actions tab is the record of which ones actually happened.
 
 ## What still needs a human
 
@@ -156,6 +162,7 @@ cloud problem the project's radar fallback is meant to solve, measured with our 
 | 3 | Backfill re-run (by hand) with checks C/D/F | Completed: 611 scenes, 254 downloads. **These are the rows in the database now.** |
 | 4 | First GitHub Actions run (triggered by hand) | Completed: no new scenes since 2026-11-05. |
 | 5 | Second GitHub Actions run (triggered by hand, after pinning the runner to Ubuntu 24.04) | Completed: no new scenes. |
+| 6 | **First scheduled run** (GitHub's scheduler, 2026-11-08 21:31 UTC) | Completed: no new scenes. |
 
 The pre-C/D/F database and its 5-band images are archived locally (`data/archive_v1/`, not in this
 repository); the comparison is in `logs/2026-11-08_cdf_before_after.md`.
