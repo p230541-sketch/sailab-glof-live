@@ -224,3 +224,43 @@ def test_radar_image_outline_matches_the_measurement(tmp_path):
     tpr.write_dem(tmp_path / "dem.tif", lake)
     assert images.render_radar_png(tmp_path / "r.tif", lake, tmp_path / "dem.tif", tmp_path / "r.png") == 36
     assert (tmp_path / "r.png").is_file()
+
+
+# --- page structure (added 2026-11-09 after a stray </div> pushed the observation log out of the layout) ---
+VOID = {"img", "br", "input", "link", "meta", "hr", "line", "rect", "circle", "polygon", "polyline", "path"}
+
+
+def unbalanced_tags(html: str) -> list:
+    from html.parser import HTMLParser
+
+    class Check(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.stack, self.problems = [], []
+
+        def handle_starttag(self, tag, attrs):
+            if tag not in VOID:
+                self.stack.append(tag)
+
+        def handle_endtag(self, tag):
+            if tag in VOID:
+                return
+            if self.stack and self.stack[-1] == tag:
+                self.stack.pop()
+            else:
+                self.problems.append((tag, self.getpos()[0], self.stack[-1] if self.stack else None))
+
+    c = Check()
+    c.feed(html)
+    return c.problems + [("unclosed", t) for t in c.stack]
+
+
+@pytest.mark.parametrize("url", ["/", "/lakes/KRB", "/lakes/ATS", "/live", "/preview/confirm-advisory",
+                                 "/preview/delivery-status", "/preview/risk-threshold"])
+def test_every_page_has_balanced_html(radar_client, url):
+    assert unbalanced_tags(radar_client.get(url).text) == []
+
+
+def test_observation_log_is_inside_the_main_layout(radar_client):
+    html = radar_client.get("/lakes/KRB").text
+    assert html.index("<h2>Observation log</h2>") < html.index("</main>")
