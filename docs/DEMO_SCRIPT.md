@@ -83,8 +83,9 @@ Only say "N scheduled runs" with the number you counted the evening before.
   (within about 6% of optical), but is not risk-scored because of snowmelt errors.
 - **"Is the radar problem solved?"** For these two lakes in summer the leak is gone; it is not validated for other
   lakes or seasons, and the 10-degree limit was chosen on the one original radar file.
-- **"Why not score radar?"** About 8% of radar values, mostly April-June, are clearly wrong (wet snow), and they made the
-  largest false anomalies. Fixing that needs spring ground truth we do not have.
+- **"Why not score radar?"** 29 of 361 usable radar values (8%) are clearly wrong by a stated rule (more than 15% from
+  the lake's optical median; `logs/2026-11-09_radar_error_count.log`). 16 of them are in April-June (wet snow), 10 in
+  February-March, and they made the largest false anomalies. Fixing that needs spring ground truth we do not have.
 - **"Is the 10% cloud limit calibrated?"** No, it is a judgement from one month of data; it is documented as such.
 - **"Did the system run since 2023?"** No. Historical images were processed once by hand (the backfill) so the baseline has
   history; the automatic nightly schedule was set up on 8 November 2026. Before the defence, look up the date of the
