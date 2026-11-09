@@ -1,0 +1,61 @@
+checked_at 2026-11-09T07:26:17+00:00; pairing window +-3 days
+
+=== ATS
+  radar measurements: 220 (Counter({'ok': 171, 'insufficient_observation': 49}))
+  radar 'ok' by month: {'01': 15, '02': 16, '03': 9, '04': 4, '05': 8, '06': 17, '07': 17, '08': 20, '09': 15, '10': 20, '11': 14, '12': 16}
+  optical 'ok' by month: {'06': 2, '07': 9, '08': 12, '09': 2}
+  pairs within 3 days: 17
+  radar - optical: mean -6.83 ha (-6.4%), median -6.4%, mean absolute 6.4%, worst -9.6%
+    radar 2023-07-21 13:06   100.03 ha | optical 2023-07-19   106.24 ha | gap 2.3 d | -5.8%
+    radar 2023-07-22 01:06    99.39 ha | optical 2023-07-19   106.24 ha | gap 2.8 d | -6.4%
+    radar 2023-08-14 13:06   100.46 ha | optical 2023-08-13   106.35 ha | gap 1.3 d | -5.5%
+    radar 2024-07-03 13:06    98.99 ha | optical 2024-07-03   106.06 ha | gap 0.3 d | -6.7%
+    radar 2024-07-04 01:06   101.97 ha | optical 2024-07-03   106.06 ha | gap 0.8 d | -3.9%
+    radar 2024-08-08 13:06    96.85 ha | optical 2024-08-07   107.17 ha | gap 1.3 d | -9.6%
+    radar 2024-08-09 01:06    99.85 ha | optical 2024-08-07   107.17 ha | gap 1.8 d | -6.8%
+    radar 2025-08-03 13:05    99.88 ha | optical 2025-08-02   106.09 ha | gap 1.3 d | -5.9%
+    radar 2025-08-04 01:06    99.80 ha | optical 2025-08-02   106.09 ha | gap 1.8 d | -5.9%
+    radar 2025-08-27 13:05    99.25 ha | optical 2025-08-27   106.14 ha | gap 0.3 d | -6.5%
+    radar 2025-08-28 01:06    99.06 ha | optical 2025-08-27   106.14 ha | gap 0.8 d | -6.7%
+    radar 2026-06-30 13:04    97.85 ha | optical 2026-06-28   105.82 ha | gap 2.3 d | -7.5%
+    radar 2026-07-01 01:05    98.99 ha | optical 2026-06-28   105.82 ha | gap 2.8 d | -6.5%
+    radar 2026-08-17 13:04    99.62 ha | optical 2026-08-17   105.84 ha | gap 0.3 d | -5.9%
+    radar 2026-08-18 01:05    99.50 ha | optical 2026-08-17   105.84 ha | gap 0.8 d | -6.0%
+    radar 2026-08-29 13:04    98.12 ha | optical 2026-08-27   105.90 ha | gap 2.3 d | -7.3%
+    radar 2026-08-30 01:05    99.21 ha | optical 2026-08-27   105.90 ha | gap 2.8 d | -6.3%
+
+=== KRB
+  radar measurements: 220 (Counter({'ok': 190, 'insufficient_observation': 30}))
+  radar 'ok' by month: {'01': 17, '02': 14, '03': 14, '04': 14, '05': 8, '06': 18, '07': 18, '08': 19, '09': 17, '10': 21, '11': 14, '12': 16}
+  optical 'ok' by month: {'07': 3, '08': 13, '09': 4}
+  pairs within 3 days: 13
+  radar - optical: mean +13.18 ha (+5.4%), median +3.0%, mean absolute 5.4%, worst +13.0%
+    radar 2023-07-21 13:06   261.90 ha | optical 2023-07-19   235.28 ha | gap 2.3 d | +11.3%
+    radar 2023-07-22 01:06   264.38 ha | optical 2023-07-19   235.28 ha | gap 2.8 d | +12.4%
+    radar 2023-08-14 13:06   261.02 ha | optical 2023-08-13   255.38 ha | gap 1.3 d | +2.2%
+    radar 2023-08-26 13:06   261.62 ha | optical 2023-08-28   257.51 ha | gap 1.7 d | +1.6%
+    radar 2023-08-27 01:06   263.68 ha | optical 2023-08-28   257.51 ha | gap 1.2 d | +2.4%
+    radar 2024-08-08 13:06   263.33 ha | optical 2024-08-07   254.91 ha | gap 1.3 d | +3.3%
+    radar 2024-08-09 01:06   262.48 ha | optical 2024-08-07   254.91 ha | gap 1.8 d | +3.0%
+    radar 2025-08-03 13:05   259.28 ha | optical 2025-08-02   234.86 ha | gap 1.3 d | +10.4%
+    radar 2025-08-04 01:06   265.31 ha | optical 2025-08-02   234.86 ha | gap 1.8 d | +13.0%
+    radar 2025-08-27 13:05   263.51 ha | optical 2025-08-27   255.78 ha | gap 0.3 d | +3.0%
+    radar 2025-08-28 01:06   262.91 ha | optical 2025-08-27   255.78 ha | gap 0.8 d | +2.8%
+    radar 2026-08-17 13:05   263.75 ha | optical 2026-08-17   256.04 ha | gap 0.3 d | +3.0%
+    radar 2026-08-18 01:05   262.27 ha | optical 2026-08-17   256.04 ha | gap 0.8 d | +2.4%
+
+ALL LAKES: 30 pairs, mean -1.3%, mean absolute 6.0%
+
+--- radar 'ok' values far from each lake's summer optical range (KRB 230-300 ha, ATS 90-110 ha):
+KRB: 18 of 190 outside the range -> [('2023-02-27', 210.6, 'insufficient_history', None), ('2023-02-28', 180.6, 'insufficient_history', None), ('2023-06-16', 224.0, 'insufficient_history', None), ('2024-04-10', 214.3, 'insufficient_history', None), ('2024-06-09', 308.3, 'insufficient_history', None), ('2024-06-10', 9.0, 'insufficient_history', None), ('2024-08-20', 326.6, 'ok', 50.3), ('2024-12-06', 229.9, 'insufficient_history', None), ('2025-04-05', 180.5, 'ok', -3.7), ('2025-04-29', 3.5, 'ok', -7.4), ('2025-05-11', 403.9, 'insufficient_history', None), ('2025-05-12', 185.6, 'insufficient_history', None), ('2025-07-22', 309.1, 'ok', 7.5), ('2026-01-31', 318.7, 'ok', 8.4), ('2026-02-24', 306.4, 'ok', 2.3), ('2026-04-24', 42.9, 'ok', -2.4), ('2026-05-06', 0.2, 'ok', -3.7), ('2026-05-31', 135.6, 'ok', -0.8)]
+ATS: 10 of 171 outside the range -> [('2023-02-27', 80.5, 'insufficient_history', None), ('2023-02-28', 79.2, 'insufficient_history', None), ('2023-03-11', 83.7, 'insufficient_history', None), ('2023-03-12', 80.6, 'insufficient_history', None), ('2023-03-24', 79.0, 'insufficient_history', None), ('2023-05-23', 83.6, 'insufficient_history', None), ('2024-04-11', 120.5, 'insufficient_history', None), ('2025-05-11', 71.2, 'insufficient_history', None), ('2026-04-25', 34.0, 'insufficient_history', None), ('2026-05-19', 17.2, 'ok', -6.6)]
+
+--- largest radar deviation scores:
+   ('KRB', '2024-08-20', 326.6, 262.7, 50.3)
+   ('KRB', '2026-01-31', 318.7, 257.5, 8.4)
+   ('KRB', '2025-07-22', 309.1, 263.7, 7.5)
+   ('KRB', '2025-04-29', 3.5, 254.0, -7.4)
+   ('KRB', '2025-11-20', 285.3, 256.6, 6.8)
+   ('ATS', '2026-05-19', 17.2, 87.8, -6.6)
+   ('KRB', '2025-01-11', 245.2, 259.1, -4.8)
+   ('KRB', '2025-07-11', 278.8, 262.3, 4.3)

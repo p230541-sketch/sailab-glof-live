@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import score_chip, icon_info, icon_warn, icon_error %}
+{% from "_macros.html" import score_chip, radar_not_scored, icon_info, icon_warn, icon_error %}
 {% block title %}Dashboard{% endblock %}
 {% block main %}
 <div class="page-head">
@@ -11,7 +11,7 @@
 
 {% if d.stale_lakes %}
 <div class="banner warn">{{ icon_warn() }}
-  <div>No usable observation in the last {{ stale_days }} days for {{ d.stale_lakes | length }} of {{ d.lakes | length }} lakes
+  <div>No usable measurement, optical or radar, in the last {{ stale_days }} days for {{ d.stale_lakes | length }} of {{ d.lakes | length }} lakes
   ({% for l in d.stale_lakes %}{{ l.name }}{{ ", " if not loop.last }}{% endfor %}). Cloud, snow and ice block optical measurement for long stretches, especially from October to May.</div>
 </div>
 {% endif %}
@@ -28,16 +28,17 @@
     <div class="note">{% for l in d.lakes %}{{ l.name }}{{ ", " if not loop.last }}{% endfor %}</div></div>
   <div class="card kpi"><div class="label">Scenes recorded</div>
     <div class="value">{{ d.totals.scene }}</div>
-    <div class="note">{% if d.first_scene %}{{ d.first_scene | date }} to {{ d.last_scene | date }}{% else %}none yet{% endif %}</div></div>
+    <div class="note">{{ d.totals.optical_scenes }} optical, {{ d.totals.radar_scenes }} radar{% if d.first_scene %}; {{ d.first_scene | date }} to {{ d.last_scene | date }}{% endif %}</div></div>
   <div class="card kpi"><div class="label">Too cloudy for optical</div>
     <div class="value">{% if d.too_cloudy_pct is not none %}{{ "%.0f" | format(d.too_cloudy_pct) }}%{% else %}—{% endif %}</div>
-    <div class="note">{{ d.totals.too_cloudy }} of {{ d.totals.scene }} scenes: over 10% cloud on the lake</div></div>
+    <div class="note">{{ d.totals.too_cloudy }} of {{ d.totals.optical_scenes }} optical scenes: over 10% cloud on the lake</div></div>
   <div class="card kpi"><div class="label">Usable measurements</div>
-    <div class="value">{{ d.measured_ok }}</div>
-    <div class="note">of {{ d.totals.measurement }} downloaded scenes passed every check</div></div>
-  <div class="card kpi"><div class="label">Days since a usable image</div>
-    <div class="value">{% if d.freshest %}{{ d.freshest.summary.days_since_last_ok }}{% else %}—{% endif %}</div>
-    <div class="note">{% if d.freshest %}{{ d.freshest.name }}, {{ d.freshest.summary.latest_ok_measurement.acquired_at | date }}{% else %}no usable image yet{% endif %}</div></div>
+    <div class="value">{{ d.totals.optical_ok + d.totals.radar_ok }}</div>
+    <div class="note">{{ d.totals.optical_ok }} of {{ d.totals.optical_measurements }} optical + {{ d.totals.radar_ok }} of {{ d.totals.radar_measurements }} radar passed every check</div></div>
+  <div class="card kpi"><div class="label">Days since a usable measurement</div>
+    <div class="value">{% if d.freshest %}{{ d.freshest.days_since_any_ok }}{% else %}—{% endif %}</div>
+    <div class="note">{% if d.freshest %}{% set fs = d.freshest.summary %}{{ d.freshest.name }},
+      {% if fs.radar.days_since_last_ok is not none and (fs.days_since_last_ok is none or fs.radar.days_since_last_ok < fs.days_since_last_ok) %}radar, {{ fs.radar.latest_ok_measurement.acquired_at | date }}{% else %}optical, {{ fs.latest_ok_measurement.acquired_at | date }}{% endif %}{% else %}none yet{% endif %}</div></div>
 </div>
 
 <div class="grid two">
@@ -45,7 +46,7 @@
     <div class="card-head"><h2>Monitored lakes</h2></div>
     {% if d.map_svg %}{{ d.map_svg | safe }}{% endif %}
     <div class="legend" style="margin-top:10px">
-      <span><i style="background:#1e4e8c"></i>Usable image in the last {{ stale_days }} days</span>
+      <span><i style="background:#1e4e8c"></i>Usable measurement in the last {{ stale_days }} days</span>
       <span><i style="background:#fff;border:2px dashed #5b6470"></i>Data gap: none in {{ stale_days }} days</span>
     </div>
     <p class="footnote">Real lake centres on a latitude/longitude grid. No basemap: it would need an internet connection.</p>
@@ -54,18 +55,20 @@
   <section class="card">
     <h2>Lakes</h2>
     {% for l in d.lakes %}
-    {% set s = l.summary %}
+    {% set s = l.summary %}{% set r = s.radar %}
     <a class="lake-row" href="/lakes/{{ l.code }}">
       <span class="rank">{{ loop.index }}</span>
       <span><span class="code">{{ l.code }}</span> {{ l.name }}<br>
-        <span class="sub">{% if s.latest_ok_measurement %}{{ s.latest_ok_measurement.extent_ha | ha }} on {{ s.latest_ok_measurement.acquired_at | date }}, {{ s.days_since_last_ok }} days ago{% else %}No usable measurement yet{% endif %}</span></span>
-      <span>{{ score_chip(s.latest_risk_score) }}</span>
-      <span>{{ l.sparkline | safe }}</span>
+        <span class="sub">Optical: {% if s.latest_ok_measurement %}{{ s.latest_ok_measurement.extent_ha | ha }} on {{ s.latest_ok_measurement.acquired_at | date }}, {{ s.days_since_last_ok }} days ago{% else %}No usable measurement yet{% endif %}</span><br>
+        <span class="sub">Radar: {% if r.latest_ok_measurement %}{{ r.latest_ok_measurement.extent_ha | ha }} on {{ r.latest_ok_measurement.acquired_at | date }}, {{ r.days_since_last_ok }} days ago{% else %}No usable measurement yet{% endif %}</span></span>
+      <span style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">{{ score_chip(s.latest_risk_score, "optical") }}{{ radar_not_scored() }}</span>
+      <span style="display:flex;flex-direction:column;gap:2px">{{ l.sparkline | safe }}{{ l.radar_sparkline | safe }}</span>
       <span>›</span>
     </a>
     {% endfor %}
     <p class="footnote">Lakes are listed in database order, not ranked: deviation scores are not danger levels.
-      The line shows each lake's last usable extents (up to 15).</p>
+      Only optical measurements are risk-scored; radar is measured and shown but not scored (snowmelt errors).
+      The lines show each lake's last usable extents (up to 15): optical above, radar below.</p>
   </section>
 </div>
 

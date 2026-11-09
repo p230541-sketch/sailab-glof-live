@@ -1,0 +1,22 @@
+checked_at: 2026-11-09T06:37:56+00:00
+file: tests/data/KarambarLake_Sentinel1_SAR_RAW.tif (original manual export, VV dB; date not recorded in the file)
+DEM: data/dem/KRB_dem.tif (Copernicus GLO30_2024_1, same 10 m grid)
+slope computed in 0.5s
+lake-centre slope: 0.19 deg | share of window steeper than 10/20/30 deg: ['67%', '50%', '31%']
+
+slope limit -> result
+  None deg: insufficient_observation      None ha  (masked 0 steep candidates; lake region (97571 px) borders no-data pixels; it may be cut off)
+    30 deg: insufficient_observation      None ha  (masked 37631 steep candidates; lake region (73404 px) borders no-data pixels; it may be cut off)
+    25 deg: insufficient_observation      None ha  (masked 46862 steep candidates; lake region (70525 px) borders no-data pixels; it may be cut off)
+    20 deg: insufficient_observation      None ha  (masked 55854 steep candidates; lake region (65780 px) borders no-data pixels; it may be cut off)
+    15 deg: insufficient_observation      None ha  (masked 64533 steep candidates; lake region (61735 px) borders no-data pixels; it may be cut off)
+    10 deg: insufficient_observation      None ha  (masked 78857 steep candidates; lake region (52984 px) borders no-data pixels; it may be cut off)
+     5 deg: insufficient_observation      None ha  (masked 97771 steep candidates; lake region (36637 px) borders no-data pixels; it may be cut off)
+
+for comparison: optical on the original 18 Jul 2026 file 237.22 ha; optical Aug 2026 254-257 ha
+
+--- variant: Otsu computed only over FLAT pixels (slope <= limit), then candidates = flat AND below that threshold
+  slope <= 20 deg: flat px 122470, Otsu -14.51 dB -> region  28162 px =  281.62 ha, touches edge: False
+  slope <= 15 deg: flat px 102354, Otsu -14.91 dB -> region  27539 px =  275.39 ha, touches edge: False
+  slope <= 10 deg: flat px  78090, Otsu -15.32 dB -> region  26752 px =  267.52 ha, touches edge: False
+  slope <=  5 deg: flat px  49887, Otsu -15.73 dB -> region  25865 px =  258.65 ha, touches edge: False

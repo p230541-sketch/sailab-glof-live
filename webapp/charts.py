@@ -10,6 +10,7 @@ from html import escape
 from math import cos, radians
 
 OPTICAL = "#1e4e8c"
+RADAR = "#0e7a5f"          # the reference design's Sentinel-1 triangle colour family
 BASELINE = "#5b6470"
 GRID = "#e3e8ec"
 AXIS_TEXT = "#5b6470"
@@ -36,18 +37,19 @@ def sparkline(values: list[float], width: int = 84, height: int = 22) -> str:
             f'stroke-width="1.3"/></svg>')
 
 
-def extent_chart(history: list[dict], start: date, end: date, width: int = 760, height: int = 300) -> str:
-    """Lake extent over time from lake_history() rows.
+def extent_chart(history: list[dict], start: date, end: date, width: int = 760, height: int = 330) -> str:
+    """Lake extent over time from lake_history() rows, optical and radar shown separately.
 
-    - Each usable measurement is a dot; dots closer than MAX_LINE_GAP_DAYS are joined.
-    - Where a risk score was computed, its seasonal baseline is drawn as a short grey dash at that date.
-    - Below the plot, every scene is a tick: blue measured, ochre refused by the quality checks,
-      grey too cloudy to download. So every gap in the line is explained by real scenes.
+    - Optical (Sentinel-2) usable measurements are blue dots; radar (Sentinel-1) ones are green triangles.
+      Points of the SAME sensor closer than MAX_LINE_GAP_DAYS are joined; the two sensors are never joined.
+    - Where a risk score was computed, its seasonal baseline (that sensor's own) is a short grey dash.
+    - Below the plot, two strips show every scene: optical (blue measured, ochre refused, grey too cloudy)
+      and radar (green measured, ochre refused). So every gap in a line is explained by real scenes.
     """
     rows = [r for r in history if start <= _d(r["acquired_at"]) <= end]
     ok = [r for r in rows if r["measurement_status"] == "ok"]
-    left, right, top, plot_bottom = 56, 16, 16, height - 74
-    strip_y = plot_bottom + 30
+    left, right, top, plot_bottom = 56, 16, 16, height - 96
+    strip_optical, strip_radar = plot_bottom + 30, plot_bottom + 52
     span_days = max((end - start).days, 1)
 
     def x(day: date) -> float:
@@ -67,21 +69,28 @@ def extent_chart(history: list[dict], start: date, end: date, width: int = 760, 
             v = lo + (hi - lo) * i / 4
             parts.append(f'<line x1="{left}" x2="{width - right}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke="{GRID}"/>'
                          f'<text x="{left - 8}" y="{y(v) + 4:.1f}" text-anchor="end" class="axis">{v:.0f}</text>')
-        for a, b in zip(ok, ok[1:]):
-            if (_d(b["acquired_at"]) - _d(a["acquired_at"])).days <= MAX_LINE_GAP_DAYS:
-                parts.append(f'<line x1="{x(_d(a["acquired_at"])):.1f}" y1="{y(a["extent_ha"]):.1f}" '
-                             f'x2="{x(_d(b["acquired_at"])):.1f}" y2="{y(b["extent_ha"]):.1f}" stroke="{OPTICAL}" '
-                             f'stroke-width="1.5"/>')
+        for sensor, colour in (("optical", OPTICAL), ("radar", RADAR)):
+            series = [r for r in ok if (r.get("sensor") or "optical") == sensor]
+            for a, b in zip(series, series[1:]):
+                if (_d(b["acquired_at"]) - _d(a["acquired_at"])).days <= MAX_LINE_GAP_DAYS:
+                    parts.append(f'<line class="join-{sensor}" x1="{x(_d(a["acquired_at"])):.1f}" y1="{y(a["extent_ha"]):.1f}" '
+                                 f'x2="{x(_d(b["acquired_at"])):.1f}" y2="{y(b["extent_ha"]):.1f}" stroke="{colour}" '
+                                 f'stroke-width="1.3"/>')
         for r in ok:
-            cx = x(_d(r["acquired_at"]))
+            sensor = r.get("sensor") or "optical"
+            cx, cy = x(_d(r["acquired_at"])), y(r["extent_ha"])
             if r["baseline_ha"] is not None:
                 parts.append(f'<line class="baseline" x1="{cx - 7:.1f}" x2="{cx + 7:.1f}" y1="{y(r["baseline_ha"]):.1f}" '
                              f'y2="{y(r["baseline_ha"]):.1f}" stroke="{BASELINE}" stroke-width="2.5"/>')
-            label = f'{r["acquired_at"][:10]}: {r["extent_ha"]:.2f} ha'
+            label = f'{r["acquired_at"][:10]} {sensor}: {r["extent_ha"]:.2f} ha'
             if r["deviation_score"] is not None:
-                label += f', baseline {r["baseline_ha"]:.2f} ha, score {r["deviation_score"]:+.2f}'
-            parts.append(f'<circle class="pt" cx="{cx:.1f}" cy="{y(r["extent_ha"]):.1f}" r="3.6" fill="{OPTICAL}">'
-                         f'<title>{escape(label)}</title></circle>')
+                label += f', {sensor} baseline {r["baseline_ha"]:.2f} ha, score {r["deviation_score"]:+.2f}'
+            if sensor == "radar":
+                parts.append(f'<polygon class="pt-radar" points="{cx:.1f},{cy - 4.5:.1f} {cx - 4.2:.1f},{cy + 3.3:.1f} '
+                             f'{cx + 4.2:.1f},{cy + 3.3:.1f}" fill="{RADAR}"><title>{escape(label)}</title></polygon>')
+            else:
+                parts.append(f'<circle class="pt" cx="{cx:.1f}" cy="{cy:.1f}" r="3.6" fill="{OPTICAL}">'
+                             f'<title>{escape(label)}</title></circle>')
     else:
         parts.append(f'<text x="{width / 2}" y="{(top + plot_bottom) / 2}" text-anchor="middle" class="empty">'
                      f'No usable measurement in this period</text>')
@@ -98,12 +107,16 @@ def extent_chart(history: list[dict], start: date, end: date, width: int = 760, 
         parts.append(f'<line x1="{x(m):.1f}" x2="{x(m):.1f}" y1="{top}" y2="{plot_bottom}" stroke="{GRID}" '
                      f'stroke-dasharray="2 3"/><text x="{x(m):.1f}" y="{plot_bottom + 16}" text-anchor="middle" '
                      f'class="axis">{label}</text>')
-    parts.append(f'<text x="{left - 8}" y="{strip_y + 4}" text-anchor="end" class="axis">scenes</text>')
+    parts.append(f'<text x="{left - 8}" y="{strip_optical + 4}" text-anchor="end" class="axis">optical</text>'
+                 f'<text x="{left - 8}" y="{strip_radar + 4}" text-anchor="end" class="axis">radar</text>')
     for r in rows:
+        radar = r.get("source") == "sentinel-1"
         kind = "too_cloudy" if r["too_cloudy"] else (r["measurement_status"] or "too_cloudy")
-        parts.append(f'<rect class="tick tick-{kind}" x="{x(_d(r["acquired_at"])) - 1:.1f}" y="{strip_y - 7}" width="2" '
-                     f'height="14" fill="{TICK_COLOURS[kind]}"><title>{escape(r["acquired_at"][:10])}: '
-                     f'{kind.replace("_", " ")}</title></rect>')
+        colour = RADAR if (radar and kind == "ok") else TICK_COLOURS[kind]
+        sy = strip_radar if radar else strip_optical
+        parts.append(f'<rect class="tick tick-{"radar" if radar else "optical"} tick-{kind}" x="{x(_d(r["acquired_at"])) - 1:.1f}" '
+                     f'y="{sy - 7}" width="2" height="14" fill="{colour}"><title>{escape(r["acquired_at"][:10])} '
+                     f'{"radar" if radar else "optical"}: {kind.replace("_", " ")}</title></rect>')
     parts.append("</svg>")
     return "".join(parts)
 

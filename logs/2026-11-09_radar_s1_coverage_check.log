@@ -1,0 +1,13 @@
+checked_at: 2026-11-09T06:33:52+00:00
+
+KRB: 220 Sentinel-1 IW scenes 2023-01-01 .. 2026-11-08
+  by year: {2023: 55, 2024: 58, 2025: 57, 2026: 50}
+  orbit direction / relative orbit: {('ASCENDING', 100): 117, ('DESCENDING', 107): 103}
+  platform: {'A': 199, 'D': 21} | polarisations: {('VV', 'VH'): 220}
+  2026: 50 scenes, median gap 6 days, last 2026-10-28
+
+ATS: 220 Sentinel-1 IW scenes 2023-01-01 .. 2026-11-08
+  by year: {2023: 55, 2024: 58, 2025: 57, 2026: 50}
+  orbit direction / relative orbit: {('ASCENDING', 100): 117, ('DESCENDING', 107): 103}
+  platform: {'A': 199, 'D': 21} | polarisations: {('VV', 'VH'): 220}
+  2026: 50 scenes, median gap 6 days, last 2026-10-28

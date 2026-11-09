@@ -25,39 +25,49 @@ def get_lake(conn: sqlite3.Connection, code: str) -> dict[str, Any] | None:
     return _row(conn.execute("SELECT * FROM lake WHERE code = ?", (code,)).fetchone())
 
 
-def lake_summary(conn: sqlite3.Connection, lake_id: int, today: date) -> dict[str, Any]:
-    """Everything the dashboard shows for one lake, each value from one query below."""
+SOURCE_FOR_SENSOR = {"optical": "sentinel-2", "radar": "sentinel-1"}
+
+
+def _sensor_summary(conn: sqlite3.Connection, lake_id: int, today: date, sensor: str) -> dict[str, Any]:
+    """Counts, newest usable measurement and newest score for ONE sensor (optical or radar)."""
+    source = SOURCE_FOR_SENSOR[sensor]
     counts = conn.execute(
         f"""SELECT COUNT(*) AS scenes,
                    COALESCE(SUM(s.file_path LIKE '{NOT_DOWNLOADED_PREFIX}%'), 0) AS too_cloudy,
                    COALESCE(SUM(m.status = 'ok'), 0) AS measured_ok,
                    COALESCE(SUM(m.status = 'insufficient_observation'), 0) AS insufficient_observation
             FROM scene s LEFT JOIN measurement m ON m.scene_id = s.id
-            WHERE s.lake_id = ?""", (lake_id,)).fetchone()
-    latest_scene = conn.execute(
-        f"""SELECT s.id, s.acquired_at, s.cloud_fraction, s.file_path,
-                   s.file_path LIKE '{NOT_DOWNLOADED_PREFIX}%' AS too_cloudy, m.status AS measurement_status
-            FROM scene s LEFT JOIN measurement m ON m.scene_id = s.id
-            WHERE s.lake_id = ? ORDER BY s.acquired_at DESC, s.id DESC LIMIT 1""", (lake_id,)).fetchone()
+            WHERE s.lake_id = ? AND s.source = ?""", (lake_id, source)).fetchone()
     latest_ok = conn.execute(
         """SELECT m.id AS measurement_id, s.acquired_at, m.extent_ha, s.cloud_fraction, s.file_path
            FROM measurement m JOIN scene s ON s.id = m.scene_id
-           WHERE m.lake_id = ? AND m.status = 'ok' ORDER BY s.acquired_at DESC, m.id DESC LIMIT 1""",
-        (lake_id,)).fetchone()
+           WHERE m.lake_id = ? AND m.status = 'ok' AND m.sensor = ? ORDER BY s.acquired_at DESC, m.id DESC LIMIT 1""",
+        (lake_id, sensor)).fetchone()
     latest_score = conn.execute(
-        """SELECT r.status, r.baseline_ha, r.deviation_score, r.scored_at, s.acquired_at, m.extent_ha
+        """SELECT r.status, r.baseline_ha, r.deviation_score, r.scored_at, s.acquired_at, m.extent_ha, m.id AS measurement_id
            FROM risk_score r JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
-           WHERE r.lake_id = ? ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""", (lake_id,)).fetchone()
-    days_since_ok = None
-    if latest_ok is not None:
-        days_since_ok = (today - date.fromisoformat(latest_ok["acquired_at"][:10])).days
-    return {
-        "counts": dict(counts),
-        "latest_scene": _row(latest_scene),
-        "latest_ok_measurement": _row(latest_ok),
-        "latest_risk_score": _row(latest_score),
-        "days_since_last_ok": days_since_ok,
-    }
+           WHERE r.lake_id = ? AND m.sensor = ? ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""",
+        (lake_id, sensor)).fetchone()
+    days = None if latest_ok is None else (today - date.fromisoformat(latest_ok["acquired_at"][:10])).days
+    return {"counts": dict(counts), "latest_ok_measurement": _row(latest_ok),
+            "latest_risk_score": _row(latest_score), "days_since_last_ok": days}
+
+
+def lake_summary(conn: sqlite3.Connection, lake_id: int, today: date) -> dict[str, Any]:
+    """Everything the dashboard shows for one lake.
+
+    The top-level keys are OPTICAL (Sentinel-2) values, as before radar existed; summary["radar"] holds the
+    same keys for Sentinel-1. The two are never combined into one number: they measure the lake slightly
+    differently (logs/2026-11-09_radar_validation.log) and are scored against separate baselines.
+    """
+    optical = _sensor_summary(conn, lake_id, today, "optical")
+    latest_scene = conn.execute(
+        f"""SELECT s.id, s.source, s.acquired_at, s.cloud_fraction, s.file_path,
+                   s.file_path LIKE '{NOT_DOWNLOADED_PREFIX}%' AS too_cloudy, m.status AS measurement_status
+            FROM scene s LEFT JOIN measurement m ON m.scene_id = s.id
+            WHERE s.lake_id = ? AND s.source = 'sentinel-2' ORDER BY s.acquired_at DESC, s.id DESC LIMIT 1""",
+        (lake_id,)).fetchone()
+    return {**optical, "latest_scene": _row(latest_scene), "radar": _sensor_summary(conn, lake_id, today, "radar")}
 
 
 def lake_history(conn: sqlite3.Connection, lake_id: int) -> list[dict[str, Any]]:
@@ -88,25 +98,32 @@ def database_totals(conn: sqlite3.Connection) -> dict[str, int]:
         out[table] = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
     out["too_cloudy"] = conn.execute(
         f"SELECT COUNT(*) FROM scene WHERE file_path LIKE '{NOT_DOWNLOADED_PREFIX}%'").fetchone()[0]
+    for sensor, source in SOURCE_FOR_SENSOR.items():
+        out[f"{sensor}_scenes"] = conn.execute("SELECT COUNT(*) FROM scene WHERE source = ?", (source,)).fetchone()[0]
+        out[f"{sensor}_measurements"] = conn.execute(
+            "SELECT COUNT(*) FROM measurement WHERE sensor = ?", (sensor,)).fetchone()[0]
+        out[f"{sensor}_ok"] = conn.execute(
+            "SELECT COUNT(*) FROM measurement WHERE sensor = ? AND status = 'ok'", (sensor,)).fetchone()[0]
     return out
 
 
 def same_month_inputs(conn: sqlite3.Connection, lake_id: int, acquired_on: date,
-                      exclude_measurement_id: int | None = None) -> dict[str, Any]:
-    """The earlier usable values the seasonal baseline for this scene could use: same calendar month,
-    observed strictly before the scene (the same inputs pipeline.py's check F counts)."""
+                      exclude_measurement_id: int | None = None, sensor: str = "optical") -> dict[str, Any]:
+    """The earlier usable values the seasonal baseline for this scene could use: same sensor, same calendar
+    month, observed strictly before the scene (the same inputs pipeline.py's check F counts)."""
     rows = conn.execute(
         """SELECT s.acquired_at, m.extent_ha FROM measurement m JOIN scene s ON s.id = m.scene_id
-           WHERE m.lake_id = ? AND m.status = 'ok' AND m.id IS NOT ? ORDER BY s.acquired_at""",
-        (lake_id, exclude_measurement_id)).fetchall()
+           WHERE m.lake_id = ? AND m.status = 'ok' AND m.sensor = ? AND m.id IS NOT ? ORDER BY s.acquired_at""",
+        (lake_id, sensor, exclude_measurement_id)).fetchall()
     earlier = [r for r in rows if date.fromisoformat(r["acquired_at"][:10]) < acquired_on
                and date.fromisoformat(r["acquired_at"][:10]).month == acquired_on.month]
     return {"count": len(earlier), "years": sorted({int(r["acquired_at"][:4]) for r in earlier}),
             "values": [(r["acquired_at"][:10], r["extent_ha"]) for r in earlier]}
 
 
-def recent_ok_extents(conn: sqlite3.Connection, lake_id: int, n: int = 15) -> list[float]:
+def recent_ok_extents(conn: sqlite3.Connection, lake_id: int, n: int = 15, sensor: str = "optical") -> list[float]:
     rows = conn.execute(
         """SELECT m.extent_ha FROM measurement m JOIN scene s ON s.id = m.scene_id
-           WHERE m.lake_id = ? AND m.status = 'ok' ORDER BY s.acquired_at DESC LIMIT ?""", (lake_id, n)).fetchall()
+           WHERE m.lake_id = ? AND m.status = 'ok' AND m.sensor = ? ORDER BY s.acquired_at DESC LIMIT ?""",
+        (lake_id, sensor, n)).fetchall()
     return [r[0] for r in reversed(rows)]

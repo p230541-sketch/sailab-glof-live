@@ -180,6 +180,24 @@ def create_app(source_db: Path | None = None, work_dir: Path | None = None,
         template, nav = previews[name]
         return render(request, template, nav, {})
 
+    @app.get("/lakes/{code}/latest-radar.png")
+    def lake_latest_radar(code: str) -> FileResponse:
+        with read_only() as conn:
+            found = lake_or_404(conn, code)
+            latest = queries.lake_summary(conn, found["id"], today())["radar"]["latest_ok_measurement"]
+        if latest is None:
+            raise HTTPException(status_code=404, detail=f"{code} has no usable radar measurement yet")
+        tif = repo_root / latest["file_path"]
+        if not tif.is_file() and (work_dir / latest["file_path"]).is_file():
+            tif = work_dir / latest["file_path"]
+        dem = repo_root / "data" / "dem" / f"{code}_dem.tif"
+        if not tif.is_file() or not dem.is_file():
+            raise HTTPException(status_code=404, detail=f"radar or DEM file not on this machine: {latest['file_path']}")
+        png = work_dir / "images" / f"{code}_{tif.stem}_radar.png"
+        if not png.is_file():
+            images.render_radar_png(tif, found, dem, png)
+        return FileResponse(png, media_type="image/png")
+
     # --- live check: the ONLY route that changes anything, and only the working copy ------------
     @app.get("/live", response_class=HTMLResponse)
     def live_page(request: Request) -> HTMLResponse:

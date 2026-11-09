@@ -10,7 +10,7 @@ running automatically on real Sentinel-2 satellite data.
 > outburst** (neither monitored lake has one on record). Please read [Limitations](#limitations)
 > before quoting any number from it.
 
-*Status as of 2026-11-08 (evening). Sections marked ⏳ change as the scheduled runs accumulate.*
+*Status as of 2026-11-09. Sections marked ⏳ change as the scheduled runs accumulate.*
 
 ---
 
@@ -20,19 +20,21 @@ Every night at **23:00 Pakistan time (18:00 UTC)**, GitHub Actions
 ([`.github/workflows/daily_run.yml`](.github/workflows/daily_run.yml)) does the following with no
 human involved:
 
-1. Installs the pinned packages and runs the **full test suite** (171 tests). If any test fails, the
+1. Installs the pinned packages and runs the **full test suite** (193 tests). If any test fails, the
    pipeline does not run, so broken code can never write to the database.
 2. Signs in to Google Earth Engine with a **service-account key** stored as an encrypted GitHub
    secret (no browser, no person).
 3. For each lake, lists new Sentinel-2 scenes since the newest one already stored, and measures the
    **cloud over the lake itself** (not over the whole 100 km tile), using Sentinel-2's own scene
    classification band and our own counting code.
-4. Scenes with more than **10 % cloud over the lake** are **recorded but not downloaded** (this build
-   is optical-only; see Limitations).
+4. Scenes with more than **10 % cloud over the lake** are **recorded but not downloaded**.
 5. Clear scenes: downloads **only the small lake window** (bands B2, B3, B4, B8, B11 + SCL, 10 m,
    UTM 43N), measures the lake, and stores the measurement.
-6. Scores each usable measurement against the lake's own **seasonal baseline** and stores the score.
-7. Writes a `run_log` row (start, finish, counts, and the **real error text** if anything failed),
+6. Scores each usable **optical** measurement against the lake's own optical **seasonal baseline**.
+7. **Radar (Sentinel-1, since 2026-11-09):** lists every new radar pass (radar sees through cloud),
+   downloads the lake window (VV, VH), measures the lake, and stores it as a `radar` measurement.
+   Radar is **not risk-scored** (see [Radar](#radar-sentinel-1)).
+8. Writes a `run_log` row (start, finish, counts, and the **real error text** if anything failed),
    writes a timestamped log file to `logs/runs/`, and **commits the database and logs back to this
    repository** — also after a failed run, so failures stay visible.
 
@@ -68,9 +70,7 @@ Actions tab is the record of which ones actually happened.
   path tracing and bridge finding is in `sailab/terrain.py`, `flood_path.py` and `network.py`, but it
   is **not connected** to this pipeline.
 - **The trained risk model.** Only the seasonal-baseline fallback (FR-14/FR-18) is used.
-- **Radar (Sentinel-1).** Cloudy scenes are recorded, not measured. The known radar failure on steep
-  terrain (region growing leaking into mountain shadow: 975.9 ha against a real 237.2 ha in the
-  earlier project tests) is unchanged and unaddressed.
+- **Radar risk scores.** Radar is measured and shown, but not scored (see [Radar](#radar-sentinel-1)).
 
 ---
 
@@ -135,20 +135,49 @@ Code: `sailab/risk.py` (unchanged) via `sailab/pipeline.py`.
   modest changes produced meaningless scores (e.g. −49.6) in the first backfill.
 - A score is a **statistical deviation**, not a danger level or a probability.
 
+## Radar (Sentinel-1)
+
+Code: `sailab/radar.py` (using the unchanged `otsu_threshold` and `region_grow`), wired in
+`sailab/pipeline.py`. Sentinel-1 passes both lakes about every 6 days (ascending and descending orbits).
+
+- **The known failure, reproduced:** on the original Karambar SAR file, the original method gives
+  **975.88 ha** (the documented 975.9 ha). The picture (`logs/2026-11-09_radar_leak_where.png`) shows
+  why: Otsu over the whole window splits bright mountain faces from everything else (cut-off −9.5 dB),
+  so the flat valley floor counts as water. A slope mask on its own did not fix it.
+- **The fix:** drop pixels steeper than **10°** (from the Copernicus 30 m DEM, slope computed by our
+  own code), **then** run Otsu over the remaining flat ground, where it separates lake (≈ −20 dB) from
+  valley floor (≈ −15 dB). On the original file: **267.52 ha**, no leak
+  (`logs/2026-11-09_radar_slope_mask_original_karambar.log`). The 10° limit was fixed **before**
+  validation. Unmasked, the leak still reaches the window edge and is refused (a test keeps this visible).
+- **Validation against optical** (radar and optical of the same lake within 3 days, 30 summer pairs,
+  `logs/2026-11-09_radar_validation.log`): mean absolute difference **6.0 %**. Karambar radar reads
+  higher (mean +5.4 %, worst +13.0 %); Atro Sar radar reads lower (mean −6.4 %, worst −9.6 %).
+- **Why radar is not risk-scored:** 28 of 361 usable radar values are clearly wrong, mostly in
+  **April–June**: wet snow during melt is as dark as water on radar, so the lake seems to vanish
+  (Karambar 0.2 ha) or flood outward (403.9 ha). Those errors produced the largest radar "anomalies"
+  (e.g. +50.3, −7.4). A melt-season check needs ground truth we do not have (optical is also blind in
+  spring), so radar scoring stays off (`pipeline.SCORE_RADAR = False`); the 361 radar scores written by
+  the first radar backfill were removed (`logs/2026-11-09_radar_scores_removed.log`; archived copy kept).
+- **Winter radar values** (≈ 255–260 ha at Karambar in January–March) probably measure the frozen
+  lake surface; they cannot be checked against optical and are **unvalidated**.
+
 ---
 
 ## Current contents of the database (`sailab_glof.db`)
 
-⏳ As of 2026-11-08, after the backfill (run 3) and one manual GitHub run (run 4):
+⏳ As of 2026-11-09, after the optical backfill (run 3), the first scheduled run (run 6) and the radar
+backfill (run 7):
 
 | | Karambar (KRB) | Atro Sar (ATS) |
 |---|---|---|
-| Scenes recorded (2023-01-05 → 2026-11-05) | 307 | 304 |
+| Optical scenes (2023-01-05 → 2026-11-05) | 307 | 304 |
 | Too cloudy for optical (recorded, not downloaded) | 178 | 179 |
-| Measured `ok` | 20 | 25 |
-| `insufficient_observation` | 109 | 100 |
-| `ok` area range | 198.31 – 257.83 ha | 105.16 – 107.17 ha |
-| Risk scores `ok` / `insufficient_history` | 8 / 12 | 11 / 14 |
+| Optical measured `ok` / `insufficient_observation` | 20 / 109 | 25 / 100 |
+| Optical `ok` area range | 198.31 – 257.83 ha | 105.16 – 107.17 ha |
+| Optical risk scores `ok` / `insufficient_history` | 8 / 12 | 11 / 14 |
+| Radar passes (2023-01 → 2026-10) | 220 | 220 |
+| Radar measured `ok` / `insufficient_observation` | 190 / 30 | 171 / 49 |
+| Radar risk scores | none (not scored) | none (not scored) |
 
 So **58 % of all scenes (357 of 611) were too cloudy over the lake** for optical measurement — the
 cloud problem the project's radar fallback is meant to solve, measured with our own data.
@@ -163,11 +192,12 @@ cloud problem the project's radar fallback is meant to solve, measured with our 
 | 4 | First GitHub Actions run (triggered by hand) | Completed: no new scenes since 2026-11-05. |
 | 5 | Second GitHub Actions run (triggered by hand, after pinning the runner to Ubuntu 24.04) | Completed: no new scenes. |
 | 6 | **First scheduled run** (GitHub's scheduler, 2026-11-08 21:31 UTC) | Completed: no new scenes. |
+| 7 | Radar backfill (by hand, 2026-11-09) | Completed: 440 radar passes downloaded and measured. Its 361 radar risk scores were later removed (radar scoring off). |
 
 The pre-C/D/F database and its 5-band images are archived locally (`data/archive_v1/`, not in this
 repository); the comparison is in `logs/2026-11-08_cdf_before_after.md`.
 
-**Downloaded images:** backfill images (~345 MB) are kept on the developer's machine, **not** in this
+**Downloaded images:** backfill images (~850 MB, optical and radar) are kept on the developer's machine, **not** in this
 repository (`data/backfill/` is git-ignored). Each can be re-downloaded by its scene id and checked
 against the SHA-256 in `logs/runs/2026-11-08T112314Z_backfill.log`. Images downloaded by the
 scheduled runs are committed to `data/scenes/`.
@@ -183,10 +213,12 @@ scheduled runs are committed to `data/scenes/`.
 | The original Atro Sar file (76.51 ha) is **cut off** by its window | `tests/test_pipeline.py::test_real_atro_sar_original_file_is_flagged_as_cut_off_by_the_window` |
 | Cloud measured over the lake differs from the tile value in many scenes (Atro Sar: 7 of 17 decisions differ) | `logs/2026-11-08_step4_live_find_new_scenes.log` |
 | A failed run is recorded, not hidden | `run_log` row 1; `logs/runs/2026-11-08T103538Z_backfill.log` |
+| The radar failure reproduces (975.88 ha) and the slope-mask fix gives 267.52 ha on the same original file | `tests/test_radar.py`, `logs/2026-11-09_radar_slope_mask_original_karambar.log` |
+| Radar vs optical within 3 days: 6.0 % mean absolute difference on 30 pairs | `logs/2026-11-09_radar_validation.log` |
 
-**About the tests (171, all passing):** most use small synthetic grids with hand-calculated expected
+**About the tests (193, all passing):** most use small synthetic grids with hand-calculated expected
 answers — they prove the algorithms compute correctly, **not** real-world accuracy. Two use the
-project's original real GeoTIFFs (`tests/data/`). The Earth Engine tests replace Earth Engine with a
+project's original real GeoTIFFs (`tests/data/`, incl. the original Karambar SAR file). The Earth Engine tests replace Earth Engine with a
 mock (stated in the test file); the real connection is proven only by the live-run logs. The 20
 tests inherited from the earlier project pass unchanged.
 
@@ -198,8 +230,10 @@ tests inherited from the earlier project pass unchanged.
    score has never been checked against a real flood event.
 2. **Newly formed lakes cannot be scored** (check F needs earlier same-month years). These are often
    the dangerous ones (e.g. Shisper, formed around 2018–19).
-3. **Blind under cloud:** optical only; 58 % of scenes were too cloudy over the lake. Radar is not
-   built.
+3. **Cloud:** 58 % of optical scenes were too cloudy over the lake. Radar fills those dates with
+   measurements, but radar is **not risk-scored**, so risk scores still come from clear optical days only.
+12. **Radar snowmelt errors:** about 8 % of usable radar values (mostly April–June) are clearly wrong;
+    winter radar values are unvalidated; each lake has a consistent radar–optical offset of about ±6 %.
 4. **Blind in winter:** frozen or snow-covered lakes are refused (correctly), so there are few or no
    measurements from roughly November to May. Scheduled runs before spring may produce no `ok` area.
 5. **Under-detection:** the NDWI cut-off of 0.2 misses real water on some days. Known and **not
@@ -245,7 +279,8 @@ sailab/
   terrain.py  flood_path.py  network.py       downstream analysis modules (unchanged, not wired in)
   db.py                    SQLite schema, inserts, history, seed lakes
   earth_engine_client.py   Earth Engine sign-in, scene listing, lake-window cloud, download
-  pipeline.py              the run: stages wired together, checks C/D/F, resume, run log
+  pipeline.py              the run: stages wired together, checks C/D/F, radar, resume, run log
+  radar.py                 Sentinel-1 measurement: slope mask, Otsu over flat ground, region growing
   queries.py               read-only queries behind every number the web app shows
 webapp/                    FastAPI + Jinja2 app: pages, offline SVG charts, live check, design previews
 app.py                     web app entry point (uvicorn app:app)
@@ -253,8 +288,10 @@ scripts/
   run_once.py              entry point (GitHub Actions); --backfill for the one-off historical run
   init_db.py               create the database and seed the two lakes
   verify_gui_numbers.py    check every number on the two real screens against the database
+  validate_radar.py        compare radar with optical measured within 3 days
 docs/                      reference designs, side-by-side comparison, demo script
-tests/                     171 tests; tests/data/ holds the two original real GeoTIFFs
+tests/                     193 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
+data/dem/                  Copernicus DEM windows for the radar slope mask
 logs/                      verification logs; logs/runs/ has one log per pipeline run
 sailab_glof.db             the database (open with DB Browser for SQLite)
 ```

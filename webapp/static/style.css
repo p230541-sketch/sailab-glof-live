@@ -75,6 +75,7 @@ h2 { font-size: 19px; font-weight: 600; margin: 0 0 12px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 13.5px; background: var(--chip); color: var(--text); white-space: nowrap; }
 .chip .num { font-family: var(--mono); }
 .chip.score { background: #e6eff6; color: #18406a; }
+.chip.score.radar { background: #e2f2ec; color: #0e5c48; }
 .chip.muted { background: #eef1f4; color: var(--muted); }
 .chip.ok { background: #e3f3ea; color: #136c3c; }
 .chip.warn { background: var(--warn); color: var(--warn-text); }

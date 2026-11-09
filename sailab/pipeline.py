@@ -1,9 +1,10 @@
 """Wires Acquisition -> Measurement -> Risk Scoring into one automatic run.
 
-Scope of this build (agreed): optical only. When choose_sensor() picks radar for
-a scene (too cloudy over the lake), the scene is still recorded in the `scene`
-table, so the history shows it existed and why it was skipped, but it is not
-downloaded or measured, and no number is invented for it.
+Optical (Sentinel-2): when choose_sensor() says a scene is too cloudy over the lake, it is recorded in
+the `scene` table but not downloaded or measured; no number is invented for it.
+Radar (Sentinel-1, added 2026-11-09): every radar pass is listed, downloaded and measured with
+sailab.radar (slope mask at RADAR_SLOPE_LIMIT_DEG, then Otsu over flat ground, then region growing).
+Radar measurements are NOT risk-scored (SCORE_RADAR = False): see the note at SCORE_RADAR.
 
 Every stage uses the already-tested functions unchanged:
   choose_sensor, ResumableRun      (acquisition.py)
@@ -57,6 +58,21 @@ RISK_STATUS_FROM_RISK_MODULE = {"ok": "ok", "insufficient history": "insufficien
 # (Atro Sar 87.0 ha vs ~106; Karambar 79.65 ha vs ~256), while clear scenes were 0-7%. Based on one month
 # of data, so a judgement call, not a calibrated value. Evidence: logs/2026-11-08_step5_smoke_test_aug2026.log
 OPTICAL_CLOUD_LIMIT_PERCENT = 10.0
+
+# Radar slope mask: pixels steeper than this are dropped before Otsu. Fixed at 10 degrees on 2026-11-09,
+# agreed with the project owner BEFORE validating radar against optical, so the validation is not tuned
+# to it. Middle of the stable range on the original Karambar file (5-20 deg gave 258.7-281.6 ha).
+# Evidence: logs/2026-11-09_radar_slope_mask_original_karambar.log
+RADAR_SLOPE_LIMIT_DEG = 10.0
+# Radar risk scoring is OFF (decided with the project owner, 2026-11-09). Validation against optical within
+# 3 days: mean absolute difference 6.0% on 30 summer pairs (logs/2026-11-09_radar_validation.log), but 28 of
+# 361 usable radar values, mostly April-June (snowmelt: wet snow is as dark as water), are clearly wrong, and
+# they produced the largest radar "anomalies" (e.g. +50.3, -7.4). Until a melt-season check is tested on the
+# stored data, radar is measured and shown, but never scored. _score() still keeps sensors apart if this is
+# ever switched on.
+SCORE_RADAR = False
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_DEM_DIR = REPO_ROOT / "data" / "dem"
 
 
 @dataclass
@@ -210,10 +226,11 @@ def clear_resume_state(db_path: str | Path) -> None:
 # ---------------------------------------------------------------------------
 # The run
 # ---------------------------------------------------------------------------
-def _since_date_for(conn, lake_id: int, initial_since_date: date) -> date:
-    """The day before the newest scene already stored (so a same-day second scene is not missed;
-    duplicates are skipped by scene id), or initial_since_date for a lake with no scenes yet."""
-    row = conn.execute("SELECT MAX(acquired_at) FROM scene WHERE lake_id = ?", (lake_id,)).fetchone()
+def _since_date_for(conn, lake_id: int, initial_since_date: date, source: str = "sentinel-2") -> date:
+    """The day before the newest scene of this source already stored (so a same-day second scene is not
+    missed; duplicates are skipped by scene id), or initial_since_date if there is none yet."""
+    row = conn.execute("SELECT MAX(acquired_at) FROM scene WHERE lake_id = ? AND source = ?",
+                       (lake_id, source)).fetchone()
     if row[0] is None:
         return initial_since_date
     return date.fromisoformat(row[0][:10]) - timedelta(days=1)
@@ -239,13 +256,14 @@ def sha256_of(path: str | Path) -> str:
 
 def run_pipeline_once(db_path: str | Path, data_dir: str | Path, initial_since_date: date,
                       lakes: list[int] | None = None, client: Any = None,
-                      until_date: date | None = None) -> RunResult:
+                      until_date: date | None = None, dem_dir: str | Path | None = None) -> RunResult:
     """One full run over every lake. Never raises for a stage failure: the error is written to
     run_log.errors and returned in RunResult.errors, so the caller can exit non-zero."""
     sign_in_needed = client is None
     if client is None:
         from sailab import earth_engine_client as client  # the real Earth Engine connection
     data_dir = Path(data_dir)
+    dem_dir = Path(dem_dir) if dem_dir is not None else DEFAULT_DEM_DIR
     repo_root = Path(db_path).resolve().parent
     conn = db.connect(db_path)
     result = RunResult(run_id=db.start_run_log(conn))
@@ -274,6 +292,15 @@ def run_pipeline_once(db_path: str | Path, data_dir: str | Path, initial_since_d
             log.info("%s: %d scenes listed after %s", lake["code"], len(scenes), since)
             for scene in scenes:
                 _process_scene(conn, client, lake, scene, data_dir, repo_root, result)
+            if hasattr(client, "find_new_s1_scenes"):
+                radar_since = _since_date_for(conn, lake_id, initial_since_date, "sentinel-1")
+                radar_scenes = client.find_new_s1_scenes(lake, radar_since, until_date)
+                log.info("%s: %d radar scenes listed after %s", lake["code"], len(radar_scenes), radar_since)
+                slope = _slope_for(client, lake, dem_dir) if radar_scenes else None
+                for scene in radar_scenes:
+                    _process_radar_scene(conn, client, lake, scene, slope, data_dir, repo_root, result)
+            else:
+                log.info("%s: this client has no radar support; radar skipped", lake["code"])
             result.lakes_processed += 1
 
         run = ResumableRun(lakes=lake_ids, downloader=process_lake, log=state)
@@ -332,9 +359,15 @@ def _process_scene(conn, client, lake, scene, data_dir: Path, repo_root: Path, r
     if outcome.status != "ok":
         return   # nothing to score: an unobserved lake has no extent to compare
 
+    _score(conn, lake, scene, measurement_id, outcome.extent_ha, "optical", result)
+
+
+def _score(conn, lake, scene, measurement_id: int, extent_ha: float, sensor: str, result: RunResult) -> None:
+    """Seasonal baseline score against the same lake's earlier values FROM THE SAME SENSOR only."""
     acquired_on = date.fromisoformat(scene.acquired_at[:10])
     # Only scenes from before this one: a backfilled 2024 scene must never be scored against 2025 data.
-    history = [record for record in db.get_extent_history(conn, lake["id"], exclude_measurement_id=measurement_id)
+    history = [record for record in db.get_extent_history(conn, lake["id"], exclude_measurement_id=measurement_id,
+                                                          sensor=sensor)
                if record.observed_on < acquired_on]
     same_month = [record for record in history if record.observed_on.month == acquired_on.month]
     same_month_years = {record.observed_on.year for record in same_month}
@@ -342,13 +375,71 @@ def _process_scene(conn, client, lake, scene, data_dir: Path, repo_root: Path, r
         # Check F: too little history for this month to say what "normal" is.
         db.insert_risk_score(conn, lake["id"], measurement_id, "anomaly_detector", "insufficient_history", None, None)
         result.risk_scores += 1
-        log.info("%s %s: risk insufficient_history (check F: %d earlier values for month %02d from %d years; "
-                 "need %d from %d)", lake["code"], scene.scene_id, len(same_month), acquired_on.month,
+        log.info("%s %s: %s risk insufficient_history (check F: %d earlier values for month %02d from %d years; "
+                 "need %d from %d)", lake["code"], scene.scene_id, sensor, len(same_month), acquired_on.month,
                  len(same_month_years), MIN_SAME_MONTH_VALUES, MIN_SAME_MONTH_YEARS)
         return
-    score = score_against_seasonal_baseline(history, acquired_on, outcome.extent_ha)
+    score = score_against_seasonal_baseline(history, acquired_on, extent_ha)
     db.insert_risk_score(conn, lake["id"], measurement_id, "anomaly_detector",
                          RISK_STATUS_FROM_RISK_MODULE[score.status], score.baseline_ha, score.deviation_score)
     result.risk_scores += 1
-    log.info("%s %s: risk %s baseline=%s score=%s", lake["code"], scene.scene_id, score.status,
+    log.info("%s %s: %s risk %s baseline=%s score=%s", lake["code"], scene.scene_id, sensor, score.status,
              score.baseline_ha, score.deviation_score)
+
+
+# ---------------------------------------------------------------------------
+# Radar (Sentinel-1)
+# ---------------------------------------------------------------------------
+def _slope_for(client, lake, dem_dir: Path):
+    """Slope grid for the lake window from its stored DEM (downloaded once, if missing)."""
+    import rasterio
+
+    from sailab.radar import slope_degrees
+
+    dem_path = dem_dir / f"{lake['code']}_dem.tif"
+    if not dem_path.is_file():
+        client.download_dem_window(lake, dem_path)
+        log.info("%s: DEM downloaded to %s sha256=%s", lake["code"], dem_path, sha256_of(dem_path))
+    with rasterio.open(dem_path) as src:
+        dem = src.read(1).astype(float)
+    dem[~np.isfinite(dem)] = np.nan
+    return slope_degrees(dem, 10.0)
+
+
+def _process_radar_scene(conn, client, lake, scene, slope, data_dir: Path, repo_root: Path, result: RunResult) -> None:
+    from sailab.radar import measure_radar_scene
+
+    if _already_recorded(conn, lake["id"], scene.scene_id):
+        log.info("%s %s: already recorded, skipped", lake["code"], scene.scene_id)
+        return
+    raster = data_dir / lake["code"] / f"{scene.scene_id}.tif"
+    try:
+        stored_path = str(raster.resolve().relative_to(repo_root))
+    except ValueError:
+        stored_path = str(raster.resolve())
+    client.download_s1_window(scene, lake, raster)
+    scene_row = db.insert_scene(conn, lake["id"], "sentinel-1", scene.acquired_at, None, stored_path)
+    result.scenes_recorded += 1
+    result.scenes_downloaded += 1
+    log.info("%s %s: downloaded %s sha256=%s", lake["code"], scene.scene_id, stored_path, sha256_of(raster))
+
+    if slope is None or slope.shape != _raster_shape(raster):
+        status, extent, reason = "insufficient_observation", None, "DEM grid does not match the radar window"
+    else:
+        outcome = measure_radar_scene(raster, lake, slope, RADAR_SLOPE_LIMIT_DEG)
+        status, extent, reason = outcome.status, outcome.extent_ha, outcome.reason
+    measurement_id = db.insert_measurement(conn, scene_row, lake["id"], "radar", extent, status)
+    result.measurements += 1
+    log.info("%s %s: radar %s %s (%s)", lake["code"], scene.scene_id, status, extent, reason)
+    if status == "ok" and SCORE_RADAR:
+        _score(conn, lake, scene, measurement_id, extent, "radar", result)
+    elif status == "ok":
+        log.info("%s %s: radar not risk-scored (SCORE_RADAR is off: snowmelt errors, see pipeline.py)",
+                 lake["code"], scene.scene_id)
+
+
+def _raster_shape(path: Path) -> tuple[int, int]:
+    import rasterio
+
+    with rasterio.open(path) as src:
+        return src.height, src.width

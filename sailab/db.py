@@ -193,7 +193,7 @@ def insert_risk_score(conn: sqlite3.Connection, lake_id: int, measurement_id: in
 # Reads
 # ---------------------------------------------------------------------------
 def get_extent_history(conn: sqlite3.Connection, lake_id: int,
-                       exclude_measurement_id: int | None = None) -> list[ExtentRecord]:
+                       exclude_measurement_id: int | None = None, sensor: str | None = None) -> list[ExtentRecord]:
     """Every usable past extent of a lake, oldest first, ready for score_against_seasonal_baseline().
 
     - observed_on is the satellite pass date (scene.acquired_at), not when the
@@ -203,11 +203,13 @@ def get_extent_history(conn: sqlite3.Connection, lake_id: int,
       have no extent, and treating them as zero would drag the baseline down.
     - exclude_measurement_id lets the caller leave out the measurement it is
       about to score, so a new value is never compared against itself.
+    - sensor ('optical' or 'radar') keeps the two sensors' baselines apart: they measure the same
+      lake slightly differently, and mixing them would create false "change" scores.
     """
     rows = conn.execute(
         "SELECT m.id, s.acquired_at, m.extent_ha FROM measurement m JOIN scene s ON s.id = m.scene_id "
-        "WHERE m.lake_id = ? AND m.status = 'ok' ORDER BY s.acquired_at, m.id",
-        (lake_id,),
+        "WHERE m.lake_id = ? AND m.status = 'ok' AND (? IS NULL OR m.sensor = ?) ORDER BY s.acquired_at, m.id",
+        (lake_id, sensor, sensor),
     ).fetchall()
     return [
         ExtentRecord(observed_on=date.fromisoformat(row["acquired_at"][:10]), extent_ha=row["extent_ha"])

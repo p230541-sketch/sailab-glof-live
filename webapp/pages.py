@@ -29,24 +29,28 @@ def _d(iso: str | date) -> date:
 
 def lake_card(conn, lake: dict, today: date) -> dict[str, Any]:
     s = queries.lake_summary(conn, lake["id"], today)
-    gap = s["days_since_last_ok"] is None or s["days_since_last_ok"] > STALE_AFTER_DAYS
-    return {**lake, "summary": s, "data_gap": gap,
-            "sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"]))}
+    days = [d for d in (s["days_since_last_ok"], s["radar"]["days_since_last_ok"]) if d is not None]
+    # Data gap: no usable measurement from EITHER sensor in the last STALE_AFTER_DAYS days.
+    gap = not days or min(days) > STALE_AFTER_DAYS
+    return {**lake, "summary": s, "data_gap": gap, "days_since_any_ok": min(days) if days else None,
+            "sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"])),
+            "radar_sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"], sensor="radar"))}
 
 
 def dashboard(conn, today: date) -> dict[str, Any]:
     lakes = [lake_card(conn, l, today) for l in queries.list_lakes(conn)]
     totals = queries.database_totals(conn)
     first = conn.execute("SELECT MIN(acquired_at), MAX(acquired_at) FROM scene").fetchone()
-    with_ok = [l for l in lakes if l["summary"]["days_since_last_ok"] is not None]
-    freshest = min(with_ok, key=lambda l: l["summary"]["days_since_last_ok"]) if with_ok else None
+    with_ok = [l for l in lakes if l["days_since_any_ok"] is not None]
+    freshest = min(with_ok, key=lambda l: l["days_since_any_ok"]) if with_ok else None
     return {
         "lakes": lakes,
         "totals": totals,
         "first_scene": first[0],
         "last_scene": first[1],
-        "too_cloudy_pct": (100.0 * totals["too_cloudy"] / totals["scene"]) if totals["scene"] else None,
-        "measured_ok": conn.execute("SELECT COUNT(*) FROM measurement WHERE status = 'ok'").fetchone()[0],
+        # share of OPTICAL scenes too cloudy (radar scenes have no cloud and must not dilute this)
+        "too_cloudy_pct": (100.0 * totals["too_cloudy"] / totals["optical_scenes"]) if totals["optical_scenes"] else None,
+        "measured_ok": totals["optical_ok"],
         "freshest": freshest,
         "stale_lakes": [l for l in lakes if l["data_gap"]],
         "latest_run": queries.latest_run(conn),
@@ -65,29 +69,32 @@ def lake_detail(conn, lake: dict, today: date, range_key: str, page: int, repo: 
     start = (end - timedelta(days=days)) if days else (_d(history[0]["acquired_at"]) if history else end)
     chart = charts.extent_chart(history, start, end) if history else None
 
-    latest_score = card["summary"]["latest_risk_score"]
-    score_inputs = None
-    if latest_score is not None:
-        m = conn.execute(
-            """SELECT m.id FROM risk_score r JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
-               WHERE r.lake_id = ? ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""", (lake["id"],)).fetchone()
-        score_inputs = queries.same_month_inputs(conn, lake["id"], _d(latest_score["acquired_at"]), m[0])
-
-    latest_ok = card["summary"]["latest_ok_measurement"]
-    image = None
-    if latest_ok is not None:
-        on_disk = (repo / latest_ok["file_path"]).is_file() or (work_dir is not None and (work_dir / latest_ok["file_path"]).is_file())
-        image = {"available": on_disk, "file_path": latest_ok["file_path"],
-                 "acquired_at": latest_ok["acquired_at"], "extent_ha": latest_ok["extent_ha"]}
+    sensors = {}
+    for sensor, summary in (("optical", card["summary"]), ("radar", card["summary"]["radar"])):
+        score = summary["latest_risk_score"]
+        inputs = None
+        if score is not None:
+            inputs = queries.same_month_inputs(conn, lake["id"], _d(score["acquired_at"]), score["measurement_id"], sensor)
+        latest_ok = summary["latest_ok_measurement"]
+        image = None
+        if latest_ok is not None:
+            on_disk = (repo / latest_ok["file_path"]).is_file() or (work_dir is not None and (work_dir / latest_ok["file_path"]).is_file())
+            image = {"available": on_disk, "file_path": latest_ok["file_path"],
+                     "acquired_at": latest_ok["acquired_at"], "extent_ha": latest_ok["extent_ha"]}
+        sensors[sensor] = {"score": score, "score_inputs": inputs, "image": image, "summary": summary}
 
     newest_first = list(reversed(history))
     pages = max(1, -(-len(newest_first) // HISTORY_PAGE_SIZE))
     page = min(max(page, 1), pages)
     rows = newest_first[(page - 1) * HISTORY_PAGE_SIZE: page * HISTORY_PAGE_SIZE]
     return {"lake": card, "chart": chart, "range_key": range_key, "chart_start": start, "chart_end": end,
-            "score": latest_score, "score_inputs": score_inputs, "image": image, "log_rows": rows,
+            "sensors": sensors, "score": sensors["optical"]["score"], "score_inputs": sensors["optical"]["score_inputs"],
+            "image": sensors["optical"]["image"], "log_rows": rows,
             "page": page, "pages": pages, "scene_count": len(history),
-            "ok_in_range": sum(1 for r in history if r["measurement_status"] == "ok" and start <= _d(r["acquired_at"]) <= end)}
+            "ok_in_range": sum(1 for r in history if r["measurement_status"] == "ok" and r["sensor"] == "optical"
+                               and start <= _d(r["acquired_at"]) <= end),
+            "radar_ok_in_range": sum(1 for r in history if r["measurement_status"] == "ok" and r["sensor"] == "radar"
+                                     and start <= _d(r["acquired_at"]) <= end)}
 
 
 def scene_quality(row: dict) -> tuple[str, str]:
@@ -97,7 +104,7 @@ def scene_quality(row: dict) -> tuple[str, str]:
     if row["measurement_status"] == "ok":
         return "ok", "Usable"
     if row["measurement_status"] == "insufficient_observation":
-        return "warn", "Refused by quality checks"
+        return "warn", ("Refused by radar checks" if row.get("source") == "sentinel-1" else "Refused by quality checks")
     return "muted", "No measurement recorded"
 
 

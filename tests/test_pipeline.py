@@ -373,12 +373,13 @@ def test_the_real_client_signs_in_before_listing(repo, monkeypatch):
     order = []
     monkeypatch.setattr(eec, "initialize", lambda: order.append("init") or "bot@x")
     monkeypatch.setattr(eec, "find_new_scenes", lambda lake, *a, **k: order.append(lake["code"]) or [])
+    monkeypatch.setattr(eec, "find_new_s1_scenes", lambda lake, *a, **k: order.append(lake["code"] + " radar") or [])
     tmp_path, db_path = repo
 
     result = pipeline.run_pipeline_once(db_path, tmp_path / "data", initial_since_date=date(2026, 10, 1))
 
     assert result.errors is None
-    assert order == ["init", "KRB", "ATS"]
+    assert order == ["init", "KRB", "KRB radar", "ATS", "ATS radar"]
 
 
 # --- check F: enough same-month history before scoring ------------------------------------------

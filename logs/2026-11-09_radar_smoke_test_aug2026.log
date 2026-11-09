@@ -1,0 +1,21 @@
+first attempt (same command) failed: EEException 'Empty date ranges not supported' when the optical since-date (2026-11-04) was after until (2026-08-31); fixed in find_new_scenes/find_new_s1_scenes, test added. Re-run:
+RADAR SMOKE TEST: Sentinel-1 passes 2026-08-01..2026-08-31 on a scratch DB copy, slope limit 10.0 deg
+elapsed 56s, errors=None, recorded=12, downloaded=12
+   ('ATS', '2026-08-05T13:04', 'radar', 'ok', 95.34, 'insufficient_history')
+   ('ATS', '2026-08-06T01:05', 'radar', 'ok', 98.16, 'insufficient_history')
+   ('ATS', '2026-08-17T05:58', 'optical', 'ok', 105.84, 'ok')
+   ('ATS', '2026-08-17T13:04', 'radar', 'ok', 99.62, 'insufficient_history')
+   ('ATS', '2026-08-18T01:05', 'radar', 'ok', 99.5, 'insufficient_history')
+   ('ATS', '2026-08-22T05:58', 'optical', 'ok', 106.14, 'ok')
+   ('ATS', '2026-08-27T05:58', 'optical', 'ok', 105.9, 'ok')
+   ('ATS', '2026-08-29T13:04', 'radar', 'ok', 98.12, 'insufficient_history')
+   ('ATS', '2026-08-30T01:05', 'radar', 'ok', 99.21, 'insufficient_history')
+   ('KRB', '2026-08-05T13:05', 'radar', 'ok', 263.71, 'insufficient_history')
+   ('KRB', '2026-08-06T01:05', 'radar', 'ok', 265.82, 'insufficient_history')
+   ('KRB', '2026-08-17T05:58', 'optical', 'ok', 256.04, 'ok')
+   ('KRB', '2026-08-17T13:05', 'radar', 'ok', 263.75, 'insufficient_history')
+   ('KRB', '2026-08-18T01:05', 'radar', 'ok', 262.27, 'insufficient_history')
+   ('KRB', '2026-08-22T05:58', 'optical', 'ok', 254.37, 'ok')
+   ('KRB', '2026-08-27T05:58', 'optical', 'insufficient_observation', None, None)
+   ('KRB', '2026-08-29T13:05', 'radar', 'ok', 257.78, 'insufficient_history')
+   ('KRB', '2026-08-30T01:05', 'radar', 'ok', 259.88, 'insufficient_history')

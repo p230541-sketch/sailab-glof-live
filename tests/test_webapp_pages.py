@@ -49,14 +49,15 @@ def write_lake_window(path, lon, lat, rows=30, cols=30):
 
 # --- dashboard --------------------------------------------------------------------------------
 def test_dashboard_shows_the_real_counts(client):
-    html = client.get("/").text
-    assert ">2</div>" in html                                      # lakes monitored
-    assert ">5</div>" in html                                      # scenes recorded
-    assert "40%" in html and "2 of 5 scenes" in html               # too cloudy: 2 of 5
-    assert "of 3 downloaded scenes passed every check" in html     # usable measurements: 2 of 3
-    assert ">120</div>" in html and "Karambar Lake, 12 Jul 2026" in html
-    assert "250.00 ha on 12 Jul 2026, 120 days ago" in html
-    assert "No usable measurement yet" in html                     # ATS has none: said in words
+    text = visible_text(client.get("/").text)
+    assert "Lakes monitored 2 " in text
+    assert "Scenes recorded 5 5 optical, 0 radar" in text
+    assert "40% 2 of 5 optical scenes" in text                       # too cloudy: 2 of 5 OPTICAL scenes
+    assert "Usable measurements 2 2 of 3 optical + 0 of 0 radar passed every check" in text
+    assert "Days since a usable measurement 120 Karambar Lake, optical, 12 Jul 2026" in text
+    assert "Optical: 250.00 ha on 12 Jul 2026, 120 days ago" in text
+    assert "Radar: No usable measurement yet" in text                # no radar rows: said in words
+    assert "No usable measurement yet" in text                        # ATS has none
 
 
 def test_dashboard_banners_come_from_the_data(client):
@@ -77,9 +78,10 @@ def test_dashboard_never_shows_the_reference_designs_sample_values(client):
 # --- lake detail --------------------------------------------------------------------------------
 def test_lake_page_score_and_its_inputs(client):
     html = client.get("/lakes/KRB").text
-    assert "Deviation <span class=\"num\">+1.50</span>" in html
+    assert "Optical deviation <span class=\"num\">+1.50</span>" in html
     assert "245.00 ha" in html                                     # stored baseline
-    assert "Earlier July values</dt><dd>1 from 1 year</dd>" in html   # only 2025-07-10 is an earlier July value
+    assert "Earlier July optical values</dt><dd>1 from 1 year</dd>" in html   # only 2025-07-10 is an earlier July value
+    assert "Radar not scored" in html and "not risk-scored" in html       # radar scoring is off (2026-11-09)
 
 
 def test_lake_page_observation_log_has_every_scene_newest_first(client):
@@ -94,14 +96,17 @@ def test_lake_page_observation_log_has_every_scene_newest_first(client):
 
 def test_lake_page_marks_unbuilt_panels(client):
     html = client.get("/lakes/KRB").text
-    for title in ("Dam and glacier", "Terrain above the lake", "Recent weather", "Sentinel-1 radar"):
+    for title in ("Dam and glacier", "Terrain above the lake", "Recent weather"):
         assert f"<h2>{title}</h2>\n  <p>No data: not part of this build.</p>" in html
+    # radar IS part of the build since 2026-11-09: it must not be labelled as missing any more
+    assert "<h2>Sentinel-1 radar</h2>" not in html and "Latest usable radar image" in html
 
 
 def test_a_lake_with_no_data_says_so(client):
     html = client.get("/lakes/ATS").text
     assert "None yet" in html and "No scenes recorded for this lake yet." in html
-    assert "No risk score has been computed for this lake yet." in html
+    assert "No optical risk score has been computed for this lake yet." in html
+    assert "No usable radar measurement yet." in html
     assert client.get("/lakes/ATS/latest-image.png").status_code == 404
 
 
@@ -172,3 +177,50 @@ def test_pages_load_nothing_from_the_internet(client, url):
     refs = re.findall(r"""(?:src|href|url)\s*[=(]\s*["']?([^"' )>]+)""", body)
     external = [r for r in refs if re.match(r"(https?:)?//", r)]
     assert external == [], external
+
+
+# --- with radar rows (added 2026-11-09) -------------------------------------------------------------
+@pytest.fixture
+def radar_client(source_db, tmp_path):
+    """The conftest database plus one usable KRB radar pass on 2026-10-30 (260.00 ha, insufficient history)
+    and one refused radar pass on 2026-11-01."""
+    conn = db.connect(source_db)
+    sid = db.insert_scene(conn, 1, "sentinel-1", "2026-10-30T13:05:17+00:00", None, "data/scenes/KRB/S1A_X_1.tif")
+    mid = db.insert_measurement(conn, sid, 1, "radar", 260.0, "ok")
+    db.insert_risk_score(conn, 1, mid, "anomaly_detector", "insufficient_history", None, None)
+    sid2 = db.insert_scene(conn, 1, "sentinel-1", "2026-11-01T01:05:40+00:00", None, "data/scenes/KRB/S1A_X_2.tif")
+    db.insert_measurement(conn, sid2, 1, "radar", None, "insufficient_observation")
+    conn.close()
+    return TestClient(create_app(source_db=source_db, work_dir=tmp_path / "work", today=lambda: TODAY,
+                                 repo=tmp_path / "repo"))
+
+
+def test_dashboard_shows_radar_separately_and_cloud_share_is_optical_only(radar_client):
+    text = visible_text(radar_client.get("/").text)
+    assert "Scenes recorded 7 5 optical, 2 radar" in text
+    assert "40% 2 of 5 optical scenes" in text                      # unchanged by the radar scenes
+    assert "Usable measurements 3 2 of 3 optical + 1 of 2 radar passed every check" in text
+    assert "Days since a usable measurement 10 Karambar Lake, radar, 30 Oct 2026" in text
+    assert "Radar: 260.00 ha on 30 Oct 2026, 10 days ago" in text
+    assert "Optical: 250.00 ha on 12 Jul 2026, 120 days ago" in text  # optical value not replaced by radar
+
+
+def test_lake_page_draws_radar_as_triangles_and_labels_its_rows(radar_client):
+    html = radar_client.get("/lakes/KRB").text
+    assert html.count('class="pt-radar"') == 1 and html.count('class="pt"') == 2
+    log = html[html.index("<h2>Observation log</h2>"):]
+    assert log.count("Sentinel-1 radar") == 2 and log.count(">Refused by radar checks</span>") == 1
+    assert "Radar not scored" in html and "Optical deviation" in html
+
+
+def test_radar_image_outline_matches_the_measurement(tmp_path):
+    """Synthetic radar + DEM from test_pipeline_radar: the drawn region must be the same 36 pixels the
+    radar measurement counts."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("tpr", "tests/test_pipeline_radar.py")
+    tpr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tpr)
+    lake = {"centre_lon": 73.7053229, "centre_lat": 36.880833, "growth_distance_limit_m": 2500.0}
+    tpr.write_radar(tmp_path / "r.tif", lake)
+    tpr.write_dem(tmp_path / "dem.tif", lake)
+    assert images.render_radar_png(tmp_path / "r.tif", lake, tmp_path / "dem.tif", tmp_path / "r.png") == 36
+    assert (tmp_path / "r.png").is_file()

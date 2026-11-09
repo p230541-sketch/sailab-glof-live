@@ -43,3 +43,31 @@ def render_scene_png(tif_path: Path, lake: Mapping[str, Any], out_path: Path) ->
     scale = max(1, 480 // max(rows, cols))
     image.resize((cols * scale, rows * scale), Image.NEAREST).save(out_path)
     return len(region)
+
+
+def render_radar_png(tif_path: Path, lake: Mapping[str, Any], dem_path: Path, out_path: Path) -> int | None:
+    """VV backscatter (greyscale) with the measured radar lake region outlined, using the SAME function the
+    pipeline measured with (sailab.radar.measure_radar_scene, slope limit from pipeline). Returns the region's
+    pixel count, or None if the scene was refused (then no outline is drawn)."""
+    import rasterio
+
+    from sailab.pipeline import RADAR_SLOPE_LIMIT_DEG
+    from sailab.radar import load_slope, measure_radar_scene
+
+    outcome = measure_radar_scene(tif_path, lake, load_slope(dem_path), RADAR_SLOPE_LIMIT_DEG)
+    with rasterio.open(tif_path) as src:
+        names = list(src.descriptions)
+        vv = src.read(names.index("VV") + 1 if "VV" in names else 1).astype(float)
+    grey = np.clip((np.nan_to_num(vv, nan=-30.0) + 30.0) / 35.0, 0, 1) * 255
+    rgb = np.stack([grey] * 3, axis=-1)
+    rows, cols = vv.shape
+    if outcome.status == "ok" and outcome.region:
+        inside = np.zeros((rows, cols), dtype=bool)
+        for p in outcome.region:
+            inside[p.row, p.col] = True
+        edge = inside & ~(np.roll(inside, 1, 0) & np.roll(inside, -1, 0) & np.roll(inside, 1, 1) & np.roll(inside, -1, 1))
+        rgb[edge] = REGION_RGB
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    scale = max(1, 480 // max(rows, cols))
+    Image.fromarray(rgb.astype(np.uint8)).resize((cols * scale, rows * scale), Image.NEAREST).save(out_path)
+    return len(outcome.region) if outcome.status == "ok" and outcome.region else None

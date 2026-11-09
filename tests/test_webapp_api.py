@@ -69,7 +69,9 @@ def test_run_log_newest_first_and_totals(conn):
     assert [r["id"] for r in queries.run_log(conn)] == [2, 1]
     assert queries.latest_run(conn)["errors"] == "EarthEngineError: quota"
     assert queries.database_totals(conn) == {"lake": 2, "scene": 5, "measurement": 3, "risk_score": 2,
-                                             "run_log": 2, "too_cloudy": 2}
+                                             "run_log": 2, "too_cloudy": 2,
+                                             "optical_scenes": 5, "optical_measurements": 3, "optical_ok": 2,
+                                             "radar_scenes": 0, "radar_measurements": 0, "radar_ok": 0}
 
 
 # --- API -------------------------------------------------------------------------------------

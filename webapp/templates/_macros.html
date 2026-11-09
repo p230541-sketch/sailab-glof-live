@@ -1,11 +1,16 @@
-{% macro score_chip(score) -%}
+{% macro score_chip(score, sensor=None) -%}
+  {%- set who = (sensor ~ " ") if sensor else "" -%}
   {%- if score is none -%}
-    <span class="chip muted" title="No risk score has been computed for this lake yet">No score yet</span>
+    <span class="chip muted" title="No {{ who }}risk score has been computed for this lake yet">{{ who | capitalize }}{{ "no score yet" if sensor else "No score yet" }}</span>
   {%- elif score.status == 'insufficient_history' -%}
-    <span class="chip muted" title="Not enough earlier same-month measurements to say what is normal (check F: 5 values from 2 years)">Insufficient history</span>
+    <span class="chip muted" title="Not enough earlier same-month {{ who }}measurements to say what is normal (check F: 5 values from 2 years)">{{ who | capitalize }}{{ "insufficient history" if sensor else "Insufficient history" }}</span>
   {%- else -%}
-    <span class="chip score" title="Deviation score: standard deviations from this lake's earlier values in the same calendar month. Not a probability or danger level.">Deviation <span class="num">{{ score.deviation_score | score }}</span></span>
+    <span class="chip score{{ ' radar' if sensor == 'radar' }}" title="Deviation score: standard deviations from this lake's earlier {{ who }}values in the same calendar month. Not a probability or danger level.">{{ who | capitalize }}{{ "deviation" if sensor else "Deviation" }} <span class="num">{{ score.deviation_score | score }}</span></span>
   {%- endif -%}
+{%- endmacro %}
+
+{% macro radar_not_scored() -%}
+<span class="chip muted" title="Radar is measured and shown, but not risk-scored in this build: during snowmelt (April-June) wet snow looks like water on radar, and those errors produced false anomalies. Radar is within about 6% of optical in summer (30 pairs).">Radar not scored</span>
 {%- endmacro %}
 
 {% macro icon_info() %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>{% endmacro %}

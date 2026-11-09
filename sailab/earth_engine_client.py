@@ -61,7 +61,7 @@ class SceneInfo:
     scene_id: str                    # Earth Engine system:index, e.g. 20261021T054849_20261021T054910_T43SCA
     lake_code: str
     acquired_at: str                 # ISO-8601 UTC datetime of the satellite pass
-    tile_cloud_percent: float        # CLOUDY_PIXEL_PERCENTAGE metadata, whole tile (kept for comparison only)
+    tile_cloud_percent: float | None  # CLOUDY_PIXEL_PERCENTAGE, whole tile (Sentinel-2 only; None for radar)
     lake_cloud_percent: float | None  # our own count over the lake window; None if the window had no valid pixels
     source: str = "sentinel-2"
 
@@ -220,6 +220,8 @@ def find_new_scenes(lake: Mapping[str, Any], since_date: date, until_date: date 
     """
     until_date = until_date or datetime.now(timezone.utc).date()
     start, end = query_dates(since_date, until_date)
+    if start >= end:
+        return []          # the whole period is already covered: genuinely nothing to list (Earth Engine rejects empty ranges)
     radius_m = float(lake["boundary_radius_m"])
     try:
         rows = _list_scene_metadata(lake_aoi(lake), start, end)
@@ -277,8 +279,9 @@ def download_params(lake: Mapping[str, Any], region: Any) -> dict[str, Any]:
     }
 
 
-def check_downloaded_window(path: Path, expected_epsg: int) -> None:
-    """Refuse a file that is not the 6-band, 10 m, UTM GeoTIFF we asked for, rather than measuring it anyway."""
+def check_downloaded_window(path: Path, expected_epsg: int, bands: tuple[str, ...] | None = None) -> None:
+    """Refuse a file that is not the 10 m, UTM GeoTIFF with the bands we asked for, rather than measuring it anyway."""
+    bands = bands or DOWNLOAD_BANDS
     import rasterio  # imported here so the rest of this module works without GDAL installed
 
     with rasterio.open(path) as src:
@@ -287,21 +290,21 @@ def check_downloaded_window(path: Path, expected_epsg: int) -> None:
             problems.append(f"crs {src.crs} != EPSG:{expected_epsg}")
         if tuple(round(r, 6) for r in src.res) != (float(DOWNLOAD_SCALE_M),) * 2:
             problems.append(f"pixel size {src.res} != {DOWNLOAD_SCALE_M} m")
-        if src.count != len(DOWNLOAD_BANDS):
-            problems.append(f"{src.count} bands != {len(DOWNLOAD_BANDS)}")
+        if src.count != len(bands):
+            problems.append(f"{src.count} bands != {len(bands)}")
         if src.width < 2 or src.height < 2:
             problems.append(f"window only {src.width}x{src.height} px")
     if problems:
         raise EarthEngineError(f"downloaded file {path} is not the expected window: " + "; ".join(problems))
 
 
-def _label_bands(path: Path) -> None:
+def _label_bands(path: Path, bands: tuple[str, ...] | None = None) -> None:
     """Write the band names into the file (Earth Engine's download leaves them blank), so the file
     documents itself the same way the manual exports did. The order is the order requested."""
     import rasterio
 
     with rasterio.open(path, "r+") as dst:
-        for index, name in enumerate(DOWNLOAD_BANDS, start=1):
+        for index, name in enumerate(bands or DOWNLOAD_BANDS, start=1):
             dst.set_band_description(index, name)
 
 
@@ -340,3 +343,89 @@ def download_scene_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_pa
         raise EarthEngineError(
             f"download_scene_window failed for {scene_info.scene_id} ({lake['code']}): {type(exc).__name__}: {exc}"
         ) from exc
+
+
+# ---------------------------------------------------------------------------
+# Elevation (for the radar slope mask) and Sentinel-1 radar scenes
+# ---------------------------------------------------------------------------
+DEM_COLLECTION = "COPERNICUS/DEM/GLO30_2024_1"   # Copernicus 30 m DEM, 2024 release (GLO30 is deprecated)
+S1_COLLECTION = "COPERNICUS/S1_GRD"
+
+
+def download_dem_window(lake: Mapping[str, Any], out_path: str | Path) -> None:
+    """Elevation for the lake window, on the same 10 m UTM grid as the optical and radar windows
+    (bilinear resampling of the 30 m DEM). Static: downloaded once per lake."""
+    import requests
+
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        tiles = ee.ImageCollection(DEM_COLLECTION).select("DEM")
+        dem = tiles.mosaic().setDefaultProjection(tiles.first().projection()).resample("bilinear").toFloat()
+        region = export_region(lake)
+        params = {**download_params(lake, region), "bands": ["DEM"]}
+        response = requests.get(dem.clip(region).getDownloadURL(params), timeout=DOWNLOAD_TIMEOUT_S)
+        if response.status_code != 200 or not response.content.startswith((b"II*\x00", b"MM\x00*")):
+            raise EarthEngineError(f"DEM download failed: HTTP {response.status_code}: {response.text[:200]}")
+        out_path.write_bytes(response.content)
+    except EarthEngineError:
+        raise
+    except Exception as exc:
+        raise EarthEngineError(f"download_dem_window failed for {lake['code']}: {type(exc).__name__}: {exc}") from exc
+
+S1_BANDS = ("VV", "VH")          # backscatter in dB, as delivered by COPERNICUS/S1_GRD
+
+
+def find_new_s1_scenes(lake: Mapping[str, Any], since_date: date, until_date: date | None = None) -> list[SceneInfo]:
+    """List (never download) Sentinel-1 IW scenes with VV over the lake acquired after since_date.
+    Radar sees through cloud, so there is no cloud check. Raises EarthEngineError on any failure."""
+    until_date = until_date or datetime.now(timezone.utc).date()
+    start, end = query_dates(since_date, until_date)
+    if start >= end:
+        return []          # the whole period is already covered (Earth Engine rejects empty date ranges)
+    try:
+        collection = (ee.ImageCollection(S1_COLLECTION).filterBounds(lake_aoi(lake)).filterDate(start, end)
+                      .filter(ee.Filter.eq("instrumentMode", "IW"))
+                      .filter(ee.Filter.listContains("transmitterReceiverPolarisation", "VV"))
+                      .sort("system:time_start"))
+        features = collection.map(lambda image: ee.Feature(None, {
+            "scene_id": image.get("system:index"), "time_start": image.get("system:time_start")})).getInfo()
+        if not isinstance(features, dict) or "features" not in features:
+            raise EarthEngineError(f"unexpected response listing radar scenes: {str(features)[:200]}")
+        return [SceneInfo(scene_id=f["properties"]["scene_id"], lake_code=lake["code"],
+                          acquired_at=_ms_to_iso(f["properties"]["time_start"]), tile_cloud_percent=None,
+                          lake_cloud_percent=None, source="sentinel-1") for f in features["features"]]
+    except EarthEngineError:
+        raise
+    except Exception as exc:
+        raise EarthEngineError(f"find_new_s1_scenes failed for lake {lake['code']}: {type(exc).__name__}: {exc}") from exc
+
+
+def download_s1_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_path: str | Path) -> None:
+    """The lake window of one Sentinel-1 scene (VV, VH in dB, float32), on the same 10 m UTM grid as the
+    optical window. Same temporary-file-then-check pattern as download_scene_window()."""
+    import requests
+
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    partial = out_path.with_name(out_path.name + ".partial")
+    try:
+        image = ee.Image(f"{S1_COLLECTION}/{scene_info.scene_id}").select(list(S1_BANDS)).toFloat()
+        region = export_region(lake)
+        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(S1_BANDS)})
+        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        if response.status_code != 200:
+            raise EarthEngineError(f"radar download HTTP {response.status_code}: {response.text[:300]}")
+        if not response.content.startswith((b"II*\x00", b"MM\x00*")):
+            raise EarthEngineError(f"radar download did not return a GeoTIFF (first bytes {response.content[:16]!r})")
+        partial.write_bytes(response.content)
+        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), S1_BANDS)
+        _label_bands(partial, S1_BANDS)
+        partial.replace(out_path)
+    except EarthEngineError:
+        partial.unlink(missing_ok=True)
+        raise
+    except Exception as exc:
+        partial.unlink(missing_ok=True)
+        raise EarthEngineError(
+            f"download_s1_window failed for {scene_info.scene_id} ({lake['code']}): {type(exc).__name__}: {exc}") from exc

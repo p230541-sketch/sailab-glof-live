@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import score_chip, not_built, icon_warn %}
+{% from "_macros.html" import score_chip, radar_not_scored, not_built, icon_warn %}
 {% block title %}{{ d.lake.code }} {{ d.lake.name }}{% endblock %}
 {% block main %}
 {% set l = d.lake %}{% set s = l.summary %}
@@ -9,20 +9,22 @@
   <div class="card-head">
     <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <h1 style="margin:0"><span class="mono">{{ l.code }}</span> {{ l.name }}</h1>
-      {{ score_chip(d.score) }}
+      {{ score_chip(d.sensors.optical.score, "optical") }}{{ radar_not_scored() }}
       {% if l.data_gap %}<span class="chip muted" title="No usable observation in {{ stale_days }} days">Data gap</span>{% endif %}
     </div>
   </div>
   <div class="grid four" style="margin-top:6px">
-    <div><div class="note" style="color:var(--muted);font-size:13.5px">Latest usable area</div>
+    <div><div class="note" style="color:var(--muted);font-size:13.5px">Latest usable area, optical</div>
       <div style="font-size:22px;font-weight:600" class="mono">{{ s.latest_ok_measurement.extent_ha | ha if s.latest_ok_measurement else "None yet" }}</div>
       <div style="color:var(--muted);font-size:13.5px">{% if s.latest_ok_measurement %}{{ s.latest_ok_measurement.acquired_at | date }}, {{ s.days_since_last_ok }} days ago{% endif %}</div></div>
-    <div><div style="color:var(--muted);font-size:13.5px">Latest scene</div>
-      <div style="font-size:22px;font-weight:600">{{ s.latest_scene.acquired_at | date if s.latest_scene else "None" }}</div>
-      <div style="color:var(--muted);font-size:13.5px">{% if s.latest_scene %}{{ "too cloudy, not downloaded" if s.latest_scene.too_cloudy else (s.latest_scene.measurement_status or "").replace("_", " ") }}{% endif %}</div></div>
+    {% set rs = s.radar %}
+    <div><div style="color:var(--muted);font-size:13.5px">Latest usable area, radar</div>
+      <div style="font-size:22px;font-weight:600" class="mono">{{ rs.latest_ok_measurement.extent_ha | ha if rs.latest_ok_measurement else "None yet" }}</div>
+      <div style="color:var(--muted);font-size:13.5px">{% if rs.latest_ok_measurement %}{{ rs.latest_ok_measurement.acquired_at | date }}, {{ rs.days_since_last_ok }} days ago{% endif %}</div></div>
     <div><div style="color:var(--muted);font-size:13.5px">Scenes recorded</div>
-      <div style="font-size:22px;font-weight:600" class="mono">{{ s.counts.scenes }}</div>
-      <div style="color:var(--muted);font-size:13.5px">{{ s.counts.measured_ok }} usable, {{ s.counts.insufficient_observation }} refused, {{ s.counts.too_cloudy }} too cloudy</div></div>
+      <div style="font-size:22px;font-weight:600" class="mono">{{ s.counts.scenes + rs.counts.scenes }}</div>
+      <div style="color:var(--muted);font-size:13.5px">optical {{ s.counts.scenes }}: {{ s.counts.measured_ok }} usable, {{ s.counts.insufficient_observation }} refused, {{ s.counts.too_cloudy }} too cloudy<br>
+        radar {{ rs.counts.scenes }}: {{ rs.counts.measured_ok }} usable, {{ rs.counts.insufficient_observation }} refused</div></div>
     <div><div style="color:var(--muted);font-size:13.5px">Settings</div>
       <div style="font-size:14px;margin-top:4px"><span class="mono">{{ "%.5f" | format(l.centre_lat) }} N, {{ "%.5f" | format(l.centre_lon) }} E</span><br>
         window {{ "%.0f" | format(l.boundary_radius_m) }} m, growth limit {{ "%.0f" | format(l.growth_distance_limit_m) }} m</div></div>
@@ -40,46 +42,48 @@
       </span>
     </div>
     <div class="legend">
-      <span><i style="background:#1e4e8c"></i>Sentinel-2 optical, usable</span>
+      <span><i style="background:#1e4e8c"></i>Sentinel-2 optical</span>
+      <span><svg width="11" height="10" style="vertical-align:middle;margin-right:5px"><polygon points="5.5,0 0,10 11,10" fill="#0e7a5f"/></svg>Sentinel-1 radar</span>
       <span><i class="dash" style="background:#5b6470"></i>Seasonal baseline (where scored)</span>
-      <span><i class="bar" style="background:#1e4e8c"></i><i class="bar" style="background:#b08a2e"></i><i class="bar" style="background:#a7b0ba"></i>Scenes: measured, refused, too cloudy</span>
+      <span><i class="bar" style="background:#1e4e8c"></i><i class="bar" style="background:#0e7a5f"></i><i class="bar" style="background:#b08a2e"></i><i class="bar" style="background:#a7b0ba"></i>Scenes: measured (optical, radar), refused, too cloudy</span>
     </div>
     {% if d.chart %}{{ d.chart | safe }}{% else %}<p>No scenes recorded for this lake yet.</p>{% endif %}
-    <p class="footnote">{{ d.chart_start | date }} to {{ d.chart_end | date }}: {{ d.ok_in_range }} usable measurements.
-      Points more than 45 days apart are not joined: a gap is a gap, not a trend. Sentinel-1 radar is not part of this build.</p>
+    <p class="footnote">{{ d.chart_start | date }} to {{ d.chart_end | date }}: {{ d.ok_in_range }} usable optical and {{ d.radar_ok_in_range }} usable radar measurements.
+      Points more than 45 days apart are not joined: a gap is a gap, not a trend. Optical and radar are never joined or averaged:
+      they measure the lake slightly differently.</p>
   </section>
 
   <section class="card">
     <h2>How the latest score was made</h2>
-    {% if d.score is none %}
-      <p>No risk score has been computed for this lake yet.</p>
+    {% set sd = d.sensors.optical %}
+    <h3 style="font-size:15px;margin:0 0 8px">Optical (Sentinel-2)</h3>
+    {% if sd.score is none %}
+      <p style="margin:0;color:var(--muted)">No optical risk score has been computed for this lake yet.</p>
     {% else %}
       <dl class="kv">
-        <dt>Scene</dt><dd>{{ d.score.acquired_at | date }}</dd>
-        <dt>Measured area</dt><dd>{{ d.score.extent_ha | ha }}</dd>
-        <dt>Earlier {{ d.score.acquired_at | month }} values</dt><dd>{{ d.score_inputs.count }} from {{ d.score_inputs.years | length }} year{{ "s" if d.score_inputs.years | length != 1 }}</dd>
-        {% if d.score.status == 'ok' %}
-        <dt>Seasonal baseline</dt><dd>{{ d.score.baseline_ha | ha }}</dd>
-        <dt>Deviation score</dt><dd>{{ d.score.deviation_score | score }}</dd>
+        <dt>Scene</dt><dd>{{ sd.score.acquired_at | date }}</dd>
+        <dt>Measured area</dt><dd>{{ sd.score.extent_ha | ha }}</dd>
+        <dt>Earlier {{ sd.score.acquired_at | month }} optical values</dt><dd>{{ sd.score_inputs.count }} from {{ sd.score_inputs.years | length }} year{{ "s" if sd.score_inputs.years | length != 1 }}</dd>
+        {% if sd.score.status == 'ok' %}
+        <dt>Seasonal baseline</dt><dd>{{ sd.score.baseline_ha | ha }}</dd>
+        <dt>Deviation score</dt><dd>{{ sd.score.deviation_score | score }}</dd>
         {% else %}
         <dt>Result</dt><dd>Insufficient history</dd>
         {% endif %}
       </dl>
-      <p class="footnote">
-      {% if d.score.status == 'ok' %}
-        Baseline = mean of the earlier values for this calendar month; score = (area − baseline) ÷ their standard deviation.
-        It is a statistical deviation, not a danger level or a probability.
-      {% else %}
-        A score needs at least 5 earlier values for this calendar month from at least 2 different years. With fewer, "normal" cannot be estimated.
-      {% endif %}
-      </p>
     {% endif %}
+    <p class="footnote">Baseline = mean of the earlier optical values for this calendar month; score = (area − baseline) ÷ their
+      standard deviation. A score needs 5 earlier values from 2 years. It is a statistical deviation, not a danger level or a probability.</p>
+    <h3 style="font-size:15px;margin:18px 0 8px">Radar (Sentinel-1)</h3>
+    <p style="margin:0;font-size:14.5px">Radar is measured and shown, but <strong>not risk-scored</strong> in this build. In summer it agrees with
+      optical to within about 6% (30 pairs within 3 days), but during snowmelt (April to June) wet snow looks like water on radar,
+      and those errors produced the largest false anomalies. Scoring stays off until a melt-season check has been tested.</p>
   </section>
 </div>
 
 <div class="grid two mt">
   <section class="card">
-    <h2>Latest usable image</h2>
+    <h2>Latest usable optical image</h2>
     {% if d.image is none %}
       <p>No usable image yet.</p>
     {% elif not d.image.available %}
@@ -91,12 +95,27 @@
         same measurement code; stored area {{ d.image.extent_ha | ha }}.</p>
     {% endif %}
   </section>
-  <div class="grid" style="grid-template-columns:1fr 1fr;align-content:start">
+  <section class="card">
+    <h2>Latest usable radar image</h2>
+    {% set ri = d.sensors.radar.image %}
+    {% if ri is none %}
+      <p>No usable radar measurement yet.</p>
+    {% elif not ri.available %}
+      <div class="banner warn">{{ icon_warn() }}<div>The radar file for {{ ri.acquired_at | date }} is not on this machine
+        (<span class="mono">{{ ri.file_path }}</span>).</div></div>
+    {% else %}
+      <img class="scene-img" src="/lakes/{{ l.code }}/latest-radar.png" alt="Sentinel-1 VV backscatter, {{ ri.acquired_at | date }}, with the measured lake outline">
+      <p class="footnote">Sentinel-1 VV backscatter, {{ ri.acquired_at | date }} (dark = smooth surface such as water). Yellow outline: the lake
+        region, recomputed with the same radar code (slope mask, then Otsu over flat ground); stored area {{ ri.extent_ha | ha }}.</p>
+    {% endif %}
+  </section>
+</div>
+
+<div class="grid three mt">
     {{ not_built("Dam and glacier") }}
     {{ not_built("Terrain above the lake") }}
     {{ not_built("Recent weather") }}
-    {{ not_built("Sentinel-1 radar") }}
-  </div>
+</div>
 </div>
 
 <section class="card table-card mt">
@@ -107,8 +126,8 @@
     {% set q = quality(r) %}
     <tr class="{{ 'dim' if q[0] != 'ok' }}">
       <td class="mono">{{ r.acquired_at | date }}</td>
-      <td>Sentinel-2 optical</td>
-      <td class="num">{{ "%.1f%%" | format(r.cloud_fraction) if r.cloud_fraction is not none else "no valid pixels" }}</td>
+      <td>{% if r.source == "sentinel-1" %}<svg width="9" height="8" style="margin-right:4px"><polygon points="4.5,0 0,8 9,8" fill="#0e7a5f"/></svg>Sentinel-1 radar{% else %}<i class="dot" style="background:#1e4e8c"></i>Sentinel-2 optical{% endif %}</td>
+      <td class="num">{% if r.source == "sentinel-1" %}<span style="color:var(--muted)">not applicable</span>{% else %}{{ "%.1f%%" | format(r.cloud_fraction) if r.cloud_fraction is not none else "no valid pixels" }}{% endif %}</td>
       <td class="num">{{ r.extent_ha | ha }}</td>
       <td><span class="chip {{ q[0] }}">{{ q[1] }}</span></td>
       <td>{% if r.risk_status == 'ok' %}<span class="mono">{{ r.deviation_score | score }}</span>{% elif r.risk_status == 'insufficient_history' %}<span style="color:var(--muted)">insufficient history</span>{% else %}—{% endif %}</td>
@@ -120,7 +139,8 @@
     {% if d.page > 1 %}<a href="?range={{ d.range_key }}&page={{ d.page - 1 }}">‹ Newer</a>{% endif %}
     {% if d.page < d.pages %}<a href="?range={{ d.range_key }}&page={{ d.page + 1 }}">Older ›</a>{% endif %}
   </div>
-  <p class="footnote" style="padding:0 20px 16px">"Refused by quality checks": centre not water, cloud or snow/ice touching the lake, or the lake cut off at the window edge.
+  <p class="footnote" style="padding:0 20px 16px">"Refused by quality checks" (optical): centre not water, cloud or snow/ice touching the lake, or the lake cut off at the window edge.
+    "Refused by radar checks": centre not darker than the radar threshold, or the region reaching the window edge.
     The exact reason for each scene is in that run's log file (logs/runs/).</p>
 </section>
 {% endblock %}

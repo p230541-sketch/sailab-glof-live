@@ -1,0 +1,6 @@
+changed_at: 2026-11-09T12:05:46+00:00
+why: radar risk scoring turned off (pipeline.SCORE_RADAR = False); see logs/2026-11-09_radar_validation.log
+archived copy with the radar scores: data/archive_v1/sailab_glof_radar_scored_before_unscore.db
+risk_score rows by sensor, before: {'optical': 45, 'radar': 361}
+deleted 361 radar risk_score rows; after: {'optical': 45}
+radar measurements kept: [('insufficient_observation', 79), ('ok', 361)]

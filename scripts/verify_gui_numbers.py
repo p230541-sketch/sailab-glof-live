@@ -50,17 +50,22 @@ def main() -> int:
         rows.append(f"| {screen} | {label} | `{expected}` | {source} | {'yes' if found else 'NO'} |")
 
     dash = page_text(client, "/")
-    n_scene = q("SELECT COUNT(*) FROM scene")[0]
-    n_cloudy = q("SELECT COUNT(*) FROM scene WHERE file_path LIKE 'not_downloaded/%'")[0]
-    n_meas = q("SELECT COUNT(*) FROM measurement")[0]
-    n_ok = q("SELECT COUNT(*) FROM measurement WHERE status = 'ok'")[0]
+    count = lambda sql, *a: q(sql, *a)[0]  # noqa: E731
+    n_scene = count("SELECT COUNT(*) FROM scene")
+    n_opt = count("SELECT COUNT(*) FROM scene WHERE source = 'sentinel-2'")
+    n_rad = count("SELECT COUNT(*) FROM scene WHERE source = 'sentinel-1'")
+    n_cloudy = count("SELECT COUNT(*) FROM scene WHERE file_path LIKE 'not_downloaded/%'")
+    m = {sen: (count("SELECT COUNT(*) FROM measurement WHERE sensor = ?", sen),
+               count("SELECT COUNT(*) FROM measurement WHERE sensor = ? AND status = 'ok'", sen)) for sen in ("optical", "radar")}
     first, last = q("SELECT MIN(acquired_at), MAX(acquired_at) FROM scene")
-    check("Dashboard", "Lakes monitored", dash, f"Lakes monitored {q('SELECT COUNT(*) FROM lake')[0]}", "COUNT(lake)")
-    check("Dashboard", "Scenes recorded", dash, f"Scenes recorded {n_scene}", "COUNT(scene)")
-    check("Dashboard", "Scene date range", dash, f"{fd(first)} to {fd(last)}", "MIN/MAX(scene.acquired_at)")
-    check("Dashboard", "Too cloudy", dash, f"{round(100 * n_cloudy / n_scene)}%", "not_downloaded scenes / all scenes")
-    check("Dashboard", "Too cloudy count", dash, f"{n_cloudy} of {n_scene} scenes", "same")
-    check("Dashboard", "Usable measurements", dash, f"Usable measurements {n_ok} of {n_meas} downloaded", "measurement.status = ok")
+    check("Dashboard", "Lakes monitored", dash, f"Lakes monitored {count('SELECT COUNT(*) FROM lake')}", "COUNT(lake)")
+    check("Dashboard", "Scenes recorded", dash, f"Scenes recorded {n_scene} {n_opt} optical, {n_rad} radar; {fd(first)} to {fd(last)}",
+          "COUNT(scene) by source, MIN/MAX(acquired_at)")
+    check("Dashboard", "Too cloudy", dash, f"{round(100 * n_cloudy / n_opt)}% {n_cloudy} of {n_opt} optical scenes",
+          "not_downloaded scenes / optical scenes")
+    check("Dashboard", "Usable measurements", dash,
+          f"Usable measurements {m['optical'][1] + m['radar'][1]} {m['optical'][1]} of {m['optical'][0]} optical + "
+          f"{m['radar'][1]} of {m['radar'][0]} radar passed every check", "measurement.status = ok, by sensor")
     run = q("SELECT * FROM run_log ORDER BY id DESC LIMIT 1")
     check("Dashboard", "Last pipeline run", dash,
           "Last pipeline run " + datetime.fromisoformat(run["started_at"]).astimezone(PKT).strftime("%d %b %Y, %H:%M PKT"),
@@ -69,49 +74,65 @@ def main() -> int:
     for lake in db.execute("SELECT * FROM lake ORDER BY id").fetchall():
         lid, code = lake["id"], lake["code"]
         detail = page_text(client, f"/lakes/{code}")
-        latest = q("""SELECT s.acquired_at, m.extent_ha, s.file_path FROM measurement m JOIN scene s ON s.id = m.scene_id
-                      WHERE m.lake_id = ? AND m.status = 'ok' ORDER BY s.acquired_at DESC LIMIT 1""", lid)
-        if latest is None:
-            check("Dashboard", f"{code} latest usable", dash, "No usable measurement yet", "no ok measurement")
-            continue
-        days = (today - datetime.fromisoformat(latest[0]).date()).days
-        check("Dashboard", f"{code} latest usable", dash, f"{latest[1]:.2f} ha on {fd(latest[0])}, {days} days ago", "newest ok measurement")
-        score = q("""SELECT r.status, r.baseline_ha, r.deviation_score, s.acquired_at, m.extent_ha FROM risk_score r
-                     JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
-                     WHERE r.lake_id = ? ORDER BY s.acquired_at DESC LIMIT 1""", lid)
-        chip = ("Insufficient history" if score["status"] == "insufficient_history"
-                else f"Deviation {score['deviation_score']:+.2f}".replace("-", "−"))
-        check("Dashboard", f"{code} score", dash, chip, "newest risk_score")
-        c = q("""SELECT COUNT(*) n, SUM(s.file_path LIKE 'not_downloaded/%') cloudy, SUM(m.status = 'ok') ok,
-                 SUM(m.status = 'insufficient_observation') refused FROM scene s LEFT JOIN measurement m ON m.scene_id = s.id
-                 WHERE s.lake_id = ?""", lid)
-        check("Lake Detail", f"{code} scenes", detail,
-              f"Scenes recorded {c['n']} {c['ok']} usable, {c['refused']} refused, {c['cloudy']} too cloudy", "scene + measurement counts")
-        check("Lake Detail", f"{code} latest usable", detail, f"{latest[1]:.2f} ha {fd(latest[0])}, {days} days ago", "newest ok measurement")
+        counts = {}
+        for sensor, source in (("optical", "sentinel-2"), ("radar", "sentinel-1")):
+            label = sensor.capitalize()
+            latest = q("""SELECT s.acquired_at, m.extent_ha, s.file_path FROM measurement m JOIN scene s ON s.id = m.scene_id
+                          WHERE m.lake_id = ? AND m.status = 'ok' AND m.sensor = ? ORDER BY s.acquired_at DESC LIMIT 1""", lid, sensor)
+            counts[sensor] = q("""SELECT COUNT(*) n, COALESCE(SUM(s.file_path LIKE 'not_downloaded/%'), 0) cloudy,
+                     COALESCE(SUM(m.status = 'ok'), 0) ok, COALESCE(SUM(m.status = 'insufficient_observation'), 0) refused
+                     FROM scene s LEFT JOIN measurement m ON m.scene_id = s.id WHERE s.lake_id = ? AND s.source = ?""", lid, source)
+            if latest is None:
+                check("Dashboard", f"{code} {sensor} latest", dash, f"{label}: No usable measurement yet", "no ok measurement")
+                continue
+            days = (today - datetime.fromisoformat(latest[0]).date()).days
+            check("Dashboard", f"{code} {sensor} latest", dash, f"{label}: {latest[1]:.2f} ha on {fd(latest[0])}, {days} days ago",
+                  f"newest ok {sensor} measurement")
+            check("Lake Detail", f"{code} {sensor} latest", detail,
+                  f"Latest usable area, {sensor} {latest[1]:.2f} ha {fd(latest[0])}, {days} days ago", f"newest ok {sensor} measurement")
+            score = q("""SELECT r.status, r.baseline_ha, r.deviation_score, s.acquired_at, m.extent_ha FROM risk_score r
+                         JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
+                         WHERE r.lake_id = ? AND m.sensor = ? ORDER BY s.acquired_at DESC LIMIT 1""", lid, sensor)
+            if sensor == "radar":
+                # radar risk scoring is off (pipeline.SCORE_RADAR): no radar score may exist, and the page must say so
+                none_stored = score is None
+                failures += not none_stored
+                rows.append(f"| Database | {code} radar risk scores | none | risk_score rows for radar measurements | "
+                            f"{'yes (none stored)' if none_stored else 'NO: radar scores found'} |")
+                check("Dashboard", f"{code} radar chip", dash, "Radar not scored", "SCORE_RADAR is off")
+            elif score is not None:
+                chip = (f"{label} insufficient history" if score["status"] == "insufficient_history"
+                        else f"{label} deviation {score['deviation_score']:+.2f}".replace("-", "−"))
+                check("Dashboard", f"{code} {sensor} score", dash, chip, f"newest {sensor} risk_score")
+                when = datetime.fromisoformat(score["acquired_at"])
+                earlier = db.execute("""SELECT substr(s.acquired_at, 1, 4) FROM measurement mm JOIN scene s ON s.id = mm.scene_id
+                                        WHERE mm.lake_id = ? AND mm.status = 'ok' AND mm.sensor = ? AND substr(s.acquired_at, 6, 2) = ?
+                                        AND s.acquired_at < ?""", (lid, sensor, when.strftime("%m"), score["acquired_at"][:10])).fetchall()
+                years = len({r[0] for r in earlier})
+                check("Lake Detail", f"{code} {sensor} score inputs", detail,
+                      f"Scene {fd(score['acquired_at'])} Measured area {score['extent_ha']:.2f} ha Earlier {when.strftime('%B')} {sensor} values "
+                      f"{len(earlier)} from {years} year{'s' if years != 1 else ''}", f"newest {sensor} risk_score and its inputs")
+                if score["status"] == "ok":
+                    check("Lake Detail", f"{code} {sensor} baseline/score", detail,
+                          f"Seasonal baseline {score['baseline_ha']:.2f} ha Deviation score {score['deviation_score']:+.2f}".replace("-", "−"),
+                          "risk_score.baseline_ha / deviation_score")
+            tif, dem = REPO / latest[2], REPO / "data" / "dem" / f"{code}_dem.tif"
+            if tif.is_file() and (sensor == "optical" or dem.is_file()):
+                out = Path(tempfile.mkdtemp()) / "x.png"
+                px = (images.render_scene_png(tif, dict(lake), out) if sensor == "optical"
+                      else images.render_radar_png(tif, dict(lake), dem, out))
+                same = px is not None and abs(px / 100 - latest[1]) < 1e-9
+                failures += not same
+                rows.append(f"| Lake Detail | {code} {sensor} image outline | `{px} px` | recomputed from {latest[2]}, stored "
+                            f"{latest[1]:.2f} ha | {'yes' if same else 'NO'} |")
+            else:
+                rows.append(f"| Lake Detail | {code} {sensor} image outline | (file not on this machine) | {latest[2]} | skipped |")
+        o, r = counts["optical"], counts["radar"]
+        check("Lake Detail", f"{code} scene counts", detail,
+              f"Scenes recorded {o['n'] + r['n']} optical {o['n']}: {o['ok']} usable, {o['refused']} refused, {o['cloudy']} too cloudy "
+              f"radar {r['n']}: {r['ok']} usable, {r['refused']} refused", "scene + measurement counts by source")
         check("Lake Detail", f"{code} settings", detail,
               f"window {lake['boundary_radius_m']:.0f} m, growth limit {lake['growth_distance_limit_m']:.0f} m", "lake row")
-        check("Lake Detail", f"{code} score scene", detail, f"Scene {fd(score['acquired_at'])}", "newest risk_score")
-        check("Lake Detail", f"{code} score area", detail, f"Measured area {score['extent_ha']:.2f} ha", "its measurement")
-        if score["status"] == "ok":
-            check("Lake Detail", f"{code} baseline", detail, f"Seasonal baseline {score['baseline_ha']:.2f} ha", "risk_score.baseline_ha")
-            check("Lake Detail", f"{code} deviation", detail,
-                  f"Deviation score {score['deviation_score']:+.2f}".replace("-", "−"), "risk_score.deviation_score")
-        when = datetime.fromisoformat(score["acquired_at"])
-        earlier = db.execute("""SELECT substr(s.acquired_at, 1, 4) FROM measurement m JOIN scene s ON s.id = m.scene_id
-                                WHERE m.lake_id = ? AND m.status = 'ok' AND substr(s.acquired_at, 6, 2) = ?
-                                AND s.acquired_at < ?""", (lid, when.strftime("%m"), score["acquired_at"][:10])).fetchall()
-        years = len({r[0] for r in earlier})
-        check("Lake Detail", f"{code} same-month values", detail,
-              f"Earlier {when.strftime('%B')} values {len(earlier)} from {years} year{'s' if years != 1 else ''}", "ok, same month, earlier")
-        tif = REPO / latest[2]
-        if tif.is_file():
-            px = images.render_scene_png(tif, dict(lake), Path(tempfile.mkdtemp()) / "x.png")
-            same = abs(px / 100 - latest[1]) < 1e-9
-            failures += not same
-            rows.append(f"| Lake Detail | {code} image outline | `{px} px = {px / 100:.2f} ha` | recomputed from {latest[2]} | "
-                        f"{'yes' if same else 'NO'} |")
-        else:
-            rows.append(f"| Lake Detail | {code} image outline | (file not on this machine) | {latest[2]} | skipped |")
 
     print(f"checked {datetime.now(timezone.utc).isoformat(timespec='seconds')}, database commit "
           f"{client.get('/api/provenance').json()['git_commit']}\n")

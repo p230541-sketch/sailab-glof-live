@@ -308,3 +308,14 @@ def test_an_earth_engine_error_during_download_is_wrapped(tmp_path):
     with mock.patch.object(eec, "ee", fake_ee):
         with pytest.raises(eec.EarthEngineError, match="User memory limit exceeded"):
             eec.download_scene_window(SCENE, KARAMBAR, tmp_path / "scene.tif")
+
+
+def test_a_period_already_covered_returns_nothing_without_asking_earth_engine():
+    """Found by the radar smoke test, 2026-11-09: since 2026-11-04, until 2026-08-31 made an empty date range,
+    which Earth Engine rejects ('Empty date ranges not supported'). Nothing to list is the honest answer."""
+    fake_ee = mock.MagicMock()
+    with mock.patch.object(eec, "ee", fake_ee):
+        assert eec.find_new_scenes(KARAMBAR, date(2026, 11, 4), date(2026, 8, 31)) == []
+        assert eec.find_new_s1_scenes(KARAMBAR, date(2026, 11, 4), date(2026, 8, 31)) == []
+        assert eec.find_new_scenes(KARAMBAR, date(2026, 8, 31), date(2026, 8, 31)) == []    # since == until: nothing after
+    fake_ee.ImageCollection.assert_not_called()
