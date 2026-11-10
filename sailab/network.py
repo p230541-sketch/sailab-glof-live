@@ -6,6 +6,10 @@ that tracks, for each node, the earliest-discovered node reachable from it
 through a back edge. Written iteratively (an explicit stack rather than
 recursive calls) so it scales to a road network larger than Python's
 recursion limit would allow.
+
+The newer method is also here: chain decomposition (Schmidt, 2013, "A simple test on 2-vertex- and
+2-edge-connectivity", Information Processing Letters 113(7), 241-244). It finds the same bridges, and
+each of its steps can be drawn on paper: see chain_decomposition().
 """
 from __future__ import annotations
 from collections import defaultdict
@@ -74,3 +78,81 @@ def find_bridges(graph: RoadGraph) -> set[frozenset[str]]:
                     bridges.add(frozenset({top_node, child}))
 
     return bridges
+
+
+# ---------------------------------------------------------------------------
+# Chain decomposition (Schmidt, 2013): the newer way to find the same bridges
+# ---------------------------------------------------------------------------
+def chain_decomposition(graph: RoadGraph) -> list[list[str]]:
+    """Split the graph's cycles into "chains" (Schmidt 2013, Section 2). Each chain is a list of junctions.
+
+    The paper's procedure, step by step:
+      1. Depth-first search. Each junction gets a number in the order it is first reached (its DFI,
+         depth-first index). The roads the search walked along are "tree edges"; every other road is a
+         "backedge", and it always joins a junction to one of its own descendants in the search tree.
+      2. Mark every junction unvisited.
+      3. Take the junctions in ascending DFI order. For every backedge that starts at junction v (v is
+         the end nearer the root): walk along the backedge, then up the tree towards the root, marking
+         each junction visited, and stop at the first junction that is already visited. The junctions
+         walked, in order, are one chain. A chain is a closed loop or an open path.
+
+    Why it works: a backedge plus the tree path between its two ends is a closed loop, so every road on
+    it has another way round. A road that no chain ever walks is on no loop at all.
+
+    The paper assumes one connected graph. A road network can be in several pieces, so here the same
+    procedure is run once per piece (a bridge is decided inside its own piece, so nothing changes).
+    Like find_bridges, this treats the graph as simple: two parallel roads between the same two
+    junctions count as one road.
+    """
+    dfi: dict[str, int] = {}                 # depth-first index of each junction
+    parent: dict[str, str | None] = {}       # the junction the search came from (None for a root)
+    order: list[str] = []                    # junctions in ascending DFI order
+
+    for root in graph.nodes():
+        if root in dfi:
+            continue
+        dfi[root] = len(order)
+        parent[root] = None
+        order.append(root)
+        stack: list[tuple[str, Iterator[str]]] = [(root, iter(graph.neighbours(root)))]
+        while stack:
+            node, neighbour_iter = stack[-1]
+            for neighbour in neighbour_iter:
+                if neighbour not in dfi:
+                    dfi[neighbour] = len(order)
+                    parent[neighbour] = node
+                    order.append(neighbour)
+                    stack.append((neighbour, iter(graph.neighbours(neighbour))))
+                    break
+            else:
+                stack.pop()
+
+    visited: set[str] = set()
+    chains: list[list[str]] = []
+    for v in order:
+        for w in graph.neighbours(v):
+            # A backedge starting at v: w was reached later than v, and not along the road v-w itself.
+            if dfi[w] <= dfi[v] or parent[w] == v:
+                continue
+            visited.add(v)
+            chain = [v]
+            current: str | None = w
+            while current is not None:
+                chain.append(current)
+                if current in visited:
+                    break                    # stop at the first junction that is already visited
+                visited.add(current)
+                current = parent[current]    # one step up the tree, towards the root
+            chains.append(chain)
+    return chains
+
+
+def find_bridges_by_chains(graph: RoadGraph) -> set[frozenset[str]]:
+    """Every bridge, found with chain decomposition: a road is a bridge exactly when no chain contains it
+    (Schmidt 2013, Lemma 4). Must always equal find_bridges(), which uses Tarjan's method."""
+    in_a_chain: set[frozenset[str]] = set()
+    for chain in chain_decomposition(graph):
+        for a, b in zip(chain, chain[1:]):
+            in_a_chain.add(frozenset({a, b}))
+    all_roads = {frozenset({u, v}) for u in graph.nodes() for v in graph.neighbours(u) if u != v}
+    return all_roads - in_a_chain

@@ -274,7 +274,7 @@ whose SHA-256 values match the run log (`logs/2026-11-10_scheduled_run_2_report.
 | Our slope code equals `numpy.gradient`; 98–99 % of pixels agree with Earth Engine's slope on the 10° mask | `logs/2026-11-09_slope_reference_check.log` |
 | Radar vs optical within 3 days: Karambar +5.2 %, Atro Sar −6.4 %, on 16 independent summer optical scenes from 2 lakes | `logs/2026-11-09_radar_validation.log`, `logs/2026-11-09_radar_validation_independence.log` |
 
-**About the tests (279, all passing):** most use small synthetic grids with hand-calculated expected
+**About the tests (287, all passing):** most use small synthetic grids with hand-calculated expected
 answers — they prove the algorithms compute correctly, **not** real-world accuracy. Four use the
 project's three original real GeoTIFFs in `tests/data/` (Karambar and Atro Sar Sentinel-2, Karambar SAR). The Earth Engine tests replace Earth Engine with a
 mock (stated in the test file); the real connection is proven only by the live-run logs. The 20
@@ -374,7 +374,7 @@ scripts/
   check_slope_reference.py compare our slope code with two independent references
   check_scene_recompute.py re-measure every stored scene from its file and compare with the database
 docs/                      reference designs, side-by-side comparison, demo script
-tests/                     279 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
+tests/                     287 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
 data/dem/                  Copernicus DEM windows for the radar slope mask
 logs/                      verification logs; logs/runs/ has one log per pipeline run
 sailab_glof.db             the database (open with DB Browser for SQLite)
