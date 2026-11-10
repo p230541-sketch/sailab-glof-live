@@ -16,14 +16,16 @@ running automatically on real Sentinel-2 satellite data.
 
 ## What runs automatically
 
-Every night at **23:00 Pakistan time (18:00 UTC)**, GitHub Actions
-([`.github/workflows/daily_run.yml`](.github/workflows/daily_run.yml)) does the following with no
-human involved:
+A **local scheduler** ([`scripts/scheduler.py`](scripts/scheduler.py)) is started once and left running.
+It wakes up every **24 hours** (`SAILAB_RUN_INTERVAL_HOURS`), does the following with no human involved,
+then sleeps until the next wake-up. (Until 2026-11-10 this was a GitHub Actions workflow with a bot
+that committed the results; that workflow has been removed. The run table below is the record of
+that period.)
 
-1. Installs the pinned packages and runs the **full test suite** (246 tests). If any test fails, the
-   pipeline does not run, so broken code can never write to the database.
-2. Signs in to Google Earth Engine with a **service-account key** stored as an encrypted GitHub
-   secret (no browser, no person).
+1. Runs the **full test suite**. If any test fails, the pipeline does not run, so broken code can
+   never write to the database.
+2. Signs in to Google Earth Engine with a **service-account key** read from the git-ignored `.env`
+   file on this machine (no browser, no person). See [Running it yourself](#running-it-yourself).
 3. For each lake, lists new Sentinel-2 scenes since the newest one already stored, and measures the
    **cloud over the lake itself** (not over the whole 100 km tile), using Sentinel-2's own scene
    classification band and our own counting code.
@@ -35,11 +37,15 @@ human involved:
    downloads the lake window (VV, VH), measures the lake, and stores it as a `radar` measurement.
    Radar is **not risk-scored** (see [Radar](#radar-sentinel-1)).
 8. Writes a `run_log` row (start, finish, counts, and the **real error text** if anything failed),
-   writes a timestamped log file to `logs/runs/`, and **commits the database and logs back to this
-   repository** — also after a failed run, so failures stay visible.
+   and writes a timestamped log file to `logs/runs/` — also after a failed run, so failures stay
+   visible. **Nothing is committed or pushed automatically**: the database and logs on this machine
+   are the record, and sharing them is a `git commit` by hand.
 
-The run history is public: open the **Actions** tab of this repository. Each bot commit
-("Automated run: <UTC time> (success|failure)") contains that run's log.
+After a failed run the scheduler tries again after 30 minutes (`SAILAB_RETRY_MINUTES`), at most 3
+times in a row, then goes back to the normal interval. Its own wake-up log is `logs/scheduler.log`.
+
+The runs below are from the GitHub Actions period (each bot commit, "Automated run: <UTC time>
+(success|failure)", contains that run's log).
 
 ⏳ **Scheduled runs so far: 2** (of the 3 on different days needed).
 
@@ -268,7 +274,7 @@ whose SHA-256 values match the run log (`logs/2026-11-10_scheduled_run_2_report.
 | Our slope code equals `numpy.gradient`; 98–99 % of pixels agree with Earth Engine's slope on the 10° mask | `logs/2026-11-09_slope_reference_check.log` |
 | Radar vs optical within 3 days: Karambar +5.2 %, Atro Sar −6.4 %, on 16 independent summer optical scenes from 2 lakes | `logs/2026-11-09_radar_validation.log`, `logs/2026-11-09_radar_validation_independence.log` |
 
-**About the tests (246, all passing):** most use small synthetic grids with hand-calculated expected
+**About the tests (262, all passing):** most use small synthetic grids with hand-calculated expected
 answers — they prove the algorithms compute correctly, **not** real-world accuracy. Four use the
 project's three original real GeoTIFFs in `tests/data/` (Karambar and Atro Sar Sentinel-2, Karambar SAR). The Earth Engine tests replace Earth Engine with a
 mock (stated in the test file); the real connection is proven only by the live-run logs. The 20
@@ -358,7 +364,8 @@ sailab/
 webapp/                    FastAPI + Jinja2 app: pages, offline SVG charts, live check, design previews
 app.py                     web app entry point (uvicorn app:app)
 scripts/
-  run_once.py              entry point (GitHub Actions); --backfill for the one-off historical run
+  scheduler.py             stays running: wakes on a timer, runs the tests, then run_once.py
+  run_once.py              one pipeline run (called by the scheduler); --backfill for the one-off historical run
   init_db.py               create the database and seed the two lakes
   verify_gui_numbers.py    check every number on the two real screens against the database
   validate_radar.py        compare radar with optical measured within 3 days
@@ -367,7 +374,7 @@ scripts/
   check_slope_reference.py compare our slope code with two independent references
   check_scene_recompute.py re-measure every stored scene from its file and compare with the database
 docs/                      reference designs, side-by-side comparison, demo script
-tests/                     246 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
+tests/                     262 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
 data/dem/                  Copernicus DEM windows for the radar slope mask
 logs/                      verification logs; logs/runs/ has one log per pipeline run
 sailab_glof.db             the database (open with DB Browser for SQLite)
@@ -380,12 +387,21 @@ python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -m pytest tests/ -q          # no credentials needed
 ```
 
-A live run needs an Earth Engine service-account key, either in the `EE_SERVICE_ACCOUNT_KEY`
-environment variable (the key's JSON text) or at `~/.config/sailab/ee-key.json`:
+A live run needs an Earth Engine service-account key. Copy `.env.example` to `.env` and set
+`EE_SERVICE_ACCOUNT_KEY_FILE` to the key's `.json` file (or `EE_SERVICE_ACCOUNT_KEY` to the key's
+JSON text). Then start the scheduler and leave it running:
 
 ```bash
-.venv/bin/python scripts/run_once.py
+.venv/bin/python scripts/scheduler.py                     # a run now, then one every 24 hours
+.venv/bin/python scripts/scheduler.py --interval-hours 6  # a different interval
+.venv/bin/python scripts/scheduler.py --once              # one run now, then exit
 ```
 
-Never commit the key. The GitHub workflow reads it from the repository secret
-`EE_SERVICE_ACCOUNT_KEY`.
+On Windows use `.venv\Scripts\python` instead of `.venv/bin/python`. To start the scheduler again
+after a restart, add it to Task Scheduler:
+`schtasks /Create /TN "SailAb GLOF" /SC ONLOGON /TR "<repo>\.venv\Scripts\python.exe <repo>\scripts\scheduler.py"`
+
+`scripts/run_once.py` on its own still does a single run, but it does not read `.env`: it needs the
+key in the environment or at `~/.config/sailab/ee-key.json`.
+
+Never commit the key. `.env` and key files are git-ignored.

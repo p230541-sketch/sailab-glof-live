@@ -330,9 +330,9 @@ def run_pipeline_once(db_path: str | Path, data_dir: str | Path, initial_since_d
 def _process_scene(conn, client, lake, scene, data_dir: Path, repo_root: Path, result: RunResult) -> None:
     raster = data_dir / lake["code"] / f"{scene.scene_id}.tif"
     try:
-        stored_path = str(raster.resolve().relative_to(repo_root))
+        stored_path = raster.resolve().relative_to(repo_root).as_posix()   # forward slashes on every system: _already_recorded matches on "/<scene id>.tif"
     except ValueError:
-        stored_path = str(raster.resolve())
+        stored_path = raster.resolve().as_posix()
     skipped_path = f"{NOT_DOWNLOADED_PREFIX}{lake['code']}/{scene.scene_id}"
     if _already_recorded(conn, lake["id"], scene.scene_id):
         log.info("%s %s: already recorded, skipped", lake["code"], scene.scene_id)
@@ -415,9 +415,9 @@ def _process_radar_scene(conn, client, lake, scene, slope, data_dir: Path, repo_
         return
     raster = data_dir / lake["code"] / f"{scene.scene_id}.tif"
     try:
-        stored_path = str(raster.resolve().relative_to(repo_root))
+        stored_path = raster.resolve().relative_to(repo_root).as_posix()   # forward slashes on every system: _already_recorded matches on "/<scene id>.tif"
     except ValueError:
-        stored_path = str(raster.resolve())
+        stored_path = raster.resolve().as_posix()
     client.download_s1_window(scene, lake, raster)
     scene_row = db.insert_scene(conn, lake["id"], "sentinel-1", scene.acquired_at, None, stored_path)
     result.scenes_recorded += 1

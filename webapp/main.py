@@ -56,7 +56,10 @@ def make_working_copy(source_db: Path, work_dir: Path) -> dict[str, Any]:
     tmp = work_dir / (WORKING_COPY_NAME + ".tmp")
     shutil.copy2(source_db, tmp)
     os.replace(tmp, copy)
-    rel = os.path.relpath(source_db, REPO)
+    try:
+        rel = os.path.relpath(source_db, REPO)
+    except ValueError:   # Windows: the database is on a different drive from the repository
+        rel = str(source_db)
     committed_db_status = _git("status", "--porcelain", "--", rel)
     return {
         "source_db": str(source_db),

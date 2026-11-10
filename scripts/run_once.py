@@ -1,7 +1,7 @@
-"""Entry point for one automatic pipeline run (called daily by GitHub Actions, or by hand).
+"""Entry point for one automatic pipeline run (called by scripts/scheduler.py on a timer, or by hand).
 
 Exit code 0 only for a clean run. Any error recorded in run_log makes this exit 1,
-so the GitHub Actions run is marked failed (red), never falsely green.
+so the scheduler logs the run as failed and retries sooner, never falsely OK.
 Every run writes its own timestamped log file to logs/runs/.
 """
 from __future__ import annotations

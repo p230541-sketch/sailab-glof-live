@@ -48,10 +48,10 @@ satellite data. Downstream Analysis (flood path, roads, bridges) and Alerting we
 | Lakes | **Karambar Lake (KRB)** and **Atro Sar (ATS)**, Gilgit-Baltistan |
 | Satellites | **Sentinel-2** (optical, cloud-blocked) and **Sentinel-1** (radar, sees through cloud) |
 | Data source | ESA Copernicus data through **Google Earth Engine**, signed in with a service account (no person needed) |
-| Runs | **GitHub Actions**, every night at **23:00 PKT (18:00 UTC)**, commits its results back to the repository |
+| Runs | **A local scheduler** (`scripts/scheduler.py`), every **24 hours** on the machine it is started on; results stay in the local database and logs (until 10 Nov 2026: GitHub Actions, nightly at 23:00 PKT, committing its results back) |
 | Stores | One SQLite database, `sailab_glof.db` (5 tables) |
 | Shows | A local web app (FastAPI + Jinja2): Dashboard, Lake Detail, a page per scene (NDWI / radar threshold views), Live check, three inert design previews; reloads itself after a `git pull` |
-| Code | **3,958 lines** of new code (new `sailab/` modules, `webapp/` Python, templates and CSS, `scripts/`, `app.py`; tests not counted), **246 tests**, all passing |
+| Code | **3,958 lines** of new code (new `sailab/` modules, `webapp/` Python, templates and CSS, `scripts/`, `app.py`; tests not counted), **262 tests**, all passing |
 | History | **1,053 scenes** from 5 Jan 2023 to 9 Nov 2026 (611 optical, 442 radar) |
 
 **What it is not.** It is a working, automated **monitoring prototype**. It sends **no alerts**, it has **never
@@ -97,7 +97,7 @@ The 20 tests that came with them still pass unchanged (`logs/2026-11-07_step1_py
                                      ▼
                           logs/runs/<time>.log  (every step, every file's SHA-256)
 
- GitHub Actions (.github/workflows/daily_run.yml): tests → scripts/run_once.py → commit DB + logs
+ scripts/scheduler.py (local, wakes every 24 h, key from .env): tests → scripts/run_once.py → DB + logs on this machine
 
  webapp/ (FastAPI) ── reads a COPY of sailab_glof.db, read-only ──► Dashboard, Lake Detail, scene pages, Live check, previews
                      └─ re-copies it by itself when sailab_glof.db changes (after a git pull)
@@ -422,9 +422,9 @@ exist, so a login would only look like security).
 
 **How it gets its data.** At start-up it **copies** `sailab_glof.db` into `.webapp/` and reads only that copy,
 read-only. The header chip shows **which git commit** the data came from and when it was copied. The Live check and the
-reload are the only things that write, and only to `.webapp/`. So the app can never collide with the nightly bot.
+reload are the only things that write, and only to `.webapp/`. So the app can never collide with the scheduled run.
 
-**How fresh data arrives.** The bot commits to GitHub; a `git pull` (by hand, or an hourly cron job:
+**How fresh data arrives.** The local scheduler writes `sailab_glof.db` directly (since 10 Nov 2026; no pull needed). Before that, the bot committed to GitHub and a `git pull` (by hand, or an hourly cron job:
 `0 * * * * cd ~/Documents/SAILAB_FYP1_FINAL && git pull --ff-only -q`) updates `sailab_glof.db` on the laptop. The app
 checks the file every 60 s; when it has changed and is unchanged on the next check and passes SQLite's integrity check,
 it copies it again (never during a live check), and every open page refreshes itself within 30 s. Meanwhile a blue
@@ -574,7 +574,7 @@ rendered page: **30 of 30 checks passed**)*
 
 ### 11.1 The numbers
 
-**246 tests, all passing** (`.venv/bin/python -m pytest tests -q`, about 21 s).
+**262 tests, all passing** (`.venv/bin/python -m pytest tests -q`, about 21 s).
 
 | Test file | Tests | Covers |
 |---|---|---|
@@ -658,7 +658,12 @@ accuracy or of flood detection, and this report never uses them that way.
 
 ---
 
-## 13. Automation on GitHub
+## 13. Automation (GitHub Actions until 10 Nov 2026, now a local scheduler)
+
+**Since 10 Nov 2026** the workflow below is removed. `scripts/scheduler.py` is started once and stays running: every 24 hours
+(`SAILAB_RUN_INTERVAL_HOURS`) it runs the tests, then `scripts/run_once.py` with the Earth Engine key from the git-ignored
+`.env` file, then sleeps. A failed run is retried after 30 minutes, at most 3 times in a row. Nothing is committed or pushed.
+The rest of this section describes the GitHub Actions setup that produced runs 4 to 9.
 
 - **Workflow:** `.github/workflows/daily_run.yml`, cron `0 18 * * *` (23:00 PKT), plus a manual "Run workflow" button.
   Ubuntu 24.04, Python 3.13, `contents: write` permission, one run at a time.

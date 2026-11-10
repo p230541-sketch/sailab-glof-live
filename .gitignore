@@ -14,3 +14,6 @@ data/archive_v1/
 .webapp/
 # Local editor/app config (machine-specific paths)
 .claude/
+# Local scheduler: keys and settings, and its own log (run logs in logs/runs/ are still kept)
+.env
+logs/scheduler.log
