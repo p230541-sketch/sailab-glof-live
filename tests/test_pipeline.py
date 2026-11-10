@@ -140,7 +140,7 @@ def test_one_clear_and_one_cloudy_scene(repo):
     assert (m["sensor"], m["status"], m["extent_ha"]) == ("optical", "ok", pytest.approx(0.25))
     [r] = rows(db_path, "SELECT * FROM risk_score")
     assert (r["status"], r["method"], r["baseline_ha"], r["deviation_score"]) == \
-        ("insufficient_history", "anomaly_detector", None, None)
+        ("insufficient_history", "seasonal_zscore", None, None)
     [log_row] = rows(db_path, "SELECT * FROM run_log")
     assert log_row["finished_at"] is not None and log_row["errors"] is None
     assert (log_row["lakes_processed"], log_row["scenes_downloaded"]) == (2, 1)

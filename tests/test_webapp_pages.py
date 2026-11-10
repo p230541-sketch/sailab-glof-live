@@ -227,7 +227,7 @@ def radar_client(source_db, tmp_path):
     conn = db.connect(source_db)
     sid = db.insert_scene(conn, 1, "sentinel-1", "2026-10-30T13:05:17+00:00", None, "data/scenes/KRB/S1A_X_1.tif")
     mid = db.insert_measurement(conn, sid, 1, "radar", 260.0, "ok")
-    db.insert_risk_score(conn, 1, mid, "anomaly_detector", "insufficient_history", None, None)
+    db.insert_risk_score(conn, 1, mid, "seasonal_zscore", "insufficient_history", None, None)
     sid2 = db.insert_scene(conn, 1, "sentinel-1", "2026-11-01T01:05:40+00:00", None, "data/scenes/KRB/S1A_X_2.tif")
     db.insert_measurement(conn, sid2, 1, "radar", None, "insufficient_observation")
     conn.close()

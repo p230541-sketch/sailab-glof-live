@@ -374,14 +374,14 @@ def _score(conn, lake, scene, measurement_id: int, extent_ha: float, sensor: str
     same_month_years = {record.observed_on.year for record in same_month}
     if len(same_month) < MIN_SAME_MONTH_VALUES or len(same_month_years) < MIN_SAME_MONTH_YEARS:
         # Check F: too little history for this month to say what "normal" is.
-        db.insert_risk_score(conn, lake["id"], measurement_id, "anomaly_detector", "insufficient_history", None, None)
+        db.insert_risk_score(conn, lake["id"], measurement_id, db.RISK_METHOD_SEASONAL_ZSCORE, "insufficient_history", None, None)
         result.risk_scores += 1
         log.info("%s %s: %s risk insufficient_history (check F: %d earlier values for month %02d from %d years; "
                  "need %d from %d)", lake["code"], scene.scene_id, sensor, len(same_month), acquired_on.month,
                  len(same_month_years), MIN_SAME_MONTH_VALUES, MIN_SAME_MONTH_YEARS)
         return
     score = score_against_seasonal_baseline(history, acquired_on, extent_ha)
-    db.insert_risk_score(conn, lake["id"], measurement_id, "anomaly_detector",
+    db.insert_risk_score(conn, lake["id"], measurement_id, db.RISK_METHOD_SEASONAL_ZSCORE,
                          RISK_STATUS_FROM_RISK_MODULE[score.status], score.baseline_ha, score.deviation_score)
     result.risk_scores += 1
     log.info("%s %s: %s risk %s baseline=%s score=%s", lake["code"], scene.scene_id, sensor, score.status,

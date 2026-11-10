@@ -73,7 +73,12 @@ SCENE_SOURCES = ("sentinel-2", "sentinel-1")
 SENSORS = ("optical", "radar")
 MEASUREMENT_STATUSES = ("ok", "insufficient_observation")
 RISK_STATUSES = ("ok", "insufficient_history")
-RISK_METHODS = ("anomaly_detector",)
+# The score in risk.py is a z-score against the same calendar month in earlier years. Until 2026-11-11 it
+# was saved under the name "anomaly_detector", which described a method this code never was.
+# migrate() renames the old rows; the numbers are not touched.
+RISK_METHOD_SEASONAL_ZSCORE = "seasonal_zscore"
+OLD_RISK_METHOD_NAMES = {"anomaly_detector": RISK_METHOD_SEASONAL_ZSCORE}
+RISK_METHODS = (RISK_METHOD_SEASONAL_ZSCORE,)
 
 # The two lakes this build starts with. These are the literal values the
 # project's existing real results (Karambar 237.2 ha, Atro Sar 76.51 ha) were
@@ -116,7 +121,22 @@ def connect(db_path: str | Path) -> sqlite3.Connection:
     conn.execute("PRAGMA foreign_keys = ON")  # SQLite ignores REFERENCES unless this is on
     conn.executescript(SCHEMA)
     conn.commit()
+    migrate(conn)
     return conn
+
+
+def migrate(conn: sqlite3.Connection) -> int:
+    """Bring an older database up to date without losing data. Safe to run every time.
+
+    Returns how many rows were changed (0 when the database is already up to date).
+    Step 1 (2026-11-11): rename old risk method labels to what the code really is.
+    """
+    changed = 0
+    for old_name, new_name in OLD_RISK_METHOD_NAMES.items():
+        cursor = conn.execute("UPDATE risk_score SET method = ? WHERE method = ?", (new_name, old_name))
+        changed += cursor.rowcount
+    conn.commit()
+    return changed
 
 
 # ---------------------------------------------------------------------------

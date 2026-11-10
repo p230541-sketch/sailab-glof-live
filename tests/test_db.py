@@ -166,7 +166,7 @@ def test_history_from_the_database_reproduces_TC_BAS_01(conn):
 
     history = db.get_extent_history(conn, lake_id, exclude_measurement_id=new_id)
     result = score_against_seasonal_baseline(history, date(2026, 7, 15), new_extent_ha=50.0)
-    risk_id = db.insert_risk_score(conn, lake_id, new_id, "anomaly_detector", "ok",
+    risk_id = db.insert_risk_score(conn, lake_id, new_id, "seasonal_zscore", "ok",
                                    result.baseline_ha, result.deviation_score)
 
     row = conn.execute("SELECT * FROM risk_score WHERE id = ?", (risk_id,)).fetchone()
@@ -178,7 +178,7 @@ def test_history_from_the_database_reproduces_TC_BAS_01(conn):
 def test_insert_risk_score_insufficient_history_stores_nulls(conn):
     lake_id = db.insert_lake(conn, "TST", "Test Lake", 73.0, 36.0, 500.0)
     m_id = _add_measured_scene(conn, lake_id, "2026-07-15", 50.0)
-    risk_id = db.insert_risk_score(conn, lake_id, m_id, "anomaly_detector", "insufficient_history", None, None)
+    risk_id = db.insert_risk_score(conn, lake_id, m_id, "seasonal_zscore", "insufficient_history", None, None)
     row = conn.execute("SELECT * FROM risk_score WHERE id = ?", (risk_id,)).fetchone()
     assert (row["status"], row["baseline_ha"], row["deviation_score"]) == ("insufficient_history", None, None)
 
@@ -188,7 +188,7 @@ def test_insert_risk_score_rejects_unknown_status_and_method(conn):
     m_id = _add_measured_scene(conn, lake_id, "2026-07-15", 50.0)
     with pytest.raises(ValueError):
         # risk.py's own spelling has a space; the database column uses an underscore. The caller must map it.
-        db.insert_risk_score(conn, lake_id, m_id, "anomaly_detector", "insufficient history", None, None)
+        db.insert_risk_score(conn, lake_id, m_id, "seasonal_zscore", "insufficient history", None, None)
     with pytest.raises(ValueError):
         db.insert_risk_score(conn, lake_id, m_id, "trained_model", "ok", 1.0, 1.0)
 
@@ -227,3 +227,26 @@ def test_out_of_range_coordinates_are_refused(conn, lon, lat):
     """Added after mutation D7 (latitude limit widened to ±180) survived the whole suite: nothing tested it."""
     with pytest.raises(ValueError, match="coordinates out of range"):
         db.insert_lake(conn, "BAD", "Bad lake", lon, lat, 1000.0)
+
+
+# --- migration: the old, wrong method label is renamed and no number changes (2026-11-11) ----------
+def test_old_method_label_is_renamed_and_the_numbers_are_kept(tmp_path):
+    path = tmp_path / "old.db"
+    conn = db.connect(path)
+    lake_id = db.insert_lake(conn, "TST", "Test Lake", 73.0, 36.0, 1000.0)
+    scene_id = db.insert_scene(conn, lake_id, "sentinel-2", "2026-07-01T05:59:00+00:00", 1.0, "data/x/a.tif")
+    m_id = db.insert_measurement(conn, scene_id, lake_id, "optical", 250.0, "ok")
+    # Written the way an older version of this code wrote it (the insert function now refuses the old name).
+    conn.execute("INSERT INTO risk_score (lake_id, measurement_id, method, status, baseline_ha, deviation_score, scored_at) "
+                 "VALUES (?, ?, 'anomaly_detector', 'ok', 245.0, 1.5, '2026-07-01T06:00:00+00:00')", (lake_id, m_id))
+    conn.commit()
+    conn.close()
+
+    conn = db.connect(path)   # opening the database runs the migration
+    rows = conn.execute("SELECT method, status, baseline_ha, deviation_score, scored_at FROM risk_score").fetchall()
+    assert [tuple(r) for r in rows] == [("seasonal_zscore", "ok", 245.0, 1.5, "2026-07-01T06:00:00+00:00")]
+    assert db.migrate(conn) == 0   # running it again changes nothing
+
+
+def test_the_old_method_label_can_no_longer_be_written():
+    assert "anomaly_detector" not in db.RISK_METHODS
