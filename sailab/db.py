@@ -84,6 +84,12 @@ RISK_METHODS = (RISK_METHOD_SEASONAL_ZSCORE,)
 # project's existing real results (Karambar 237.2 ha, Atro Sar 76.51 ha) were
 # computed from. They must not be "corrected" or rounded: new measurements are
 # only comparable with the old ones if they use exactly these coordinates.
+#
+# Source check (2026-11-11): the centres have no recorded origin, so they were checked against the
+# HMA Glacial Lake Inventory (Hi-MAG), Version 2.0, September 2020 (Chen, Zhang, Guo, Allen, Kargel,
+# Haritashya, Watson). Karambar is 0.144 km from Hi-MAG lake GL073703E36879N (248.6 ha in 2017) and
+# Atro Sar is 0.408 km from GL073645E36644N (98.2 ha in 2017). Hi-MAG is a check, not the origin.
+# Details: logs/2026-11-11_lake_coordinates_vs_himag.md
 SEED_LAKES = (
     {
         "code": "KRB",
