@@ -10,7 +10,7 @@ running automatically on real Sentinel-2 satellite data.
 > outburst** (neither monitored lake has one on record). Please read [Limitations](#limitations)
 > before quoting any number from it.
 
-*Status as of 2026-11-09. Sections marked ⏳ change as the scheduled runs accumulate.*
+*Status as of 2026-11-10. Sections marked ⏳ change as the scheduled runs accumulate.*
 
 ---
 
@@ -20,7 +20,7 @@ Every night at **23:00 Pakistan time (18:00 UTC)**, GitHub Actions
 ([`.github/workflows/daily_run.yml`](.github/workflows/daily_run.yml)) does the following with no
 human involved:
 
-1. Installs the pinned packages and runs the **full test suite** (216 tests). If any test fails, the
+1. Installs the pinned packages and runs the **full test suite** (246 tests). If any test fails, the
    pipeline does not run, so broken code can never write to the database.
 2. Signs in to Google Earth Engine with a **service-account key** stored as an encrypted GitHub
    secret (no browser, no person).
@@ -41,7 +41,7 @@ human involved:
 The run history is public: open the **Actions** tab of this repository. Each bot commit
 ("Automated run: <UTC time> (success|failure)") contains that run's log.
 
-⏳ **Scheduled runs so far: 1** (of the 3 on different days needed).
+⏳ **Scheduled runs so far: 2** (of the 3 on different days needed).
 
 | Date (UTC) | Trigger | Result |
 |---|---|---|
@@ -49,6 +49,7 @@ The run history is public: open the **Actions** tab of this repository. Each bot
 | 2026-11-08 19:01 | manual (after pinning Ubuntu 24.04) | success, no new scene |
 | **2026-11-08 21:31** | **schedule** (the 18:00 UTC slot, started 3.5 h late by GitHub) | **success**, 171 tests passed in 6.13 s (`logs/2026-11-08_scheduled_run_6_github_test_step.log`, from GitHub's job log), no new scene since 2026-11-05; bot commit `5872d48`, `run_log` row 6 |
 | 2026-11-09 12:09 | manual (checking radar on GitHub) | success, no new scene; bot commit `21ad8a6`, `run_log` row 8 |
+| **2026-11-10 01:01** | **schedule** (the 2026-11-09 18:00 UTC slot, started about 7 h late by GitHub) | **success**, 216 tests passed in 8.51 s; **new Sentinel-1 pass for both lakes** (2026-11-09 13:05 UTC): Karambar 257.55 ha, Atro Sar 97.14 ha, both within the 15 % rule, not scored; first images committed to `data/scenes/`; bot commit `69378dc`, `run_log` row 9 (`logs/2026-11-10_scheduled_run_2_report.md`) |
 
 Manual runs do not count as automatic. GitHub can start scheduled runs late or skip them, so the
 Actions tab is the record of which ones actually happened.
@@ -175,10 +176,11 @@ Code: `sailab/radar.py` (using the unchanged `otsu_threshold` and `region_grow`)
 - **Open question:** why Karambar radar reads high and Atro Sar radar reads low is **unexplained**. A
   plausible cause is shoreline terrain (how the 30 m DEM and the 10° mask cut the shore) or water
   turbidity/surface roughness; **untested**.
-- **Why radar is not risk-scored:** **29 of 361** usable radar values (8.0 %) are clearly wrong by a
+- **Why radar is not risk-scored:** **29 of 363** usable radar values (8.0 %) are clearly wrong by a
   stated rule: more than 15 % away from that lake's median optical area (just beyond the largest summer
   radar–optical difference, +13.0 %; a judgement, not calibrated; 20 % gives 23, 25 % gives 15).
-  `scripts/count_radar_errors.py` → `logs/2026-11-09_radar_error_count.log`. (An earlier count with
+  `scripts/count_radar_errors.py` → `logs/2026-11-10_radar_error_count.log` (29 of 361 on 9 November,
+  `logs/2026-11-09_radar_error_count.log`; the two passes since are within the rule). (An earlier count with
   hand-set summer ranges, Karambar 230–300 ha and Atro Sar 90–110 ha, gave 18 + 10 = 28:
   `logs/2026-11-09_radar_validation.log`. The two rules agree on 8 %.) **16 of the 29 are in
   April–June**, where wet snow during melt is as dark as water on radar, so the lake seems to vanish
@@ -193,8 +195,8 @@ Code: `sailab/radar.py` (using the unchanged `otsu_threshold` and `region_grow`)
 
 ## Current contents of the database (`sailab_glof.db`)
 
-⏳ As of 2026-11-09, after the optical backfill (run 3), the first scheduled run (run 6) and the radar
-backfill (run 7); run 8 found nothing new:
+⏳ As of 2026-11-10, after the optical backfill (run 3), the first scheduled run (run 6), the radar
+backfill (run 7), run 8 (nothing new) and the second scheduled run (run 9: one new radar pass per lake):
 
 | | Karambar (KRB) | Atro Sar (ATS) |
 |---|---|---|
@@ -203,23 +205,23 @@ backfill (run 7); run 8 found nothing new:
 | Optical measured `ok` / `insufficient_observation` | 20 / 109 | 25 / 100 |
 | Optical `ok` area range | 198.31 – 257.83 ha | 105.16 – 107.17 ha |
 | Optical risk scores `ok` / `insufficient_history` | 8 / 12 | 11 / 14 |
-| Radar passes (2023-01 → 2026-10) | 220 | 220 |
-| Radar measured `ok` / `insufficient_observation` | 190 / 30 | 171 / 49 |
+| Radar passes (2023-01 → 2026-11-09) | 221 | 221 |
+| Radar measured `ok` / `insufficient_observation` | 191 / 30 | 172 / 49 |
 | Radar risk scores | none (not scored) | none (not scored) |
 
 **Measurement counts, defined side by side** (both numbers are correct; they count different things):
 
 | | Optical | Radar | Total |
 |---|---|---|---|
-| Scenes recorded (`scene` rows) | 611 | 440 | **1,051** |
+| Scenes recorded (`scene` rows) | 611 | 442 | **1,053** |
 | Too cloudy: recorded, not downloaded, **no measurement row** | 357 | 0 | 357 |
-| **Measurement rows written** (`measurement` rows, every status) | 254 | 440 | **694** |
+| **Measurement rows written** (`measurement` rows, every status) | 254 | 442 | **696** |
 | of which refused (`insufficient_observation`) | 209 | 79 | 288 |
-| of which **usable** (`ok`, passed every check) | 45 | 361 | **406** |
+| of which **usable** (`ok`, passed every check) | 45 | 363 | **408** |
 
-So "694" is every measurement attempt stored, and "406" is the usable subset (406 + 288 = 694). Only the
+So "696" is every measurement attempt stored, and "408" is the usable subset (408 + 288 = 696). Only the
 45 usable optical values are risk-scored (radar is not scored). The Dashboard's "Usable measurements" tile
-shows 406 and both parts of 694.
+shows 408 and both parts of 696. (On 9 November, before run 9, these were 1,051 / 694 / 406.)
 
 So **58 % of all scenes (357 of 611) were too cloudy over the lake** for optical measurement — the
 cloud problem the project's radar fallback is meant to solve, measured with our own data.
@@ -236,6 +238,7 @@ cloud problem the project's radar fallback is meant to solve, measured with our 
 | 6 | **First scheduled run** (GitHub's scheduler, 2026-11-08 21:31 UTC) | Completed: no new scenes. |
 | 7 | Radar backfill (by hand, 2026-11-09) | Completed: 440 radar passes downloaded and measured. Its 361 radar risk scores were later removed (radar scoring off). |
 | 8 | GitHub Actions run (triggered by hand, 2026-11-09 12:09 UTC) to check radar on GitHub | Completed: no new scenes. |
+| 9 | **Second scheduled run** (GitHub's scheduler, 2026-11-10 01:02 UTC) | Completed: 2 new radar passes recorded, downloaded and measured (Karambar 257.55 ha, Atro Sar 97.14 ha); no new optical scene. |
 
 The pre-C/D/F database and its 5-band images are archived locally (`data/archive_v1/`, not in this
 repository); the comparison is in `logs/2026-11-08_cdf_before_after.md`.
@@ -243,8 +246,8 @@ repository); the comparison is in `logs/2026-11-08_cdf_before_after.md`.
 **Downloaded images:** backfill images (~850 MB, optical and radar) are kept on the developer's machine, **not** in this
 repository (`data/backfill/` is git-ignored). Each can be re-downloaded by its scene id and checked
 against the SHA-256 in `logs/runs/2026-11-08T112314Z_backfill.log`. Images downloaded by the
-scheduled runs are committed to `data/scenes/`. **None yet:** no scheduled run has found a new scene so
-far, so this step has not yet run on GitHub and the folder does not exist.
+scheduled runs are committed to `data/scenes/`. **First used by run 9** (2026-11-10): two Sentinel-1 windows,
+whose SHA-256 values match the run log (`logs/2026-11-10_scheduled_run_2_report.md`).
 
 ---
 
@@ -258,13 +261,14 @@ far, so this step has not yet run on GitHub and the folder does not exist.
 | Cloud measured over the lake differs from the tile value in many scenes (Atro Sar: 7 of 17 decisions differ) | `logs/2026-11-08_step4_live_find_new_scenes.log` |
 | A failed run is recorded, not hidden | `run_log` row 1; `logs/runs/2026-11-08T103538Z_backfill.log` |
 | The radar failure reproduces (975.88 ha), and with the slope mask the leak is gone (267.52 ha) on the same original file | `tests/test_radar.py`, `logs/2026-11-09_radar_slope_mask_original_karambar.log` |
-| 29 of 361 usable radar values are clearly wrong (more than 15 % from the lake's optical median), 16 of them April–June | `scripts/count_radar_errors.py`, `logs/2026-11-09_radar_error_count.log` |
+| 29 of 363 usable radar values are clearly wrong (more than 15 % from the lake's optical median), 16 of them April–June | `scripts/count_radar_errors.py`, `logs/2026-11-10_radar_error_count.log` |
+| Every stored measurement can be reproduced from its file: all 696 recomputed by the scene-page code give the stored status and area | `scripts/check_scene_recompute.py`, `logs/2026-11-10_scene_page_recompute_check.log` |
 | The tests catch deliberate bugs in the new modules: 35 one-line mutations in `db.py`, `pipeline.py`, `radar.py`, `earth_engine_client.py`, **all caught**; 2 survived the first run (same-day value in the baseline; latitude limit) and tests were added for both | `scripts/mutation_check.py`, `logs/2026-11-09_mutation_check_new_modules_run1.log` (what survived), `..._run4_final.log` (35 of 35) |
 | Every HTML page any test renders is checked for unbalanced tags; the original stray `</div>` now fails 17 tests (2 before), and a bug planted in the live page's failed state fails 3 | `tests/conftest.py`, `tests/html_check.py`, `logs/2026-11-09_html_balance_check_proof.log` |
 | Our slope code equals `numpy.gradient`; 98–99 % of pixels agree with Earth Engine's slope on the 10° mask | `logs/2026-11-09_slope_reference_check.log` |
 | Radar vs optical within 3 days: Karambar +5.2 %, Atro Sar −6.4 %, on 16 independent summer optical scenes from 2 lakes | `logs/2026-11-09_radar_validation.log`, `logs/2026-11-09_radar_validation_independence.log` |
 
-**About the tests (216, all passing):** most use small synthetic grids with hand-calculated expected
+**About the tests (246, all passing):** most use small synthetic grids with hand-calculated expected
 answers — they prove the algorithms compute correctly, **not** real-world accuracy. Four use the
 project's three original real GeoTIFFs in `tests/data/` (Karambar and Atro Sar Sentinel-2, Karambar SAR). The Earth Engine tests replace Earth Engine with a
 mock (stated in the test file); the real connection is proven only by the live-run logs. The 20
@@ -295,7 +299,7 @@ tests inherited from the earlier project pass unchanged.
     area in the earlier project tests (from that project's own results; not re-checked in this repository).
 11. **GitHub scheduling:** scheduled runs can start late or occasionally be skipped by GitHub.
 12. **Radar:** a mitigation validated on only 2 lakes in summer (16 independent scenes), with
-    unexplained lake-specific offsets (+5.2 %, −6.4 %); 29 of 361 usable radar values (8.0 %; 16 in
+    unexplained lake-specific offsets (+5.2 %, −6.4 %); 29 of 363 usable radar values (8.0 %; 16 in
     April–June snowmelt, 10 in February–March) are clearly wrong; winter radar values are unvalidated; radar is not scored.
 
 ---
@@ -309,14 +313,32 @@ the Live check button.
   reference designs' sample values never appear). `scripts/verify_gui_numbers.py` re-checks every number
   on both screens against independent SQL; the cold run-through result is in
   `logs/2026-11-08_gui_cold_runthrough_numbers.md`.
+- **Scene pages** (`/scenes/<id>`, the "View image" link on every observation-log row): the measurement is
+  **recomputed from the stored file** when the page opens, with the pipeline's own unchanged functions,
+  and shown next to what the run stored ("Same as stored" / "Differs from stored"). Optical: true colour,
+  the **NDWI** map (water above 0.2) and the cloud/snow map that checks C and D use, with the NDWI at the
+  lake centre and pixels × 10 m × 10 m = area. Radar: VV backscatter and the threshold map (ground steeper
+  than 10° removed, pixels darker than that pass's Otsu threshold, the grown lake), with the threshold in dB.
+  Too-cloudy scenes say "not downloaded"; a missing file says so. All 696 stored measurements recompute the
+  same (`logs/2026-11-10_scene_page_recompute_check.log`). Screenshots: `docs/screenshots/2026-11-10/`.
 - **Working copy:** at start-up the app copies `sailab_glof.db` to `.webapp/` and shows which commit it
   came from. It never writes to the published file, so it cannot collide with the nightly bot's commits.
+- **Automatic reload:** after a `git pull` changes `sailab_glof.db`, the app notices within a minute and
+  copies it again, but only if the file is unchanged on two checks in a row and passes SQLite's integrity
+  check, and never while a live check is running. Open pages then refresh themselves (new numbers on screen
+  about 1.5–2.5 minutes after the pull). A banner also offers **Load the newer data now** (`POST /reload`).
+  Reloading discards this laptop's live-check results. `SAILAB_AUTO_RELOAD_SECONDS=0` turns it off.
+  Real-server check: `logs/2026-11-10_gui_auto_reload_check.md`. To pull automatically, add to `crontab -e`:
+  `0 * * * * cd ~/Documents/SAILAB_FYP1_FINAL && git pull --ff-only -q`
 - **Live check:** one button runs the real pipeline for both lakes, writing to the working copy only.
   Tested for real: no new scene (about 10 s), network cut (fails after about 20-35 s, 32 s and 23 s in two real tests, with a plain-language
   error), and a copy rewound to 2026-08-15 (42 scenes found, 12 measured; every row and every file
-  identical to the backfill: `logs/2026-11-08_gui_live_check_new_scenes_vs_backfill.log`).
+  identical to the backfill: `logs/2026-11-08_gui_live_check_new_scenes_vs_backfill.log`). On 2026-11-10 a
+  live check found a **real new radar pass** 3 minutes after the nightly run had looked (Karambar 261.14 ha,
+  Atro Sar 98.05 ha, 21 s): `logs/2026-11-10_gui_live_check_found_new_pass.md`.
 - **Design previews** (Confirm advisory, Delivery status, Risk threshold): the design's own sample data,
-  watermarked, every control disabled. `POST /live/check` is the only route in the app that changes anything.
+  watermarked, every control disabled, no script. The only routes that change anything are `POST /live/check`
+  and `POST /reload`, and both write only to `.webapp/` (a test checks the route list).
 - The screens next to the reference designs, and why they differ: `docs/comparison/`.
 - What to click and say in a demo: `docs/DEMO_SCRIPT.md`; if the live check fails: `docs/LIVE_CHECK_FALLBACK.md`.
 - Odds of a usable optical scene in a November demo: none for either lake in any year on record
@@ -343,8 +365,9 @@ scripts/
   count_radar_errors.py    count clearly wrong radar values with a stated rule
   mutation_check.py        break one line at a time in the new modules and check the tests fail
   check_slope_reference.py compare our slope code with two independent references
+  check_scene_recompute.py re-measure every stored scene from its file and compare with the database
 docs/                      reference designs, side-by-side comparison, demo script
-tests/                     216 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
+tests/                     246 tests; tests/data/ holds the original real optical and SAR GeoTIFFs
 data/dem/                  Copernicus DEM windows for the radar slope mask
 logs/                      verification logs; logs/runs/ has one log per pipeline run
 sailab_glof.db             the database (open with DB Browser for SQLite)
