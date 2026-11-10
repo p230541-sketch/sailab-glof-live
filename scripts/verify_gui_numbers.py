@@ -94,7 +94,7 @@ def main() -> int:
                   f"Latest usable area, {sensor} {latest[1]:.2f} ha {fd(latest[0])}, {days} days ago", f"newest ok {sensor} measurement")
             score = q("""SELECT r.status, r.baseline_ha, r.deviation_score, s.acquired_at, m.extent_ha FROM risk_score r
                          JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
-                         WHERE r.lake_id = ? AND m.sensor = ? ORDER BY s.acquired_at DESC LIMIT 1""", lid, sensor)
+                         WHERE r.lake_id = ? AND m.sensor = ? AND r.method = 'seasonal_zscore' ORDER BY s.acquired_at DESC LIMIT 1""", lid, sensor)
             if sensor == "radar":
                 # radar risk scoring is off (pipeline.SCORE_RADAR): no radar score may exist, and the page must say so
                 none_stored = score is None

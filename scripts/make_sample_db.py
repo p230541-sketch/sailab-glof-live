@@ -50,6 +50,7 @@ def build_sample_db(out_path: Path) -> dict[str, int]:
             # The real scoring code, unchanged: same z-score and same minimum-history rule as real lakes get.
             pipeline._score(conn, lake_row, SimpleNamespace(acquired_at=acquired_at, scene_id=scene_name),
                             measurement_id, m.extent_ha, "optical", result)
+            pipeline.score_eif(conn, lake_row, acquired_at, scene_name, measurement_id, m.extent_ha, "optical")
             counts["scores"] += 1
     db.finish_run_log(conn, run_id, counts["lakes"], 0)
     conn.close()

@@ -46,7 +46,7 @@ def _sensor_summary(conn: sqlite3.Connection, lake_id: int, today: date, sensor:
     latest_score = conn.execute(
         """SELECT r.status, r.baseline_ha, r.deviation_score, r.scored_at, s.acquired_at, m.extent_ha, m.id AS measurement_id
            FROM risk_score r JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
-           WHERE r.lake_id = ? AND m.sensor = ? ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""",
+           WHERE r.lake_id = ? AND m.sensor = ? AND r.method = 'seasonal_zscore' ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""",
         (lake_id, sensor)).fetchone()
     days = None if latest_ok is None else (today - date.fromisoformat(latest_ok["acquired_at"][:10])).days
     return {"counts": dict(counts), "latest_ok_measurement": _row(latest_ok),
@@ -79,7 +79,7 @@ def lake_history(conn: sqlite3.Connection, lake_id: int) -> list[dict[str, Any]]
                    r.status AS risk_status, r.baseline_ha, r.deviation_score
             FROM scene s
             LEFT JOIN measurement m ON m.scene_id = s.id
-            LEFT JOIN risk_score r ON r.measurement_id = m.id
+            LEFT JOIN risk_score r ON r.measurement_id = m.id AND r.method = 'seasonal_zscore'
             WHERE s.lake_id = ? ORDER BY s.acquired_at, s.id""", (lake_id,)).fetchall()
     return [dict(r) for r in rows]
 

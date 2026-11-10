@@ -56,7 +56,9 @@ CREATE TABLE IF NOT EXISTS risk_score (
     status TEXT NOT NULL,
     baseline_ha REAL,
     deviation_score REAL,
-    scored_at TEXT NOT NULL
+    scored_at TEXT NOT NULL,
+    score_0_100 REAL,
+    reason TEXT
 );
 
 CREATE TABLE IF NOT EXISTS run_log (
@@ -78,7 +80,12 @@ RISK_STATUSES = ("ok", "insufficient_history")
 # migrate() renames the old rows; the numbers are not touched.
 RISK_METHOD_SEASONAL_ZSCORE = "seasonal_zscore"
 OLD_RISK_METHOD_NAMES = {"anomaly_detector": RISK_METHOD_SEASONAL_ZSCORE}
-RISK_METHODS = (RISK_METHOD_SEASONAL_ZSCORE,)
+# The newer method (sailab/risk_eif.py). For its rows: baseline_ha = the usual area for the month,
+# deviation_score = the forest's raw score (0 to 1), score_0_100 and reason = what a person reads.
+RISK_METHOD_EIF = "extended_isolation_forest"
+RISK_METHODS = (RISK_METHOD_SEASONAL_ZSCORE, RISK_METHOD_EIF)
+# Columns added to risk_score after the first databases were made; migrate() adds them to an old file.
+RISK_SCORE_ADDED_COLUMNS = (("score_0_100", "REAL"), ("reason", "TEXT"))
 
 # The two lakes this build starts with. These are the literal values the
 # project's existing real results (Karambar 237.2 ha, Atro Sar 76.51 ha) were
@@ -136,8 +143,13 @@ def migrate(conn: sqlite3.Connection) -> int:
 
     Returns how many rows were changed (0 when the database is already up to date).
     Step 1 (2026-11-11): rename old risk method labels to what the code really is.
+    Step 2 (2026-11-11): add the score_0_100 and reason columns (empty for the old rows).
     """
     changed = 0
+    existing = {row[1] for row in conn.execute("PRAGMA table_info(risk_score)")}
+    for column, column_type in RISK_SCORE_ADDED_COLUMNS:
+        if column not in existing:
+            conn.execute(f"ALTER TABLE risk_score ADD COLUMN {column} {column_type}")
     for old_name, new_name in OLD_RISK_METHOD_NAMES.items():
         cursor = conn.execute("UPDATE risk_score SET method = ? WHERE method = ?", (new_name, old_name))
         changed += cursor.rowcount
@@ -201,15 +213,19 @@ def insert_measurement(conn: sqlite3.Connection, scene_id: int, lake_id: int, se
 
 def insert_risk_score(conn: sqlite3.Connection, lake_id: int, measurement_id: int, method: str, status: str,
                       baseline_ha: float | None, deviation_score: float | None,
-                      scored_at: str | None = None) -> int:
+                      scored_at: str | None = None, score_0_100: float | None = None,
+                      reason: str | None = None) -> int:
     if method not in RISK_METHODS:
         raise ValueError(f"risk method must be one of {RISK_METHODS}, got {method!r}")
     if status not in RISK_STATUSES:
         raise ValueError(f"risk status must be one of {RISK_STATUSES}, got {status!r}")
+    if score_0_100 is not None and not 0.0 <= score_0_100 <= 100.0:
+        raise ValueError(f"score_0_100 must be between 0 and 100, got {score_0_100}")
     cursor = conn.execute(
-        "INSERT INTO risk_score (lake_id, measurement_id, method, status, baseline_ha, deviation_score, scored_at) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (lake_id, measurement_id, method, status, baseline_ha, deviation_score, scored_at or utc_now_iso()),
+        "INSERT INTO risk_score (lake_id, measurement_id, method, status, baseline_ha, deviation_score, scored_at, "
+        "score_0_100, reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (lake_id, measurement_id, method, status, baseline_ha, deviation_score, scored_at or utc_now_iso(),
+         score_0_100, reason),
     )
     conn.commit()
     return cursor.lastrowid

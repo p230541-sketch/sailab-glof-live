@@ -85,7 +85,8 @@ def _newest_scores(conn, code, n):
     """The n newest scores of one lake, oldest of them first."""
     rows = conn.execute(
         "SELECT r.status, r.deviation_score FROM risk_score r JOIN measurement m ON m.id = r.measurement_id "
-        "JOIN scene s ON s.id = m.scene_id JOIN lake l ON l.id = m.lake_id WHERE l.code = ? "
+        "JOIN scene s ON s.id = m.scene_id JOIN lake l ON l.id = m.lake_id "
+        "WHERE l.code = ? AND r.method = 'seasonal_zscore' "
         "ORDER BY s.acquired_at DESC LIMIT ?", (code, n)).fetchall()
     return rows[::-1]
 

@@ -361,6 +361,32 @@ def _process_scene(conn, client, lake, scene, data_dir: Path, repo_root: Path, r
         return   # nothing to score: an unobserved lake has no extent to compare
 
     _score(conn, lake, scene, measurement_id, outcome.extent_ha, "optical", result)
+    score_eif(conn, lake, scene.acquired_at, scene.scene_id, measurement_id, outcome.extent_ha, "optical")
+
+
+def score_eif(conn, lake, acquired_at: str, scene_name: str, measurement_id: int, extent_ha: float,
+              sensor: str) -> str:
+    """The newer score (Extended Isolation Forest, sailab/risk_eif.py), saved NEXT TO the z-score, never
+    instead of it. Uses only readings from before this scene, from the same sensor, of every lake.
+    Returns the status that was saved ('ok' or 'insufficient_history')."""
+    from sailab import risk_eif
+
+    acquired_on = date.fromisoformat(acquired_at[:10])
+    own_earlier, other_lakes_earlier = [], []
+    for other in db.get_lakes(conn):
+        history = [record for record in db.get_extent_history(conn, other["id"], exclude_measurement_id=measurement_id,
+                                                              sensor=sensor)
+                   if record.observed_on < acquired_on]
+        if other["id"] == lake["id"]:
+            own_earlier = history
+        else:
+            other_lakes_earlier.append(history)
+    outcome = risk_eif.score_with_eif(lake["code"], own_earlier, other_lakes_earlier, acquired_on, extent_ha)
+    db.insert_risk_score(conn, lake["id"], measurement_id, db.RISK_METHOD_EIF, outcome.status, outcome.usual_ha,
+                         outcome.raw_score, score_0_100=outcome.score_0_100, reason=outcome.reason)
+    log.info("%s %s: %s EIF risk %s score=%s (%s)", lake["code"], scene_name, sensor, outcome.status,
+             outcome.score_0_100, outcome.reason or f"{outcome.earlier_points} earlier points")
+    return outcome.status
 
 
 def _score(conn, lake, scene, measurement_id: int, extent_ha: float, sensor: str, result: RunResult) -> None:

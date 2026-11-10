@@ -138,7 +138,7 @@ def test_one_clear_and_one_cloudy_scene(repo):
     assert scenes[1]["file_path"] == "not_downloaded/KRB/20261026T0546_1_T43SCA"
     [m] = rows(db_path, "SELECT * FROM measurement")
     assert (m["sensor"], m["status"], m["extent_ha"]) == ("optical", "ok", pytest.approx(0.25))
-    [r] = rows(db_path, "SELECT * FROM risk_score")
+    [r] = rows(db_path, "SELECT * FROM risk_score WHERE method = 'seasonal_zscore'")
     assert (r["status"], r["method"], r["baseline_ha"], r["deviation_score"]) == \
         ("insufficient_history", "seasonal_zscore", None, None)
     [log_row] = rows(db_path, "SELECT * FROM run_log")
@@ -184,7 +184,7 @@ def test_seasonal_baseline_is_scored_from_stored_history(repo):
                  until_date=date(2026, 11, 8))
 
     assert result.errors is None
-    [r] = rows(db_path, "SELECT * FROM risk_score")
+    [r] = rows(db_path, "SELECT * FROM risk_score WHERE method = 'seasonal_zscore'")
     assert r["status"] == "ok"
     assert r["baseline_ha"] == pytest.approx(0.20)
     assert r["deviation_score"] == pytest.approx(0.7071068)
@@ -217,7 +217,7 @@ def test_scoring_never_uses_data_from_after_the_scene(repo):
 
     run(repo, FakeClient({"KRB": [scene("KRB", "2026-07-18", 2.0)]}, ignore_since=True))
 
-    risk = rows(db_path, "SELECT * FROM risk_score")
+    risk = rows(db_path, "SELECT * FROM risk_score WHERE method = 'seasonal_zscore'")
     assert len(risk) == 1
     assert risk[0]["baseline_ha"] == pytest.approx(0.20)
     assert risk[0]["deviation_score"] == pytest.approx(0.7071068)
@@ -403,7 +403,7 @@ def test_check_F_needs_5_same_month_values_from_2_years(repo, history, expected_
     result = run(repo, FakeClient({"KRB": [scene("KRB", "2026-07-18", 2.0)]}, ignore_since=True))
 
     assert result.errors is None
-    [r] = rows(db_path, "SELECT * FROM risk_score")
+    [r] = rows(db_path, "SELECT * FROM risk_score WHERE method = 'seasonal_zscore'")
     assert r["status"] == expected_status
     if expected_status == "insufficient_history":
         assert (r["baseline_ha"], r["deviation_score"]) == (None, None)
@@ -424,7 +424,7 @@ def test_a_value_from_the_same_day_is_not_part_of_the_baseline(repo):
     result = run(repo, FakeClient({"KRB": [scene("KRB", "2026-07-18", 2.0)]}, ignore_since=True))
 
     assert result.errors is None
-    [r] = rows(db_path, "SELECT * FROM risk_score")
+    [r] = rows(db_path, "SELECT * FROM risk_score WHERE method = 'seasonal_zscore'")
     assert r["status"] == "insufficient_history"
 
 
