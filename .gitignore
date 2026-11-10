@@ -17,3 +17,5 @@ data/archive_v1/
 # Local scheduler: keys and settings, and its own log (run logs in logs/runs/ are still kept)
 .env
 logs/scheduler.log
+# Generated sample database (rebuild with scripts/make_sample_db.py)
+sample_data/*.db
