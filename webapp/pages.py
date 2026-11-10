@@ -97,6 +97,27 @@ def lake_detail(conn, lake: dict, today: date, range_key: str, page: int, repo: 
                                      and start <= _d(r["acquired_at"]) <= end)}
 
 
+def scene_record(conn, scene_id: int) -> dict[str, Any] | None:
+    """One scene with its lake, its stored measurement and its risk score (None if there is no such scene)."""
+    row = conn.execute(
+        f"""SELECT s.id AS scene_id, s.lake_id, s.source, s.acquired_at, s.cloud_fraction, s.file_path, s.downloaded_at,
+                   s.file_path LIKE '{queries.NOT_DOWNLOADED_PREFIX}%' AS too_cloudy,
+                   m.id AS measurement_id, m.sensor, m.status AS measurement_status, m.extent_ha, m.measured_at,
+                   r.status AS risk_status, r.baseline_ha, r.deviation_score
+            FROM scene s LEFT JOIN measurement m ON m.scene_id = s.id
+            LEFT JOIN risk_score r ON r.measurement_id = m.id WHERE s.id = ?""", (scene_id,)).fetchone()
+    if row is None:
+        return None
+    rec = dict(row)
+    rec["lake"] = next(l for l in queries.list_lakes(conn) if l["id"] == rec["lake_id"])
+    # neighbours in this lake's log (oldest first, same order as lake_history), for previous/next links
+    ids = [r[0] for r in conn.execute("SELECT id FROM scene WHERE lake_id = ? ORDER BY acquired_at, id", (rec["lake_id"],))]
+    i = ids.index(scene_id)
+    rec["older_id"] = ids[i - 1] if i > 0 else None
+    rec["newer_id"] = ids[i + 1] if i + 1 < len(ids) else None
+    return rec
+
+
 def scene_quality(row: dict) -> tuple[str, str]:
     """(chip style, words) for one observation-log row, from its stored status only."""
     if row["too_cloudy"]:

@@ -19,6 +19,14 @@
   <div class="banner-top">
     Prototype. Monitoring and measurement only: Downstream Analysis and Alerting are not built, so this system sends no alerts.
   </div>
+  {% if source_is_newer %}
+  <div class="banner info newer-data" style="margin:0;border-radius:0">
+    <div><strong>Newer data available.</strong> <span class="mono">sailab_glof.db</span> on this laptop has changed since these pages copied it
+      ({{ provenance.copied_at | utc_time }}), for example after <span class="mono">git pull</span>.{% if live_run_ids %} Loading it discards this laptop's live-check results.{% endif %}
+      {% if auto_reload_on %}It will load automatically within about {{ (auto_reload_s * 2 / 60) | round(0, 'ceil') | int }} minute{{ "s" if auto_reload_s * 2 > 60 }}, unless a live check is running.{% endif %}
+      <form class="inline-form" method="post" action="/reload"><button type="submit" class="btn primary" style="padding:4px 12px;font-size:14px">Load the newer data{{ " now" if auto_reload_on }}</button></form></div>
+  </div>
+  {% endif %}
   <div class="layout">
     <nav class="sidebar">
       <a href="/" class="{{ 'active' if nav == 'dashboard' }}">
@@ -38,5 +46,18 @@
     </nav>
     <main>{% block main %}{% endblock %}</main>
   </div>
+{% block autoreload %}
+<script>
+/* Automatic reload: the server re-copies sailab_glof.db when it changes (see webapp/main.py). This only
+   reloads the open page once that has happened, so it shows the new data. Same-origin request only. */
+(function () {
+  var copied = "{{ provenance.copied_at }}";
+  setInterval(function () {
+    fetch("/api/provenance", {cache: "no-store"}).then(function (r) { return r.json(); })
+      .then(function (p) { if (p.copied_at !== copied) { location.reload(); } }).catch(function () {});
+  }, 30000);
+})();
+</script>
+{% endblock %}
 </body>
 </html>

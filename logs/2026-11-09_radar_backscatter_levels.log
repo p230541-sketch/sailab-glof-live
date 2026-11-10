@@ -1,0 +1,7 @@
+checked 2026-11-09 (UTC), original Karambar SAR file tests/data/KarambarLake_Sentinel1_SAR_RAW.tif, DEM data/dem/KRB_dem.tif
+measure_radar_scene with the 10 deg slope mask: ok, 267.52 ha, Otsu threshold over flat ground -15.32 dB
+median VV inside the measured lake region:          -20.1 dB
+median VV of flat ground (slope <= 10 deg) outside:  -11.3 dB
+Whole-window Otsu threshold (no mask): -9.5 dB (title of logs/2026-11-09_radar_leak_where.png)
+Correction: the README had said "lake (about -20 dB) from valley floor (about -15 dB)". The -15 dB figure was the
+threshold between them, not the valley floor; the flat ground's median is -11.3 dB.

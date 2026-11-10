@@ -146,8 +146,8 @@ Code: `sailab/radar.py` (using the unchanged `otsu_threshold` and `region_grow`)
   why: Otsu over the whole window splits bright mountain faces from everything else (cut-off −9.5 dB),
   so the flat valley floor counts as water. A slope mask on its own did not fix it.
 - **The mitigation:** drop pixels steeper than **10°** (from the Copernicus 30 m DEM, slope computed by
-  our own code), **then** run Otsu over the remaining flat ground, where it separates lake (≈ −20 dB)
-  from valley floor (≈ −15 dB). On the original file the leak is gone: **267.52 ha**
+  our own code), **then** run Otsu over the remaining flat ground, where it separates lake (median −20.1 dB)
+  from the rest of the flat ground (median −11.3 dB) at −15.3 dB (`logs/2026-11-09_radar_backscatter_levels.log`). On the original file the leak is gone: **267.52 ha**
   (`logs/2026-11-09_radar_slope_mask_original_karambar.log`). Unmasked, the leak still reaches the
   window edge and is refused (a test keeps this visible).
 - **How 10° was chosen (honestly):** 5°, 10°, 15° and 20° were tried on the **one** original radar file

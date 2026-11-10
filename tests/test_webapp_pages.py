@@ -272,7 +272,7 @@ from html_check import unbalanced_tags  # noqa: E402  (also applied to every HTM
 
 PAGE_URLS = ["/", "/lakes/KRB", "/lakes/ATS", "/lakes/KRB?range=12m", "/lakes/KRB?range=24m", "/lakes/KRB?page=2",
              "/lakes/XXX", "/live", "/preview/confirm-advisory", "/preview/delivery-status", "/preview/risk-threshold",
-             "/preview/nope"]
+             "/preview/nope", "/scenes/1", "/scenes/2", "/scenes/3", "/scenes/6", "/scenes/7", "/scenes/9999"]
 
 
 @pytest.mark.parametrize("url", PAGE_URLS)

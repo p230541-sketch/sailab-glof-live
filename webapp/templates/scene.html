@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon_warn, icon_info %}
+{% set s = d.s %}{% set a = d.a %}{% set radar = s.source == "sentinel-1" %}
+{% block title %}{{ s.lake.code }} {{ s.acquired_at | date }} {{ "radar" if radar else "optical" }}{% endblock %}
+{% block main %}
+<div class="breadcrumb"><a href="/">Dashboard</a> / <a href="/lakes/{{ s.lake.code }}"><span class="mono">{{ s.lake.code }}</span></a> / scene {{ s.scene_id }}</div>
+
+<section class="card">
+  <div class="card-head">
+    <h1 style="margin:0"><span class="mono">{{ s.lake.code }}</span> {{ s.lake.name }}: {{ "Sentinel-1 radar" if radar else "Sentinel-2 optical" }}, {{ s.acquired_at | utc_time }}</h1>
+    <span class="pager" style="padding:0">
+      {% if s.newer_id %}<a href="/scenes/{{ s.newer_id }}">‹ Newer scene</a>{% endif %}
+      {% if s.older_id %}<a href="/scenes/{{ s.older_id }}">Older scene ›</a>{% endif %}
+    </span>
+  </div>
+  {% set q = quality(s) %}
+  <dl class="kv wide">
+    <dt>Satellite pass</dt><dd>{{ s.acquired_at | utc_time }} ({{ s.acquired_at | pkt }})</dd>
+    {% if not radar %}<dt>Cloud over the lake</dt><dd>{{ "%.1f%%" | format(s.cloud_fraction) if s.cloud_fraction is not none else "no valid pixels" }} (limit {{ "%.0f" | format(d.cloud_limit) }}%)</dd>{% endif %}
+    <dt>Stored by the run</dt><dd><span class="chip {{ q[0] }}">{{ q[1] }}</span>{% if s.extent_ha is not none %} <span class="mono">{{ s.extent_ha | ha }}</span>{% endif %}{% if s.measured_at %}, measured {{ s.measured_at | utc_time }}{% endif %}</dd>
+    <dt>Risk score</dt><dd>{% if radar %}not scored (radar){% elif s.risk_status == 'ok' %}<span class="mono">{{ s.deviation_score | score }}</span> (baseline {{ s.baseline_ha | ha }}){% elif s.risk_status == 'insufficient_history' %}insufficient history{% else %}—{% endif %}</dd>
+    <dt>File</dt><dd class="mono" style="word-break:break-all">{{ s.file_path }}{% if d.from_live_check %} (downloaded by a live check on this laptop){% endif %}</dd>
+  </dl>
+</section>
+
+{% if d.why_not == "not_downloaded" %}
+<section class="card mt"><div class="banner warn">{{ icon_info() }}<div>Not downloaded: {{ "%.1f%%" | format(s.cloud_fraction) if s.cloud_fraction is not none else "no valid pixels" }} of the lake was under cloud, above the {{ "%.0f" | format(d.cloud_limit) }}% limit.
+  There is no image for this pass and nothing was measured.</div></div></section>
+{% elif d.why_not == "file_missing" %}
+<section class="card mt"><div class="banner warn">{{ icon_warn() }}<div>The file for this scene is not on this machine (<span class="mono">{{ s.file_path }}</span>).
+  Backfill images are kept only on the developer's laptop, so nothing can be recomputed or drawn here.</div></div></section>
+{% elif d.why_not == "dem_missing" %}
+<section class="card mt"><div class="banner warn">{{ icon_warn() }}<div>The terrain file <span class="mono">data/dem/{{ s.lake.code }}_dem.tif</span> is missing, so the radar slope mask cannot be recomputed.</div></div></section>
+{% elif d.why_not %}
+<section class="card mt"><div class="banner error">{{ icon_warn() }}<div>The recomputation failed. Nothing is shown in its place.<br><span class="mono">{{ d.why_not }}</span></div></div></section>
+{% else %}
+<section class="card mt">
+  <h2>Recomputed now from the stored file</h2>
+  <dl class="kv wide">
+    <dt>Result</dt><dd><span class="chip {{ 'ok' if a.status == 'ok' else 'warn' }}">{{ "Usable" if a.status == 'ok' else "Refused" }}</span>
+      {% if a.extent_ha is not none %}<span class="mono">{{ a.extent_ha | ha }}</span>{% endif %} ({{ a.reason }})</dd>
+    <dt>Against the stored result</dt><dd>{% if d.agreement == "same" %}<span class="chip ok">Same as stored</span>{% else %}<span class="chip warn">Differs from stored</span> stored: {{ s.measurement_status or "no measurement" }} {{ s.extent_ha | ha }}{% endif %}</dd>
+    {% if a.region_px is not none %}<dt>Lake region</dt><dd><span class="mono">{{ "{:,}".format(a.region_px) }}</span> pixels × {{ "%.0f" | format(a.pixel_size_m) }} m × {{ "%.0f" | format(a.pixel_size_m) }} m = <span class="mono">{{ "%.2f" | format(a.region_px * a.pixel_size_m * a.pixel_size_m / 10000) }} ha</span>{% if a.status != 'ok' %} (grown, then refused: not stored as an area){% endif %}</dd>{% endif %}
+    <dt>Window</dt><dd>{{ a.window_px[0] }} × {{ a.window_px[1] }} pixels around the lake centre</dd>
+    {% if radar %}
+    <dt>Slope mask</dt><dd>ground steeper than {{ "%.0f" | format(a.slope_limit_deg) }}° removed: <span class="mono">{{ "{:,}".format(a.masked_steep_px) }}</span> pixels</dd>
+    <dt>Otsu threshold</dt><dd>{% if a.threshold_db is not none %}<span class="mono">{{ "%.2f" | format(a.threshold_db) }} dB</span>, computed from the remaining flat ground of this pass{% else %}—{% endif %}</dd>
+    <dt>VV backscatter (median)</dt><dd>lake {{ "%.1f dB" | format(a.stats.vv_median_lake_db) if a.stats.vv_median_lake_db is defined else "—" }},
+      other flat ground {{ "%.1f dB" | format(a.stats.vv_median_flat_ground_db) if a.stats.vv_median_flat_ground_db is defined else "—" }},
+      whole window {{ "%.1f dB" | format(a.stats.vv_median_window_db) }}</dd>
+    {% else %}
+    <dt>NDWI</dt><dd>(green − NIR) ÷ (green + NIR); water above <span class="mono">{{ "%.1f" | format(a.ndwi_cutoff) }}</span>.
+      At the lake centre <span class="mono">{{ "%.3f" | format(a.stats.ndwi_at_centre) if a.stats.ndwi_at_centre is not none else "no data" }}</span>{% if a.stats.ndwi_in_lake_median is defined %},
+      median inside the lake <span class="mono">{{ "%.3f" | format(a.stats.ndwi_in_lake_median) }}</span>{% endif %};
+      {{ "{:,}".format(a.stats.water_px_in_window) }} water pixels in the whole window (only those connected to the centre count)</dd>
+    {% if a.stats.cloud_px_in_window is defined %}<dt>Cloud / snow in window</dt><dd>{{ "{:,}".format(a.stats.cloud_px_in_window) }} cloud or shadow pixels, {{ "{:,}".format(a.stats.snow_px_in_window) }} snow/ice pixels (Sentinel-2 scene classification)</dd>{% endif %}
+    {% endif %}
+  </dl>
+  <p class="footnote">Computed when this page was opened, by the pipeline's own unchanged measurement function
+    ({{ "sailab.radar.measure_radar_scene" if radar else "sailab.pipeline.measure_scene" }}) on the file above. It is not read from the database;
+    the line above says whether it agrees with what the run stored.</p>
+</section>
+
+<div class="grid {{ 'even' if radar else 'three' }} mt">
+  {% for kind in d.pictures if kind in a.pictures %}
+  <section class="card">
+    {% if kind == "truecolour" %}<h2>True colour</h2>
+    {% elif kind == "ndwi" %}<h2>NDWI water index</h2>
+    {% elif kind == "checks" %}<h2>Cloud and snow (checks C, D)</h2>
+    {% elif kind == "vv" %}<h2>VV backscatter</h2>
+    {% else %}<h2>Threshold map</h2>{% endif %}
+    <img class="scene-img" src="/scenes/{{ s.scene_id }}/{{ kind }}.png" alt="{{ kind }} picture of scene {{ s.scene_id }}">
+    <p class="footnote">
+      {% if kind == "truecolour" %}Sentinel-2 bands 4, 3, 2.
+      {% elif kind == "ndwi" %}Blue: NDWI above {{ "%.1f" | format(a.ndwi_cutoff) }} (water; darker = higher). Brown to pale: below it (land, snow, rock). Black: no data.
+      {% elif kind == "checks" %}Pink: cloud or cloud shadow. Cyan: snow or ice. A lake touching either is refused.
+      {% elif kind == "vv" %}Dark = smooth surface such as calm water. Range −30 to +5 dB.
+      {% else %}Brown: removed as steeper than {{ "%.0f" | format(a.slope_limit_deg) }}°. Blue: flat ground darker than the threshold. Pale: flat ground brighter. Black: no data.
+        Yellow dots inside the lake are pixels brighter than the threshold, not counted.{% endif %}
+      Yellow outline: the lake region grown from the centre.</p>
+  </section>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

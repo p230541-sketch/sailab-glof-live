@@ -121,7 +121,7 @@
 <section class="card table-card mt">
   <h2>Observation log</h2>
   <table>
-    <tr><th>Date</th><th>Sensor</th><th class="num">Cloud over lake</th><th class="num">Extent</th><th>Quality</th><th>Risk</th></tr>
+    <tr><th>Date</th><th>Sensor</th><th class="num">Cloud over lake</th><th class="num">Extent</th><th>Quality</th><th>Risk</th><th>Scene</th></tr>
     {% for r in d.log_rows %}
     {% set q = quality(r) %}
     <tr class="{{ 'dim' if q[0] != 'ok' }}">
@@ -131,6 +131,7 @@
       <td class="num">{{ r.extent_ha | ha }}</td>
       <td><span class="chip {{ q[0] }}">{{ q[1] }}</span></td>
       <td>{% if r.risk_status == 'ok' %}<span class="mono">{{ r.deviation_score | score }}</span>{% elif r.risk_status == 'insufficient_history' %}<span style="color:var(--muted)">insufficient history</span>{% else %}—{% endif %}</td>
+      <td><a href="/scenes/{{ r.scene_id }}">{{ "Details" if r.too_cloudy else "View image" }}</a></td>
     </tr>
     {% endfor %}
   </table>
@@ -141,6 +142,7 @@
   </div>
   <p class="footnote" style="padding:0 20px 16px">"Refused by quality checks" (optical): centre not water, cloud or snow/ice touching the lake, or the lake cut off at the window edge.
     "Refused by radar checks": centre not darker than the radar threshold, or the region reaching the window edge.
-    The exact reason for each scene is in that run's log file (logs/runs/).</p>
+    The exact reason for each scene is in that run's log file (logs/runs/), and on its scene page ("View image"), where the
+    measurement is recomputed from the stored file and drawn: true colour, NDWI and cloud/snow for optical; backscatter and the threshold map for radar.</p>
 </section>
 {% endblock %}

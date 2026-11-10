@@ -1,0 +1,8 @@
+# 2026-11-10T08:09:12Z scripts/check_scene_recompute.py on sailab_glof.db (commit 69378dc)
+
+696 measured scenes checked in 608 s
+  ATS optical  same          125
+  ATS radar    same          221
+  KRB optical  same          129
+  KRB radar    same          221
+exit code 0

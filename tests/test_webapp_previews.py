@@ -44,12 +44,13 @@ def test_previews_have_no_forms_scripts_or_handlers(client, name):
     assert "<form" not in html and "<script" not in html and "onclick" not in html
 
 
-def test_the_only_route_that_can_change_anything_is_the_live_check(client):
-    """Previews and pages are GET only. The single exception is POST /live/check, which writes to the
-    app's working copy only (see test_webapp_live.py for the proof that the published file is untouched)."""
+def test_the_only_routes_that_can_change_anything_are_live_check_and_reload(client):
+    """Previews and pages are GET only. The exceptions are POST /live/check and POST /reload, which write to
+    the app's working copy only (proof that the published file is untouched: test_webapp_live.py and
+    test_webapp_scenes.py::test_reload_never_writes_the_source_database)."""
     changing = {(route.path, m) for route in client.app.routes for m in getattr(route, "methods", set())
                 if m not in {"GET", "HEAD"}}
-    assert changing == {("/live/check", "POST")}, changing
+    assert changing == {("/live/check", "POST"), ("/reload", "POST")}, changing
 
 
 def test_real_pages_do_not_carry_the_preview_banner(client):

@@ -10,6 +10,12 @@ from sailab import db
 TODAY = date(2026, 11, 9)
 
 
+@pytest.fixture(autouse=True)
+def _no_background_auto_reload(monkeypatch):
+    """Tests drive the auto-reload by calling app.state.auto_reload_tick(); no watcher thread unless a test asks."""
+    monkeypatch.setenv("SAILAB_AUTO_RELOAD_SECONDS", "0")
+
+
 @pytest.fixture
 def source_db(tmp_path):
     path = tmp_path / "source.db"
