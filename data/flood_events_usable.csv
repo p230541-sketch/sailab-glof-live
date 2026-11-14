@@ -1,0 +1,50 @@
+source,record_id,country,lake_name,date,lon,lat,dam_type
+hma,484,China,Gongbatongsha Co,2016-05-07,86.064,28.078,moraine
+global,RGI60_14_SouthAsiaWest:315,China,Kyagar Lake,2016-06-17,77.1932,35.6774,ice
+global,RGI60_14_SouthAsiaWest:316,Pakistan,Chihnji,2016-06-18,74.0041,36.7836,ice
+global,RGI60_15_SouthAsiaEast:66,China,Gongbatongsha Tsho,2016-07-07,86.0639,28.0782,moraine
+hma,482,China,Kyagar,2016-07-17,77.190788,35.677371,ice
+both,483,China,Kyagar,2016-08-11,77.190788,35.677371,ice
+both,491,Nepal,Langmale,2017-04-20,87.141,27.814,moraine
+global,RGI60_13_CentralAsia:912,Kyrgyzstan,Merzbacher,2017-07-07,79.8464,42.2068,ice
+both,487,Pakistan,Unnamed,2017-07-28,75.474953,36.344239,ice
+hma,488,India,Unknown,2017-08-04,76.733,34.588,moraine
+global,RGI60_13_CentralAsia:913,Kyrgyzstan,Chelektor,2017-08-08,74.7,42.4,moraine
+hma,489,China,Kyagar,2017-08-10,77.190788,35.677371,ice
+hma,494,Pakistan,Unnamed,2018-03-25,75.474953,36.344239,ice
+both,495,Pakistan,Unnamed,2018-05-10,75.474953,36.344239,ice
+global,RGI60_15_SouthAsiaEast:16,China,Zalai Tsho,2018-07-07,95.292,30.263,moraine
+hma,497,China,Unknown,2018-07-08,86.321,28.244,moraine
+hma,492,Afghanistan,Pishkandah,2018-07-11,69.624574,35.471115,moraine
+global,RGI60_14_SouthAsiaWest:321,Afghanistan,RGI60-14.24705,2018-07-12,69.6282,35.4701,moraine
+both,496,China,Kyagar,2018-08-10,77.190788,35.677371,ice
+global,RGI60_14_SouthAsiaWest:324,Pakistan,Khurdopin,2019-05-10,75.4786,36.3423,ice
+both,503,Bhutan,Thorthormi,2019-06-20,90.263,28.106,moraine
+both,499,Pakistan,Shisper,2019-06-22,74.572267,36.35594,ice
+global,RGI60_14_SouthAsiaWest:326,Pakistan,"Rogheli Gol Glaciers, glacier of Nalla",2019-07-07,71.97,35.86,moraine
+both,501,China,Kyagar,2019-07-25,77.190788,35.677371,ice
+both,502,Kyrgyzstan,Toguz-Bulak,2019-08-08,77.266932,41.977646,moraine
+global,RGI60_13_CentralAsia:917,Kazakhstan,No1,2019-08-14,76.8474,43.0069,ice
+both,506,Pakistan,Shisper,2020-05-29,74.572267,36.35594,ice
+both,508,China,Jinwuco,2020-06-26,93.631,30.356,moraine
+global,RGI60_13_CentralAsia:919,China,Jiangpu,2020-08-01,94.5436,30.4362,moraine
+hma,723,Kyrgyzstan,Akpay,2020-08-02,74.340159,42.533401,moraine
+global,RGI60_13_CentralAsia:920,Kyrgyzstan,Merzbacher,2020-08-05,79.8464,42.2068,ice
+hma,513,Pakistan,Unnamed,2021-05-11,75.474953,36.344239,ice
+hma,512,Pakistan,Shisper,2021-05-15,74.572267,36.35594,ice
+hma,511,Pakistan,Unnamed,2021-06-08,73.685255,36.326525,moraine
+both,515,Nepal,Pemdang Pokhari,2021-06-14,85.515,28.131,moraine
+both,514,India,Rumbak,2021-08-22,77.422315,33.999709,moraine
+hma,731,China,Chamai,2021-10-05,78.840557,31.914649,moraine
+both,516,Pakistan,Shisper,2022-05-07,74.572267,36.35594,ice
+global,RGI60_15_SouthAsiaEast:71,India,South Lhonak Lake,2023-10-03,88.1955,27.9126,moraine
+hma,698,India,South Lonak,2023-10-04,88.1926,27.9121,moraine
+hma,699,Bhutan,Thorthormi,2023-10-30,90.263,28.106,moraine
+hma,730,Nepal,Birendra Taal,2024-04-21,84.631217,28.596901,moraine
+hma,732,Pakistan,Dih,2024-08-12,75.114381,36.809967,moraine
+hma,733,Nepal,Tomutse Lake,2024-08-16,86.570105,27.826109,moraine
+hma,734,Pakistan,Unknown,2024-08-30,72.175989,35.780972,moraine
+hma,758,Pakistan,NA,2025-06-24,72.382147,35.846222,moraine
+hma,760,Kyrgyzstan,NA,2025-06-27,74.818683,42.575186,moraine
+hma,762,Nepal,NA,2025-07-08,83.819932,29.287763,ice
+global,RGI60_14_SouthAsiaWest:335,Pakistan,,2025-08-22,73.6211,36.1462,moraine
