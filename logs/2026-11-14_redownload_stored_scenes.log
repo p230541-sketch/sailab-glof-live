@@ -1,0 +1,20 @@
+2026-11-14 20:38:25,644 INFO signed in to Earth Engine as sailab-ee@sailab-glof.iam.gserviceaccount.com
+2026-11-14 20:38:25,661 INFO 698 stored scenes, 698 fingerprints on record
+2026-11-14 20:39:28,120 INFO 25 downloaded so far (latest: data/backfill/ATS/S1A_IW_GRDH_1SDV_20260401T010621_20260401T010646_063879_0808B0_C3AC.tif)
+2026-11-14 20:40:28,105 INFO 50 downloaded so far (latest: data/backfill/ATS/S1D_IW_GRDH_1SDV_20260829T130454_20260829T130519_004341_008028_A1D0.tif)
+2026-11-14 20:41:30,051 INFO 75 downloaded so far (latest: data/backfill/ATS/20230609T054639_20230609T055542_T43SCA.tif)
+2026-11-14 20:42:29,740 INFO 100 downloaded so far (latest: data/backfill/ATS/20240409T054641_20240409T055258_T43SCA.tif)
+2026-11-14 20:43:28,708 INFO 125 downloaded so far (latest: data/backfill/ATS/20250305T054741_20250305T055749_T43SCA.tif)
+2026-11-14 20:44:27,686 INFO 150 downloaded so far (latest: data/backfill/ATS/20251031T055031_20251031T055031_T43SCA.tif)
+2026-11-14 20:45:27,656 INFO 175 downloaded so far (latest: data/backfill/ATS/20260603T054629_20260603T055602_T43SCA.tif)
+2026-11-14 20:45:31,458 WARNING data/backfill/ATS/20260628T054641_20260628T055641_T43SCA.tif attempt 1 failed: EarthEngineError: download HTTP 503: {
+  "error": {
+    "code": 503,
+    "message": "Earth Engine memory capacity exceeded.",
+    "status": "UNAVAILABLE"
+  }
+}
+
+2026-11-14 20:45:52,936 INFO finished. Totals:
+2026-11-14 20:45:52,936 INFO   already here, same file                       513
+2026-11-14 20:45:52,936 INFO   downloaded, same file                         185
