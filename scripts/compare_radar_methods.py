@@ -1,4 +1,5 @@
-"""Radar water measurement: plain Otsu (old) against Edge Otsu (Markert et al. 2020), on every stored radar pass.
+"""Radar water measurement: plain Otsu (old) against Edge Otsu (Markert et al. 2020) and self-adaptive block
+Otsu (Tan et al. 2023), on every stored radar pass.
 
     python scripts/compare_radar_methods.py
 
@@ -23,7 +24,7 @@ from statistics import median
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from sailab import db, pipeline, radar_edge_otsu as eo  # noqa: E402
+from sailab import db, pipeline, radar_block_otsu as bo, radar_edge_otsu as eo  # noqa: E402
 from sailab.radar import load_slope  # noqa: E402
 
 DB_PATH = REPO / "sailab_glof.db"
@@ -35,7 +36,8 @@ def main() -> int:
     conn = db.connect(DB_PATH)
     lakes = {row["id"]: dict(row) for row in conn.execute("SELECT * FROM lake")}
     slopes = {lake_id: load_slope(REPO / "data" / "dem" / f"{lake['code']}_dem.tif") for lake_id, lake in lakes.items()}
-    rows = conn.execute("SELECT m.id, m.lake_id, s.file_path FROM measurement m JOIN scene s ON s.id = m.scene_id "
+    block_sizes = defaultdict(lambda: defaultdict(int))
+    rows = conn.execute("SELECT m.id, m.lake_id, s.file_path, s.acquired_at FROM measurement m JOIN scene s ON s.id = m.scene_id "
                         "WHERE m.sensor = 'radar' ORDER BY s.acquired_at").fetchall()
     coverage = defaultdict(list)
     missing = 0
@@ -49,16 +51,21 @@ def main() -> int:
         db.insert_alt_measurement(conn, row["id"], eo.METHOD, outcome.status, outcome.extent_ha, outcome.threshold_db)
         if covered:
             coverage[row["lake_id"]].append(covered)
+        block, size = bo.measure_radar_block_otsu(path, lakes[row["lake_id"]], slopes[row["lake_id"]],
+                                                  pipeline.RADAR_SLOPE_LIMIT_DEG, row["acquired_at"])
+        db.insert_alt_measurement(conn, row["id"], bo.METHOD, block.status, block.extent_ha, block.threshold_db)
+        block_sizes[row["lake_id"]][size] += 1
 
     lines = [
-        "# Radar water measurement: plain Otsu (old) against Edge Otsu (new)",
+        "# Radar water measurement: plain Otsu (old) against Edge Otsu and block Otsu (new)",
         "",
         f"Written by `scripts/compare_radar_methods.py` on {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC. "
         "Every number is read from the database.",
         "",
         f"Edge Otsu (Markert et al. 2020, section 2.3.2) with the paper's numbers: initial cutoff "
         f"{eo.INITIAL_THRESHOLD_DB} dB, edges over {eo.MIN_EDGE_LENGTH_M:.0f} m, {eo.BUFFER_M:.0f} m buffer on each side. "
-        f"Both methods use the same {pipeline.RADAR_SLOPE_LIMIT_DEG:.0f} degree slope mask and the same refusals. "
+        f"Block Otsu (Tan et al. 2023) with the paper's {bo.PATCH_LONG_PX}-pixel patch. "
+        f"All three use the same {pipeline.RADAR_SLOPE_LIMIT_DEG:.0f} degree slope mask and the same refusals. "
         f"Passes with no stored picture on this machine: {missing}.",
         "",
     ]
@@ -75,7 +82,10 @@ def main() -> int:
                                      "ON s.id = m.scene_id WHERE m.lake_id = ? AND m.sensor = 'radar'"),
                 ("Edge Otsu (new)", "SELECT s.acquired_at, a.status, a.extent_ha FROM alt_measurement a JOIN measurement m "
                                     "ON m.id = a.measurement_id JOIN scene s ON s.id = m.scene_id WHERE m.lake_id = ? "
-                                    "AND m.sensor = 'radar' AND a.method = 'edge_otsu'")):
+                                    "AND m.sensor = 'radar' AND a.method = 'edge_otsu'"),
+                ("Block Otsu (new)", "SELECT s.acquired_at, a.status, a.extent_ha FROM alt_measurement a JOIN measurement m "
+                                     "ON m.id = a.measurement_id JOIN scene s ON s.id = m.scene_id WHERE m.lake_id = ? "
+                                     "AND m.sensor = 'radar' AND a.method = 'block_otsu'")):
             results = [(date.fromisoformat(r[0][:10]), r[1], r[2]) for r in conn.execute(query, (lake_id,))]
             ok = [(d, a) for d, status, a in results if status == "ok"]
             wrong = sum(abs(a - optical_median) > WRONG_SHARE * optical_median for _, a in ok)
@@ -86,6 +96,10 @@ def main() -> int:
         if coverage[lake_id]:
             lines += ["", f"Share of the usable window the Edge Otsu buffer covered: median "
                       f"{median(coverage[lake_id]):.0%} (1.0 would be the same as plain Otsu)."]
+        sizes = dict(block_sizes[lake_id])
+        lines += [f"Block size chosen by block Otsu: {', '.join(f'{k} px: {v} passes' for k, v in sizes.items() if k)}"
+                  + (f"; whole window as one group (narrower than 2 x {bo.PATCH_LONG_PX} px, same as plain Otsu): "
+                     f"{sizes[None]} passes" if None in sizes else "") + "."]
         lines.append("")
     conn.close()
     out = REPO / "logs" / f"{datetime.now(timezone.utc):%Y-%m-%d}_radar_methods_comparison.md"

@@ -104,14 +104,17 @@ def read_vv(path: str | Path) -> tuple[np.ndarray, float]:
 
 def grow_below_threshold(path: str | Path, lake: Mapping[str, Any], vv: np.ndarray, usable: np.ndarray,
                          no_data: np.ndarray, threshold: float, masked: int, pixel_size_m: float,
-                         label: str = "") -> RadarOutcome:
+                         candidate: np.ndarray | None = None) -> RadarOutcome:
     """The part of a radar measurement that does not depend on how the cutoff was chosen: pixels darker
     than the cutoff are water candidates, the lake is grown from its centre, and the result is refused if it
-    touches missing data. Shared by plain Otsu (above) and Edge Otsu (sailab/radar_edge_otsu.py)."""
+    touches missing data. Shared by plain Otsu (above), Edge Otsu (sailab/radar_edge_otsu.py) and block Otsu
+    (sailab/radar_block_otsu.py). `candidate` is for a method with a different cutoff in different parts of
+    the window; `threshold` is then the cutoff at the lake centre, used in the messages."""
     from sailab.pipeline import lake_centre_in_pixels   # same georeferenced centre as the optical path
 
     rows, cols = vv.shape
-    candidate = usable & (vv < threshold)
+    if candidate is None:
+        candidate = usable & (vv < threshold)
 
     row_f, col_f = lake_centre_in_pixels(path, lake["centre_lon"], lake["centre_lat"])
     seed = Pixel(floor(row_f), floor(col_f))
