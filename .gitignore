@@ -19,3 +19,5 @@ data/archive_v1/
 logs/scheduler.log
 # Generated sample database (rebuild with scripts/make_sample_db.py)
 sample_data/*.db
+# Extra SMBWI bands (B8A, B9, B11, B12), re-downloadable with scripts/download_smbwi_bands.py
+data/smbwi_bands/

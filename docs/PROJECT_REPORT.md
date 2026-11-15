@@ -51,7 +51,7 @@ satellite data. Downstream Analysis (flood path, roads, bridges) and Alerting we
 | Runs | **A local scheduler** (`scripts/scheduler.py`), every **24 hours** on the machine it is started on; results stay in the local database and logs (until 10 Nov 2026: GitHub Actions, nightly at 23:00 PKT, committing its results back) |
 | Stores | One SQLite database, `sailab_glof.db` (5 tables) |
 | Shows | A local web app (FastAPI + Jinja2): Dashboard, Lake Detail, a page per scene (NDWI / radar threshold views), Live check, three inert design previews; reloads itself after a `git pull` |
-| Code | **3,958 lines** of new code (new `sailab/` modules, `webapp/` Python, templates and CSS, `scripts/`, `app.py`; tests not counted), **348 tests**, all passing |
+| Code | **3,958 lines** of new code (new `sailab/` modules, `webapp/` Python, templates and CSS, `scripts/`, `app.py`; tests not counted), **369 tests**, all passing |
 | History | **1,053 scenes** from 5 Jan 2023 to 9 Nov 2026 (611 optical, 442 radar) |
 
 **What it is not.** It is a working, automated **monitoring prototype**. It sends **no alerts**, it has **never
@@ -574,7 +574,7 @@ rendered page: **30 of 30 checks passed**)*
 
 ### 11.1 The numbers
 
-**348 tests, all passing** (`.venv/bin/python -m pytest tests -q`, about 21 s).
+**369 tests, all passing** (`.venv/bin/python -m pytest tests -q`, about 21 s).
 
 | Test file | Tests | Covers |
 |---|---|---|

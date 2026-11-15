@@ -346,6 +346,48 @@ def download_scene_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_pa
 
 
 # ---------------------------------------------------------------------------
+# Extra bands for the SMBWI water index (Su et al. 2024)
+# ---------------------------------------------------------------------------
+# SMBWI = B2 + 2.5 B3 - 2 (B8 + B8A + B9) - B11 - B12 (Su et al. 2024, equation 1). The stored pictures
+# have B2, B3, B4, B8, B11 and SCL only. These four are downloaded into a SEPARATE file on the same
+# window, scale and projection, so the stored pictures stay byte for byte as they were. B11 is fetched
+# again because the paper resamples every coarser band with bicubic resampling (its section 2.3), while
+# the stored B11 was resampled the Earth Engine default way (nearest neighbour).
+SMBWI_EXTRA_BANDS = ("B8A", "B9", "B11", "B12")
+
+
+def download_smbwi_bands(scene_info: SceneInfo, lake: Mapping[str, Any], out_path: str | Path) -> None:
+    """The lake window of one Sentinel-2 scene with bands B8A, B9, B11, B12 (bicubic, 10 m, UTM, uint16).
+    Same temporary-file-then-check pattern as download_scene_window()."""
+    import requests
+
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    partial = out_path.with_name(out_path.name + ".partial")
+    try:
+        image = (ee.Image(f"{COLLECTION}/{scene_info.scene_id}").select(list(SMBWI_EXTRA_BANDS))
+                 .resample("bicubic").toUint16())
+        region = export_region(lake)
+        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(SMBWI_EXTRA_BANDS)})
+        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        if response.status_code != 200:
+            raise EarthEngineError(f"SMBWI band download HTTP {response.status_code}: {response.text[:300]}")
+        if not response.content.startswith((b"II*\x00", b"MM\x00*")):
+            raise EarthEngineError(f"SMBWI band download did not return a GeoTIFF (first bytes {response.content[:16]!r})")
+        partial.write_bytes(response.content)
+        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), SMBWI_EXTRA_BANDS)
+        _label_bands(partial, SMBWI_EXTRA_BANDS)
+        partial.replace(out_path)
+    except EarthEngineError:
+        partial.unlink(missing_ok=True)
+        raise
+    except Exception as exc:
+        partial.unlink(missing_ok=True)
+        raise EarthEngineError(
+            f"download_smbwi_bands failed for {scene_info.scene_id} ({lake['code']}): {type(exc).__name__}: {exc}") from exc
+
+
+# ---------------------------------------------------------------------------
 # Elevation (for the radar slope mask) and Sentinel-1 radar scenes
 # ---------------------------------------------------------------------------
 DEM_COLLECTION = "COPERNICUS/DEM/GLO30_2024_1"   # Copernicus 30 m DEM, 2024 release (GLO30 is deprecated)

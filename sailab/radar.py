@@ -89,6 +89,28 @@ def measure_radar_scene(path: str | Path, lake: Mapping[str, Any], slope: np.nda
     if not values:
         return RadarOutcome("insufficient_observation", None, "no valid radar pixels in the window")
     threshold = otsu_threshold(values)             # over flat pixels only when the slope mask is on
+    return grow_below_threshold(path, lake, vv, usable, no_data, threshold, masked, pixel_size_m)
+
+
+def read_vv(path: str | Path) -> tuple[np.ndarray, float]:
+    """The VV band (dB) of a stored radar window, and its pixel size in metres."""
+    import rasterio
+
+    with rasterio.open(path) as src:
+        names = list(src.descriptions)
+        band = names.index("VV") + 1 if "VV" in names else 1
+        return src.read(band).astype(float), float(src.res[0])
+
+
+def grow_below_threshold(path: str | Path, lake: Mapping[str, Any], vv: np.ndarray, usable: np.ndarray,
+                         no_data: np.ndarray, threshold: float, masked: int, pixel_size_m: float,
+                         label: str = "") -> RadarOutcome:
+    """The part of a radar measurement that does not depend on how the cutoff was chosen: pixels darker
+    than the cutoff are water candidates, the lake is grown from its centre, and the result is refused if it
+    touches missing data. Shared by plain Otsu (above) and Edge Otsu (sailab/radar_edge_otsu.py)."""
+    from sailab.pipeline import lake_centre_in_pixels   # same georeferenced centre as the optical path
+
+    rows, cols = vv.shape
     candidate = usable & (vv < threshold)
 
     row_f, col_f = lake_centre_in_pixels(path, lake["centre_lon"], lake["centre_lat"])

@@ -81,6 +81,7 @@ class MeasurementOutcome:
     status: str                 # 'ok' or 'insufficient_observation'
     extent_ha: float | None
     reason: str                 # human-readable, written to the run log
+    cutoff: float | None = None  # the water cutoff used (fixed 0.2 for NDWI, or the Otsu value)
 
 
 @dataclass
@@ -146,16 +147,28 @@ def measure_scene(path: str | Path, lake: Mapping[str, Any], cutoff: float = 0.2
                 raise ValueError(f"{path} has {src.count} bands, no SCL band: cannot run the cloud and snow checks")
             scl = src.read(SCL_BAND_INDEX)
     rows, cols = green.shape
+    no_data = (green == 0) & (nir == 0)
+    is_water = {Pixel(r, c): classify_water_ndwi(green[r, c], nir[r, c], cutoff) for r in range(rows) for c in range(cols)}
+    outcome = grow_and_check(path, lake, is_water, no_data, scl if scl_checks else None,
+                             pixel_size_m, f"NDWI <= {cutoff}")
+    outcome.cutoff = cutoff
+    return outcome
+
+
+def grow_and_check(path: str | Path, lake: Mapping[str, Any], is_water: dict, no_data, scl,
+                   pixel_size_m: float, not_water_text: str) -> MeasurementOutcome:
+    """The part of a camera measurement that does not depend on how water was found: grow the lake from
+    its centre over the water map, then refuse the result when it may be wrong (cut off, cloud, snow).
+    Shared by NDWI (measure_scene) and the newer indices (sailab/water_index.py), so every method faces
+    exactly the same checks. scl=None skips checks C and D (only for the original 5-band exports)."""
+    rows, cols = no_data.shape
     row_f, col_f = lake_centre_in_pixels(path, lake["centre_lon"], lake["centre_lat"])
     seed = Pixel(floor(row_f), floor(col_f))
 
     if not (0 <= seed.row < rows and 0 <= seed.col < cols):
         return MeasurementOutcome("insufficient_observation", None, f"lake centre {seed} is outside the {cols}x{rows} window")
-    no_data = (green == 0) & (nir == 0)
-
-    is_water = {Pixel(r, c): classify_water_ndwi(green[r, c], nir[r, c], cutoff) for r in range(rows) for c in range(cols)}
     if not is_water[seed]:
-        return MeasurementOutcome("insufficient_observation", None, f"centre pixel {seed} is not water (NDWI <= {cutoff})")
+        return MeasurementOutcome("insufficient_observation", None, f"centre pixel {seed} is not water ({not_water_text})")
 
     region = region_grow(is_water, seed, (row_f * pixel_size_m, col_f * pixel_size_m), pixel_size_m,
                          float(lake["growth_distance_limit_m"]))
@@ -163,7 +176,7 @@ def measure_scene(path: str | Path, lake: Mapping[str, Any], cutoff: float = 0.2
     if touching:
         return MeasurementOutcome("insufficient_observation", None,
                                   f"lake region ({len(region)} px) borders {touching} no-data pixels; it may be cut off")
-    if scl_checks:
+    if scl is not None:
         cloud_touching = _pixels_touching(region, np.isin(scl, SCL_CLOUD_CLASSES))
         if cloud_touching:
             return MeasurementOutcome("insufficient_observation", None,

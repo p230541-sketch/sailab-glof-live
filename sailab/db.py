@@ -61,6 +61,19 @@ CREATE TABLE IF NOT EXISTS risk_score (
     reason TEXT
 );
 
+-- The same camera scene measured by a newer method (added 2026-11-15). The measurement table keeps the
+-- original NDWI result untouched; each newer method's result is one row here, pointing at it.
+CREATE TABLE IF NOT EXISTS alt_measurement (
+    id INTEGER PRIMARY KEY,
+    measurement_id INTEGER NOT NULL REFERENCES measurement(id),
+    method TEXT NOT NULL,
+    status TEXT NOT NULL,
+    extent_ha REAL,
+    cutoff REAL,
+    measured_at TEXT NOT NULL,
+    UNIQUE (measurement_id, method)
+);
+
 CREATE TABLE IF NOT EXISTS run_log (
     id INTEGER PRIMARY KEY,
     started_at TEXT NOT NULL,
@@ -75,6 +88,7 @@ SCENE_SOURCES = ("sentinel-2", "sentinel-1")
 SENSORS = ("optical", "radar")
 MEASUREMENT_STATUSES = ("ok", "insufficient_observation")
 RISK_STATUSES = ("ok", "insufficient_history")
+ALT_MEASUREMENT_METHODS = ("ndwi_otsu", "smbwi_otsu", "edge_otsu")
 # The score in risk.py is a z-score against the same calendar month in earlier years. Until 2026-11-11 it
 # was saved under the name "anomaly_detector", which described a method this code never was.
 # migrate() renames the old rows; the numbers are not touched.
@@ -206,6 +220,27 @@ def insert_measurement(conn: sqlite3.Connection, scene_id: int, lake_id: int, se
         "INSERT INTO measurement (scene_id, lake_id, sensor, extent_ha, status, measured_at) "
         "VALUES (?, ?, ?, ?, ?, ?)",
         (scene_id, lake_id, sensor, extent_ha, status, measured_at or utc_now_iso()),
+    )
+    conn.commit()
+    return cursor.lastrowid
+
+
+def insert_alt_measurement(conn: sqlite3.Connection, measurement_id: int, method: str, status: str,
+                           extent_ha: float | None, cutoff: float | None, measured_at: str | None = None) -> int:
+    """Save (or replace) one scene's result from a newer measurement method. Same rule as
+    insert_measurement: an area exactly when the status is 'ok', never an invented zero."""
+    if method not in ALT_MEASUREMENT_METHODS:
+        raise ValueError(f"method must be one of {ALT_MEASUREMENT_METHODS}, got {method!r}")
+    if status not in MEASUREMENT_STATUSES:
+        raise ValueError(f"measurement status must be one of {MEASUREMENT_STATUSES}, got {status!r}")
+    if (status == "ok") != (extent_ha is not None):
+        raise ValueError("an area must be given exactly when the status is 'ok'")
+    cursor = conn.execute(
+        "INSERT INTO alt_measurement (measurement_id, method, status, extent_ha, cutoff, measured_at) "
+        "VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (measurement_id, method) DO UPDATE SET "
+        "status = excluded.status, extent_ha = excluded.extent_ha, cutoff = excluded.cutoff, "
+        "measured_at = excluded.measured_at",
+        (measurement_id, method, status, extent_ha, cutoff, measured_at or utc_now_iso()),
     )
     conn.commit()
     return cursor.lastrowid

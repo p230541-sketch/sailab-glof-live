@@ -25,9 +25,9 @@ def _add_measured_scene(conn, lake_id, acquired_at, extent_ha, status="ok"):
     return db.insert_measurement(conn, scene_id, lake_id, "optical", extent_ha, status)
 
 
-def test_connect_creates_all_five_tables(conn):
+def test_connect_creates_all_six_tables(conn):
     tables = {row["name"] for row in conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
-    assert tables == {"lake", "scene", "measurement", "risk_score", "run_log"}
+    assert tables == {"lake", "scene", "measurement", "alt_measurement", "risk_score", "run_log"}
 
 
 def test_rows_survive_closing_and_reopening_the_file(db_path):
