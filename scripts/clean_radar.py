@@ -41,7 +41,10 @@ def write_clean(float_path: Path, dem_path: Path, out_path: Path) -> tuple[float
     import rasterio
 
     with rasterio.open(float_path) as src:
-        vv, vh, angle = (src.read(i).astype(float) for i in (1, 2, 3))
+        names = list(src.descriptions)          # VH is missing on VV-only passes (scene names with "1SSV")
+        vv = src.read(names.index("VV") + 1).astype(float)
+        angle = src.read(names.index("angle") + 1).astype(float)
+        vh = src.read(names.index("VH") + 1).astype(float) if "VH" in names else np.full(vv.shape, np.nan)
         heading = float(src.tags()["HEADING_DEG"])     # worked out over the whole scene at download
         profile = src.profile
         pixel_size_m = float(src.res[0])

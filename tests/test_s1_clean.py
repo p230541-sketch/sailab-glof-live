@@ -108,3 +108,12 @@ def test_heading_is_between_minus_180_and_180():
 def test_db_conversion():
     assert sc.to_db(np.array([0.1, 1.0])).tolist() == pytest.approx([-10.0, 0.0])
     assert np.isnan(sc.to_db(np.array([0.0]))[0])
+
+
+def test_a_vv_only_pass_is_still_cleaned():
+    """Some 2017 passes have no VH band; VV must still be cleaned, VH comes out as no data."""
+    vv = np.full((12, 12), 0.05)
+    vh = np.full((12, 12), np.nan)
+    angle = np.full((12, 12), 38.0)
+    vv_db, vh_db, _ = sc.clean(vv, vh, angle, np.full((12, 12), 3000.0), 10.0, heading_deg=-84.0)
+    assert np.isfinite(vv_db).all() and np.isnan(vh_db).all()

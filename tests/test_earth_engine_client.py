@@ -319,3 +319,21 @@ def test_a_period_already_covered_returns_nothing_without_asking_earth_engine():
         assert eec.find_new_s1_scenes(KARAMBAR, date(2026, 11, 4), date(2026, 8, 31)) == []
         assert eec.find_new_scenes(KARAMBAR, date(2026, 8, 31), date(2026, 8, 31)) == []    # since == until: nothing after
     fake_ee.ImageCollection.assert_not_called()
+
+
+# --- added 2026-11-15: VV-only radar passes ---------------------------------------------------------
+def test_radar_download_takes_vh_only_when_the_pass_has_it():
+    from sailab.earth_engine_client import bands_present
+
+    assert bands_present(("VV", "VH"), ["VV", "VH", "angle"]) == ("VV", "VH")
+    assert bands_present(("VV", "VH"), ["VV", "angle"]) == ("VV",)          # a 2017 "1SSV" pass
+    assert bands_present(("VV", "VH", "angle"), ["VV", "angle"]) == ("VV", "angle")
+
+
+def test_a_pass_without_vv_is_refused():
+    import pytest
+
+    from sailab.earth_engine_client import EarthEngineError, bands_present
+
+    with pytest.raises(EarthEngineError):
+        bands_present(("VV", "VH"), ["HH", "HV"])

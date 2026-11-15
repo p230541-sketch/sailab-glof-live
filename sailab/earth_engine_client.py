@@ -348,6 +348,16 @@ def download_scene_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_pa
 # ---------------------------------------------------------------------------
 # Radar in linear power with its incidence angle (for sailab/s1_clean.py, after Mullissa et al. 2021)
 # ---------------------------------------------------------------------------
+def bands_present(wanted: tuple[str, ...], available: list[str]) -> tuple[str, ...]:
+    """The wanted bands this scene actually has, in the wanted order. VV is always required (it is what the
+    lake is measured from); VH is optional: some early Sentinel-1 passes (scene names with "1SSV", 2017) were
+    recorded in VV only, and asking Earth Engine for a missing VH band fails the whole download."""
+    have = tuple(b for b in wanted if b in available)
+    if "VV" not in have:
+        raise EarthEngineError(f"scene has no VV band (bands: {available})")
+    return have
+
+
 S1_FLOAT_COLLECTION = "COPERNICUS/S1_GRD_FLOAT"   # the same scenes as S1_GRD, kept in linear power
 S1_FLOAT_BANDS = ("VV", "VH", "angle")
 
@@ -375,17 +385,19 @@ def download_s1_float_window(scene_info: SceneInfo, lake: Mapping[str, Any], out
     out_path.parent.mkdir(parents=True, exist_ok=True)
     partial = out_path.with_name(out_path.name + ".partial")
     try:
-        image = ee.Image(f"{S1_FLOAT_COLLECTION}/{scene_info.scene_id}").select(list(S1_FLOAT_BANDS)).toFloat()
+        source = ee.Image(f"{S1_FLOAT_COLLECTION}/{scene_info.scene_id}")
+        bands = bands_present(S1_FLOAT_BANDS, source.bandNames().getInfo())
+        image = source.select(list(bands)).toFloat()
         region = export_region(lake)
-        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(S1_FLOAT_BANDS)})
+        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(bands)})
         response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
         if response.status_code != 200:
             raise EarthEngineError(f"radar float download HTTP {response.status_code}: {response.text[:300]}")
         if not response.content.startswith((b"II*\x00", b"MM\x00*")):
             raise EarthEngineError(f"radar float download did not return a GeoTIFF (first bytes {response.content[:16]!r})")
         partial.write_bytes(response.content)
-        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), S1_FLOAT_BANDS)
-        _label_bands(partial, S1_FLOAT_BANDS)
+        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), bands)
+        _label_bands(partial, bands)
         import rasterio
 
         with rasterio.open(partial, "r+") as dst:
@@ -507,17 +519,19 @@ def download_s1_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_path:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     partial = out_path.with_name(out_path.name + ".partial")
     try:
-        image = ee.Image(f"{S1_COLLECTION}/{scene_info.scene_id}").select(list(S1_BANDS)).toFloat()
+        source = ee.Image(f"{S1_COLLECTION}/{scene_info.scene_id}")
+        bands = bands_present(S1_BANDS, source.bandNames().getInfo())
+        image = source.select(list(bands)).toFloat()
         region = export_region(lake)
-        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(S1_BANDS)})
+        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(bands)})
         response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
         if response.status_code != 200:
             raise EarthEngineError(f"radar download HTTP {response.status_code}: {response.text[:300]}")
         if not response.content.startswith((b"II*\x00", b"MM\x00*")):
             raise EarthEngineError(f"radar download did not return a GeoTIFF (first bytes {response.content[:16]!r})")
         partial.write_bytes(response.content)
-        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), S1_BANDS)
-        _label_bands(partial, S1_BANDS)
+        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), bands)
+        _label_bands(partial, bands)
         partial.replace(out_path)
     except EarthEngineError:
         partial.unlink(missing_ok=True)

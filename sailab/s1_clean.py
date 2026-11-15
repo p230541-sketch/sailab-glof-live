@@ -191,10 +191,10 @@ def clean(vv: np.ndarray, vh: np.ndarray, angle_deg: np.ndarray, dem: np.ndarray
     border noise, or in layover / shadow. heading_deg should be worked out over the whole scene
     (earth_engine_client.s1_scene_heading); only when it is not given is it worked out from this window,
     which works only if the window's angle band actually changes across it."""
-    keep = border_noise_mask(angle_deg) & np.isfinite(vv) & np.isfinite(vh)
+    keep = border_noise_mask(angle_deg)
     heading = heading_from_angle(angle_deg, pixel_size_m) if heading_deg is None else heading_deg
     out = []
-    for band in (vv, vh):
-        filtered = refined_lee(np.where(keep, band, np.nan))
+    for band in (vv, vh):   # VH may be all NaN: some early passes were recorded in VV only
+        filtered = refined_lee(np.where(keep & np.isfinite(band), band, np.nan))
         out.append(to_db(terrain_flatten(filtered, angle_deg, dem, pixel_size_m, heading)))
     return out[0], out[1], heading
