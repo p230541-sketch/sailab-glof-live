@@ -43,9 +43,13 @@ def measure_all(conn: sqlite3.Connection) -> dict[str, int]:
     rows = conn.execute("SELECT m.id, m.lake_id, s.file_path FROM measurement m JOIN scene s ON s.id = m.scene_id "
                         "WHERE m.sensor = 'optical' ORDER BY s.acquired_at").fetchall()
     counts = defaultdict(int)
+    done = {(r[0], r[1]) for r in conn.execute("SELECT measurement_id, method FROM alt_measurement")}
     for row in rows:
         lake = lakes[row["lake_id"]]
         stored = REPO / row["file_path"]
+        if (row["id"], wi.METHOD_NDWI_OTSU) in done and (row["id"], wi.METHOD_SMBWI_OTSU) in done:
+            counts["already measured earlier, kept"] += 1
+            continue
         if not stored.is_file():
             counts["stored picture missing"] += 1
             continue
@@ -176,7 +180,14 @@ def draw(records: list[dict], radar_values: dict, out_png: Path) -> None:
 
 
 def main() -> int:
-    conn = db.connect(DB_PATH)
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--db", type=Path, default=DB_PATH,
+                        help="database to use (default: the real one). Give a copy to compare while another "
+                             "run is writing to the real database.")
+    args = parser.parse_args()
+    conn = db.connect(args.db)
     counts = measure_all(conn)
     records = results(conn)
     radar_values = radar(conn)
