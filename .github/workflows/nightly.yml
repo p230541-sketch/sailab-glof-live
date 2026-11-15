@@ -1,0 +1,104 @@
+name: SailAb nightly run
+
+# Free cloud deployment (no card): GitHub runs this every night, so monitoring continues with the laptop off.
+#   - the code is on 'main'; the database and run logs are on the 'data' branch (so 'main' stays code only)
+#   - the Earth Engine key is the encrypted secret EE_SERVICE_ACCOUNT_KEY (never in the repository)
+#   - pictures are measured and then dropped (too big for git); only the measurements are kept
+#   - the online dashboard (GitHub Pages) is rebuilt from the new database after every run
+on:
+  schedule:
+    - cron: '0 18 * * *'      # 18:00 UTC = 23:00 Pakistan time. GitHub may start scheduled runs late.
+  workflow_dispatch: {}        # "Run workflow" button, for a run by hand
+
+permissions:
+  contents: write              # to save the database on the 'data' branch
+  pages: write                 # to publish the dashboard
+  id-token: write
+
+concurrency:
+  group: sailab-nightly        # never two runs writing the database at once
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    outputs:
+      has_data: ${{ steps.data.outputs.has_data }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Is there a 'data' branch with the database yet?
+        id: data
+        run: |
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            echo "has_data=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_data=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No 'data' branch yet: nothing to run. Push the database to 'data' first (see README)."
+          fi
+
+      - uses: actions/checkout@v5
+        if: steps.data.outputs.has_data == 'true'
+        with:
+          ref: data
+          path: data-branch
+
+      - uses: actions/setup-python@v6
+        if: steps.data.outputs.has_data == 'true'
+        with:
+          python-version: '3.13'
+
+      - name: Install the pinned packages
+        if: steps.data.outputs.has_data == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Run the test suite first (a broken build must not write to the database)
+        if: steps.data.outputs.has_data == 'true'
+        run: python -m pytest tests/ -q
+
+      - name: Put the stored database in place
+        if: steps.data.outputs.has_data == 'true'
+        run: |
+          cp data-branch/sailab_glof.db sailab_glof.db
+          if [ -f data-branch/sailab_glof.resume.json ]; then cp data-branch/sailab_glof.resume.json .; fi
+
+      - name: Run the pipeline for every lake
+        if: steps.data.outputs.has_data == 'true'
+        env:
+          EE_SERVICE_ACCOUNT_KEY: ${{ secrets.EE_SERVICE_ACCOUNT_KEY }}
+        run: python scripts/run_once.py       # exits 1 on any recorded error, so the run shows as failed
+
+      - name: Save the database and run log to the 'data' branch (also after a failed run)
+        if: always() && steps.data.outputs.has_data == 'true'
+        run: |
+          cp sailab_glof.db data-branch/sailab_glof.db
+          if [ -f sailab_glof.resume.json ]; then cp sailab_glof.resume.json data-branch/; else rm -f data-branch/sailab_glof.resume.json; fi
+          mkdir -p data-branch/runs
+          cp logs/runs/*.log data-branch/runs/ 2>/dev/null || true
+          cd data-branch
+          git config user.name "SailAb nightly run"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Nightly run $(date -u +%Y-%m-%dT%H:%M:%SZ) (${{ job.status }})"
+          git push origin data
+
+      - name: Build the online dashboard from the new database
+        if: always() && steps.data.outputs.has_data == 'true'
+        run: python scripts/export_static_site.py --db sailab_glof.db --out site
+
+      - uses: actions/upload-pages-artifact@v3
+        if: always() && steps.data.outputs.has_data == 'true'
+        with:
+          path: site
+
+  publish:
+    needs: run
+    if: always() && needs.run.outputs.has_data == 'true'
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

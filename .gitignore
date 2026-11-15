@@ -24,3 +24,8 @@ data/smbwi_bands/
 # Radar in linear power and cleaned radar, re-downloadable with scripts/clean_radar.py
 data/s1_float/
 data/s1_clean/
+# Online dashboard, rebuilt by scripts/export_static_site.py
+site/
+# The live database lives on the data branch (see docs/DEPLOYMENT.md); the local copy is not tracked on main
+sailab_glof.db
+sailab_glof.resume.json
