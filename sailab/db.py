@@ -137,8 +137,10 @@ SEED_LAKES = (
     # with that project's lake positions and window half-widths (window radius = halfKm x 1000 m; growth
     # limit the same). Its "fix" note says where each position came from. Darmander was NOT added: the
     # earlier project excluded it ("no lake at this coordinate; only 2 ha of water, 2.5 km away").
-    # Shishper, Khurdopin, Badswat and Chihnji had recorded outbursts; Passu, Rush and Attabad were the
-    # earlier project's stable "control" lakes.
+    # Shishper, Khurdopin, Badswat and Chihnji had recorded outbursts; Passu and Rush were the earlier
+    # project's stable "control" lakes. Attabad was added and then removed the same day (2026-11-15, decided
+    # with the project owner): the lake is about 20 km long, far larger than any lake window, so almost every
+    # measurement would be refused as cut off; it had no stored scene when removed.
     {   # fix: visual (Sentinel-2 2019-05-06, lake at max extent). Formed Nov 2018; outbursts 2019 to 2022.
         "code": "SHP", "name": "Shishper (Hassanabad)", "centre_lon": 74.5623, "centre_lat": 36.3607,
         "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
@@ -162,11 +164,6 @@ SEED_LAKES = (
     {   # fix: Hi-MAG (unconnected glacial lake, 0.042 km2, 4611 m). Control lake.
         "code": "RSH", "name": "Rush Lake (Nagar)", "centre_lon": 74.8825, "centre_lat": 36.1741,
         "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
-    },
-    {   # fix: known location (landslide dam, 2010). Control lake; about 20 km long, so a 4 km window
-        # will usually see it cut off at the edge and refuse the measurement.
-        "code": "ATB", "name": "Attabad Lake", "centre_lon": 74.8650, "centre_lat": 36.3400,
-        "boundary_radius_m": 4000.0, "growth_distance_limit_m": 4000.0,
     },
 )
 

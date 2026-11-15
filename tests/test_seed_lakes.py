@@ -1,18 +1,20 @@
-"""The full list of seed lakes (the two original lakes plus the seven Pakistani lakes added on 2026-11-15)."""
+"""The full list of seed lakes (the two original lakes plus the six Pakistani lakes added on 2026-11-15;
+Attabad was added and removed the same day, see db.SEED_LAKES)."""
 from __future__ import annotations
 
 from conftest import ALL_SEED_LAKES
 from sailab import db
 
 ADDED = {"SHP": (74.5623, 36.3607), "KHD": (75.4755, 36.3441), "BDS": (74.0345, 36.5470), "CHJ": (74.00409, 36.78359),
-         "PSU": (74.8622, 36.4330), "RSH": (74.8825, 36.1741), "ATB": (74.8650, 36.3400)}
+         "PSU": (74.8622, 36.4330), "RSH": (74.8825, 36.1741)}
 
 
-def test_nine_lakes_with_unique_codes_and_the_originals_first():
+def test_eight_lakes_with_unique_codes_and_the_originals_first():
     codes = [lake["code"] for lake in ALL_SEED_LAKES]
     assert codes[:2] == ["KRB", "ATS"]                    # ids 1 and 2 stay the same for the stored data
-    assert len(codes) == 9 and len(set(codes)) == 9
+    assert len(codes) == 8 and len(set(codes)) == 8
     assert "DMD" not in codes                             # Darmander: excluded by the earlier project (no lake there)
+    assert "ATB" not in codes                             # Attabad: removed (far larger than any lake window)
 
 
 def test_added_lakes_use_the_earlier_projects_positions_exactly():
@@ -28,5 +30,5 @@ def test_every_lake_is_in_northern_pakistan_and_has_a_window(tmp_path, monkeypat
     monkeypatch.setattr(db, "SEED_LAKES", ALL_SEED_LAKES)
     conn = db.connect(tmp_path / "t.db")
     ids = db.seed_lakes(conn)
-    assert ids == list(range(1, 10))
+    assert ids == list(range(1, 9))
     assert db.seed_lakes(conn) == ids                     # seeding again changes nothing

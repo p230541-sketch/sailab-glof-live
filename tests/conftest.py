@@ -10,13 +10,13 @@ from sailab import db
 TODAY = date(2026, 11, 9)
 
 
-ALL_SEED_LAKES = db.SEED_LAKES          # all 9 lakes, kept here before any test narrows the list
+ALL_SEED_LAKES = db.SEED_LAKES          # all 8 lakes, kept here before any test narrows the list
 
 
 @pytest.fixture(autouse=True)
 def _two_original_lakes(monkeypatch):
     """Most tests were written for the two original lakes (KRB = id 1, ATS = id 2) and count exactly two.
-    They keep running on those two; tests/test_seed_lakes.py checks the full list of nine."""
+    They keep running on those two; tests/test_seed_lakes.py checks the full list."""
     monkeypatch.setattr(db, "SEED_LAKES", ALL_SEED_LAKES[:2])
 
 
