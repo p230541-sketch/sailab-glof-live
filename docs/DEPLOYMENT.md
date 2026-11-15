@@ -20,13 +20,17 @@ Set up on 2026-11-15. Everything runs on GitHub's free services.
 
 ## On the laptop
 
-Get the latest database from the cloud (for the local web app, which also shows the pictures):
+Get the latest database from the cloud (for the local web app, which also shows the pictures). Run these
+inside the project folder (`sailab-glof-live`), and not while a local backfill is writing to the database:
 
 ```
-git fetch origin data
-git show origin/data:sailab_glof.db > sailab_glof.db
+git fetch deploy data
+git restore --source=deploy/data --worktree -- sailab_glof.db
 .venv\Scripts\python -m uvicorn app:app
 ```
+
+(`deploy` is the name of the remote for this repository; on a fresh clone it is `origin`. Do not use
+`git show ... > sailab_glof.db` in PowerShell: `>` saves text and corrupts the binary database file.)
 
 The laptop must not also run the nightly job, or two copies of the database would drift apart. The Windows
 scheduled task "SailAb GLOF" was removed when this deployment went live.
