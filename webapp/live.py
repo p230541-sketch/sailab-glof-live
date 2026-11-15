@@ -1,4 +1,4 @@
-"""The live-check button: one real pipeline run for both lakes, started from the web page.
+"""The live-check button: one real pipeline run for every lake that already has data, started from the web page.
 
 It calls the same run_pipeline_once() the nightly GitHub Actions run uses, with the real Earth Engine
 connection, against the app's WORKING COPY of the database (never the published sailab_glof.db).
@@ -16,8 +16,33 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-# Same start date as scripts/run_once.py. Only used for a lake with no stored scene (both lakes have some).
+# Same start date as scripts/run_once.py. Only used for a lake with no stored scene; the live check skips
+# such lakes (see lakes_with_data), so in practice it is not used.
 INITIAL_SINCE_DATE = date(2022, 12, 31)
+REPO = Path(__file__).resolve().parent.parent
+
+
+def load_key_settings() -> None:
+    """Read the Earth Engine key settings from the repository's .env file, exactly as scripts/scheduler.py
+    does (a variable already set in the environment wins). Without this the web app found no key."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("sailab_scheduler_env", REPO / "scripts" / "scheduler.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.load_env_file(module.ENV_FILE)
+
+
+def lakes_with_data(db_path: Path) -> list[int]:
+    """Lakes that already have at least one stored scene. A lake with none needs its history downloaded
+    first (scripts/run_once.py --backfill), which takes hours, so the button leaves it out."""
+    import sqlite3
+
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    try:
+        return [row[0] for row in conn.execute("SELECT DISTINCT lake_id FROM scene ORDER BY lake_id")]
+    finally:
+        conn.close()
 
 
 def explain_error(error: str | None) -> str | None:
@@ -106,7 +131,12 @@ class LiveChecker:
         try:
             runner = self._runner
             if runner is None:
-                from sailab.pipeline import run_pipeline_once as runner
+                from functools import partial
+
+                from sailab.pipeline import run_pipeline_once
+
+                load_key_settings()
+                runner = partial(run_pipeline_once, lakes=lakes_with_data(self.db_path))
             result = runner(self.db_path, self.data_dir, INITIAL_SINCE_DATE)
         except Exception as exc:  # run_pipeline_once records its own errors; this is for anything outside it
             crash = f"{type(exc).__name__}: {exc}\n" + "".join(traceback.format_exception(exc)[-4:])

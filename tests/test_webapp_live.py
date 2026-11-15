@@ -95,7 +95,7 @@ def test_new_scene_is_measured_and_written_to_the_working_copy_only(source_db, t
 def test_no_new_scene_says_so(source_db, tmp_path):
     client = make(source_db, tmp_path, runner_with(FakeEarthEngine({})))
     html = check_now(client)
-    assert "No new scene for either lake" in html
+    assert "No new scene for any lake" in html
     assert client.app.state.live.snapshot()["status"] == "no_new_scene"
     copy = sqlite3.connect(client.app.state.provenance["working_copy"])
     assert copy.execute("SELECT COUNT(*) FROM run_log").fetchone()[0] == 3     # the check itself is logged
@@ -113,7 +113,7 @@ def test_a_failure_shows_the_real_error_and_is_recorded(source_db, tmp_path):
     assert "memory capacity exceeded" in errors
     # neither the success banner nor the no-new-scene banner may appear for a failed check
     assert "new scene recorded." not in html and "new scenes recorded." not in html
-    assert "No new scene for either lake" not in html
+    assert "No new scene for any lake" not in html
 
 
 def test_a_crash_outside_the_pipeline_is_shown_too(source_db, tmp_path):
@@ -136,7 +136,7 @@ def test_only_one_check_runs_at_a_time_and_the_page_refreshes_meanwhile(source_d
     assert live.start() is True
     assert live.start() is False                                           # second click while running: ignored
     page = client.get("/live").text
-    assert '<meta http-equiv="refresh" content="3">' in page and "Checking both lakes" in page
+    assert '<meta http-equiv="refresh" content="3">' in page and "Checking all lakes" in page
     release.set(); live.wait(10)
     assert live.snapshot()["status"] == "no_new_scene"
     assert len(live.history) == 1
@@ -184,3 +184,27 @@ def test_failed_page_leads_with_the_plain_line_and_keeps_the_exact_error(source_
     html = check_now(client)
     assert "usage limit" in html and "It stopped after" in html
     assert "Technical details: the exact error" in html and "Too many concurrent aggregations." in html
+
+
+# --- added 2026-11-15: the key file and which lakes the button checks ----------------------------------
+def test_the_button_only_checks_lakes_that_already_have_data(source_db):
+    """A lake with no stored scene needs hours of history first (the backfill), so the button leaves it out.
+    In the test database only Karambar (id 1) has scenes."""
+    from webapp.live import lakes_with_data
+
+    assert lakes_with_data(source_db) == [1]
+
+
+def test_the_key_settings_are_read_from_the_env_file(monkeypatch, tmp_path):
+    """The web app used to find no key, because only the scheduler read .env."""
+    import webapp.live as live
+
+    monkeypatch.delenv("EE_SERVICE_ACCOUNT_KEY_FILE", raising=False)
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts" / "scheduler.py").write_text(
+        (live.REPO / "scripts" / "scheduler.py").read_text(encoding="utf-8"), encoding="utf-8")
+    (tmp_path / ".env").write_text("EE_SERVICE_ACCOUNT_KEY_FILE=D:/test-key.json\n", encoding="utf-8")
+    monkeypatch.setattr(live, "REPO", tmp_path)
+    live.load_key_settings()
+    import os
+    assert os.environ["EE_SERVICE_ACCOUNT_KEY_FILE"] == "D:/test-key.json"

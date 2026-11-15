@@ -8,15 +8,15 @@
 
 <section class="card">
   <h2>Check for a new scene now</h2>
-  <p style="margin-top:0">Runs the real pipeline once for both lakes, exactly as the nightly run does: it asks Google Earth Engine for
+  <p style="margin-top:0">Runs the real pipeline once for every lake that already has stored data, exactly as the nightly run does: it asks Google Earth Engine for
     Sentinel-2 scenes newer than the last stored one, checks the cloud over each lake, downloads and measures any clear scene,
     and scores it. It needs an internet connection.</p>
   <p style="color:var(--muted);font-size:14px">Results are written to this laptop's working copy of the database only, never to the
-    published record that the nightly run commits. From October to May both lakes are usually cloudy, frozen or snow-covered, so
+    published record that the nightly run commits. From October to May these lakes are usually cloudy, frozen or snow-covered, so
     "no usable observation" is the most likely honest result.</p>
   <form method="post" action="/live/check">
     <button type="submit" class="btn primary" {% if st.status == 'running' %}disabled title="A check is already running"{% endif %}>
-      {% if st.status == 'running' %}Checking…{% else %}Check both lakes now{% endif %}</button>
+      {% if st.status == 'running' %}Checking…{% else %}Check all lakes now{% endif %}</button>
   </form>
 </section>
 
@@ -25,7 +25,7 @@
   {% if st.status == 'idle' %}
     <p style="color:var(--muted)">No live check has run since the app started.</p>
   {% elif st.status == 'running' %}
-    <div class="banner info">{{ icon_info() }}<div><strong>Checking both lakes…</strong> Started {{ st.started_at | utc_time }}.
+    <div class="banner info">{{ icon_info() }}<div><strong>Checking all lakes…</strong> Started {{ st.started_at | utc_time }}.
       This page refreshes every 3 seconds. A check usually takes 10 to 60 seconds.</div></div>
   {% elif st.status == 'failed' %}
     <div class="banner error">{{ icon_error() }}<div><strong>The check could not complete.</strong> {{ st.explanation }}
@@ -35,7 +35,7 @@
     <pre class="mono" style="white-space:pre-wrap;background:#f7f9fa;border:1px solid var(--border);border-radius:6px;padding:12px;font-size:12.5px">{{ st.errors }}</pre>
     </details>
   {% elif st.status == 'no_new_scene' %}
-    <div class="banner info">{{ icon_info() }}<div><strong>No new scene for either lake</strong> since the newest one already stored.
+    <div class="banner info">{{ icon_info() }}<div><strong>No new scene for any lake</strong> since the newest one already stored.
       Earth Engine answered normally; Sentinel-2 passes about every 2 to 5 days and new scenes take some hours to appear.</div></div>
   {% else %}
     <div class="banner {{ 'info' if r.measurements else 'warn' }}">{{ icon_info() if r.measurements else icon_warn() }}<div>
