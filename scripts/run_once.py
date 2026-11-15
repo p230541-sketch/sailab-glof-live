@@ -32,6 +32,9 @@ INITIAL_SINCE_DATE: date | None = date(2022, 12, 31)
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--since", type=date.fromisoformat, default=None,
+                        help="for a lake with NO scenes stored yet, look for scenes after this date (YYYY-MM-DD); "
+                             "lakes that already have scenes always continue from their newest one")
     parser.add_argument("--backfill", action="store_true",
                         help="one-off historical run started by hand: same pipeline, files saved to data/backfill/")
     args = parser.parse_args()
@@ -60,7 +63,9 @@ def main() -> int:
     db.seed_lakes(conn)   # no-op when the lakes exist; raises if a stored coordinate was changed
     conn.close()
 
-    result = run_pipeline_once(DB_PATH, data_dir, INITIAL_SINCE_DATE)
+    since = args.since or INITIAL_SINCE_DATE
+    log.info("lakes with no stored scenes start after %s", since)
+    result = run_pipeline_once(DB_PATH, data_dir, since)
     log.info("summary: run_id=%s lakes=%s scenes_recorded=%s downloaded=%s measurements=%s risk_scores=%s",
              result.run_id, result.lakes_processed, result.scenes_recorded, result.scenes_downloaded,
              result.measurements, result.risk_scores)

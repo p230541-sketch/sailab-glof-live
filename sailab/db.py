@@ -133,6 +133,41 @@ SEED_LAKES = (
         "boundary_radius_m": 1500.0,
         "growth_distance_limit_m": 1500.0,
     },
+    # Added 2026-11-15: the Pakistani lakes of the earlier SailAb project (D:\University\FYP\tools\lakes.mjs),
+    # with that project's lake positions and window half-widths (window radius = halfKm x 1000 m; growth
+    # limit the same). Its "fix" note says where each position came from. Darmander was NOT added: the
+    # earlier project excluded it ("no lake at this coordinate; only 2 ha of water, 2.5 km away").
+    # Shishper, Khurdopin, Badswat and Chihnji had recorded outbursts; Passu, Rush and Attabad were the
+    # earlier project's stable "control" lakes.
+    {   # fix: visual (Sentinel-2 2019-05-06, lake at max extent). Formed Nov 2018; outbursts 2019 to 2022.
+        "code": "SHP", "name": "Shishper (Hassanabad)", "centre_lon": 74.5623, "centre_lat": 36.3607,
+        "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
+    },
+    {   # fix: Hi-MAG (ice-marginal lake, 0.069 km2, 3479 m). Surge-dammed lake on the Shimshal river.
+        "code": "KHD", "name": "Khurdopin (Shimshal)", "centre_lon": 75.4755, "centre_lat": 36.3441,
+        "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
+    },
+    {   # fix: Global GLOF Database 36.5458, 74.0339 + visual (Sentinel-2 2018-08-04). 2018 outburst.
+        "code": "BDS", "name": "Badswat (Ishkoman)", "centre_lon": 74.0345, "centre_lat": 36.5470,
+        "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
+    },
+    {   # fix: Global GLOF Database coordinate, checked against Sentinel-2 (water at the point). 2016 outburst.
+        "code": "CHJ", "name": "Chihnji", "centre_lon": 74.00409, "centre_lat": 36.78359,
+        "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
+    },
+    {   # fix: Hi-MAG 0.103 km2 + visual (Sentinel-2 2023-08-08, dark open water). Control lake.
+        "code": "PSU", "name": "Passu proglacial lake", "centre_lon": 74.8622, "centre_lat": 36.4330,
+        "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
+    },
+    {   # fix: Hi-MAG (unconnected glacial lake, 0.042 km2, 4611 m). Control lake.
+        "code": "RSH", "name": "Rush Lake (Nagar)", "centre_lon": 74.8825, "centre_lat": 36.1741,
+        "boundary_radius_m": 3000.0, "growth_distance_limit_m": 3000.0,
+    },
+    {   # fix: known location (landslide dam, 2010). Control lake; about 20 km long, so a 4 km window
+        # will usually see it cut off at the edge and refuse the measurement.
+        "code": "ATB", "name": "Attabad Lake", "centre_lon": 74.8650, "centre_lat": 36.3400,
+        "boundary_radius_m": 4000.0, "growth_distance_limit_m": 4000.0,
+    },
 )
 
 
