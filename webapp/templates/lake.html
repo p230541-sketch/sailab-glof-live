@@ -75,6 +75,22 @@
     {% endif %}
     <p class="footnote">Baseline = mean of the earlier optical values for this calendar month; score = (area − baseline) ÷ their
       standard deviation. A score needs 5 earlier values from 2 years. It is a statistical deviation, not a danger level or a probability.</p>
+    {% set eif = d.lake.eif %}
+    <h3 style="font-size:15px;margin:18px 0 8px">New score: Extended Isolation Forest (optical)</h3>
+    {% if eif is none %}
+      <p style="margin:0;color:var(--muted)">Not computed yet for this lake.</p>
+    {% elif eif.status != 'ok' %}
+      <p style="margin:0">Newest reading ({{ eif.acquired_at | date }}): too little history to score yet.</p>
+    {% else %}
+      <dl class="kv">
+        <dt>Scene</dt><dd>{{ eif.acquired_at | date }}</dd>
+        <dt>Score</dt><dd><strong>{{ "%.1f" | format(eif.score_0_100) }} / 100</strong></dd>
+        <dt>Reason</dt><dd>{{ eif.reason }}</dd>
+      </dl>
+    {% endif %}
+    <p class="footnote">Hariri, Carrasco Kind and Brunner (2021). Each reading becomes two numbers measured against the lake's own past: how far its
+      area is from the usual area for that month, and how much that changed since the previous reading. 0 = an ordinary reading,
+      100 = as unusual as a reading can be. A shrinking lake can score high but is never called growing. Not a danger level or a probability.</p>
     <h3 style="font-size:15px;margin:18px 0 8px">Radar (Sentinel-1)</h3>
     <p style="margin:0;font-size:14.5px">Radar is measured and shown, but <strong>not risk-scored</strong> in this build. In summer it agrees with
       near-same-day optical to within about 5–6% (Karambar +5.2%, Atro Sar −6.4%; 16 summer scenes, 2 lakes), but during snowmelt (April to June) wet snow looks like water on radar,

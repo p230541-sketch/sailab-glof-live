@@ -121,6 +121,15 @@ def same_month_inputs(conn: sqlite3.Connection, lake_id: int, acquired_on: date,
             "values": [(r["acquired_at"][:10], r["extent_ha"]) for r in earlier]}
 
 
+def latest_eif_score(conn: sqlite3.Connection, lake_id: int) -> dict[str, Any] | None:
+    """The newest Extended Isolation Forest score of a lake (sailab/risk_eif.py), with its reason line."""
+    return _row(conn.execute(
+        """SELECT r.status, r.score_0_100, r.reason, r.baseline_ha AS usual_ha, s.acquired_at, m.extent_ha
+           FROM risk_score r JOIN measurement m ON m.id = r.measurement_id JOIN scene s ON s.id = m.scene_id
+           WHERE r.lake_id = ? AND r.method = 'extended_isolation_forest' ORDER BY s.acquired_at DESC, r.id DESC LIMIT 1""",
+        (lake_id,)).fetchone())
+
+
 def recent_ok_extents(conn: sqlite3.Connection, lake_id: int, n: int = 15, sensor: str = "optical") -> list[float]:
     rows = conn.execute(
         """SELECT m.extent_ha FROM measurement m JOIN scene s ON s.id = m.scene_id

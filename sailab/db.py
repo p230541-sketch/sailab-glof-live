@@ -88,7 +88,7 @@ SCENE_SOURCES = ("sentinel-2", "sentinel-1")
 SENSORS = ("optical", "radar")
 MEASUREMENT_STATUSES = ("ok", "insufficient_observation")
 RISK_STATUSES = ("ok", "insufficient_history")
-ALT_MEASUREMENT_METHODS = ("ndwi_otsu", "smbwi_otsu", "edge_otsu", "block_otsu")
+ALT_MEASUREMENT_METHODS = ("ndwi_otsu", "smbwi_otsu", "edge_otsu", "block_otsu", "clean_otsu", "clean_block_otsu")
 # The score in risk.py is a z-score against the same calendar month in earlier years. Until 2026-11-11 it
 # was saved under the name "anomaly_detector", which described a method this code never was.
 # migrate() renames the old rows; the numbers are not touched.

@@ -34,11 +34,20 @@ def lake_card(conn, lake: dict, today: date) -> dict[str, Any]:
     gap = not days or min(days) > STALE_AFTER_DAYS
     return {**lake, "summary": s, "data_gap": gap, "days_since_any_ok": min(days) if days else None,
             "sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"])),
-            "radar_sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"], sensor="radar"))}
+            "radar_sparkline": charts.sparkline(queries.recent_ok_extents(conn, lake["id"], sensor="radar")),
+            "eif": queries.latest_eif_score(conn, lake["id"])}
+
+
+def eif_rank_key(card: dict[str, Any]) -> tuple:
+    """Dashboard order: highest newest EIF score first; lakes with no score yet after them, by code."""
+    eif = card.get("eif")
+    scored = eif is not None and eif["status"] == "ok"
+    return (0 if scored else 1, -(eif["score_0_100"] if scored else 0.0), card["code"])
 
 
 def dashboard(conn, today: date) -> dict[str, Any]:
-    lakes = [lake_card(conn, l, today) for l in queries.list_lakes(conn)]
+    in_db_order = [lake_card(conn, l, today) for l in queries.list_lakes(conn)]
+    lakes = sorted(in_db_order, key=eif_rank_key)          # the list on screen is ranked; banners keep database order
     totals = queries.database_totals(conn)
     first = conn.execute("SELECT MIN(acquired_at), MAX(acquired_at) FROM scene").fetchone()
     with_ok = [l for l in lakes if l["days_since_any_ok"] is not None]
@@ -52,7 +61,7 @@ def dashboard(conn, today: date) -> dict[str, Any]:
         "too_cloudy_pct": (100.0 * totals["too_cloudy"] / totals["optical_scenes"]) if totals["optical_scenes"] else None,
         "measured_ok": totals["optical_ok"],
         "freshest": freshest,
-        "stale_lakes": [l for l in lakes if l["data_gap"]],
+        "stale_lakes": [l for l in in_db_order if l["data_gap"]],
         "latest_run": queries.latest_run(conn),
         "runs": queries.run_log(conn, 6),
         "map_svg": charts.location_map([{**l, "link": f"/lakes/{l['code']}"} for l in lakes]) if lakes else None,

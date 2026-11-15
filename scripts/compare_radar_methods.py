@@ -25,7 +25,7 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
 from sailab import db, pipeline, radar_block_otsu as bo, radar_edge_otsu as eo  # noqa: E402
-from sailab.radar import load_slope  # noqa: E402
+from sailab.radar import load_slope, measure_radar_scene  # noqa: E402
 
 DB_PATH = REPO / "sailab_glof.db"
 WRONG_SHARE = 0.15
@@ -55,9 +55,16 @@ def main() -> int:
                                                   pipeline.RADAR_SLOPE_LIMIT_DEG, row["acquired_at"])
         db.insert_alt_measurement(conn, row["id"], bo.METHOD, block.status, block.extent_ha, block.threshold_db)
         block_sizes[row["lake_id"]][size] += 1
+        cleaned = REPO / "data" / "s1_clean" / lakes[row["lake_id"]]["code"] / path.name
+        if cleaned.is_file():   # after border noise removal, Refined Lee and terrain correction (scripts/clean_radar.py)
+            c1 = measure_radar_scene(cleaned, lakes[row["lake_id"]], slopes[row["lake_id"]], pipeline.RADAR_SLOPE_LIMIT_DEG)
+            db.insert_alt_measurement(conn, row["id"], "clean_otsu", c1.status, c1.extent_ha, c1.threshold_db)
+            c2, _ = bo.measure_radar_block_otsu(cleaned, lakes[row["lake_id"]], slopes[row["lake_id"]],
+                                                pipeline.RADAR_SLOPE_LIMIT_DEG, row["acquired_at"])
+            db.insert_alt_measurement(conn, row["id"], "clean_block_otsu", c2.status, c2.extent_ha, c2.threshold_db)
 
     lines = [
-        "# Radar water measurement: plain Otsu (old) against Edge Otsu and block Otsu (new)",
+        "# Radar water measurement: plain Otsu (old) against Edge Otsu, block Otsu and cleaned radar (new)",
         "",
         f"Written by `scripts/compare_radar_methods.py` on {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC. "
         "Every number is read from the database.",
@@ -65,7 +72,9 @@ def main() -> int:
         f"Edge Otsu (Markert et al. 2020, section 2.3.2) with the paper's numbers: initial cutoff "
         f"{eo.INITIAL_THRESHOLD_DB} dB, edges over {eo.MIN_EDGE_LENGTH_M:.0f} m, {eo.BUFFER_M:.0f} m buffer on each side. "
         f"Block Otsu (Tan et al. 2023) with the paper's {bo.PATCH_LONG_PX}-pixel patch. "
-        f"All three use the same {pipeline.RADAR_SLOPE_LIMIT_DEG:.0f} degree slope mask and the same refusals. "
+        "Cleaned radar: border noise removal, Refined Lee speckle filter and volume-model terrain correction "
+        "(sailab/s1_clean.py, our own code after Mullissa et al. 2021); layover and shadow pixels become no data. "
+        f"All methods use the same {pipeline.RADAR_SLOPE_LIMIT_DEG:.0f} degree slope mask and the same refusals. "
         f"Passes with no stored picture on this machine: {missing}.",
         "",
     ]
@@ -85,7 +94,13 @@ def main() -> int:
                                     "AND m.sensor = 'radar' AND a.method = 'edge_otsu'"),
                 ("Block Otsu (new)", "SELECT s.acquired_at, a.status, a.extent_ha FROM alt_measurement a JOIN measurement m "
                                      "ON m.id = a.measurement_id JOIN scene s ON s.id = m.scene_id WHERE m.lake_id = ? "
-                                     "AND m.sensor = 'radar' AND a.method = 'block_otsu'")):
+                                     "AND m.sensor = 'radar' AND a.method = 'block_otsu'"),
+                ("Cleaned radar, plain Otsu", "SELECT s.acquired_at, a.status, a.extent_ha FROM alt_measurement a "
+                                              "JOIN measurement m ON m.id = a.measurement_id JOIN scene s ON s.id = m.scene_id "
+                                              "WHERE m.lake_id = ? AND m.sensor = 'radar' AND a.method = 'clean_otsu'"),
+                ("Cleaned radar, block Otsu", "SELECT s.acquired_at, a.status, a.extent_ha FROM alt_measurement a "
+                                              "JOIN measurement m ON m.id = a.measurement_id JOIN scene s ON s.id = m.scene_id "
+                                              "WHERE m.lake_id = ? AND m.sensor = 'radar' AND a.method = 'clean_block_otsu'")):
             results = [(date.fromisoformat(r[0][:10]), r[1], r[2]) for r in conn.execute(query, (lake_id,))]
             ok = [(d, a) for d, status, a in results if status == "ok"]
             wrong = sum(abs(a - optical_median) > WRONG_SHARE * optical_median for _, a in ok)

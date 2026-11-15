@@ -346,6 +346,61 @@ def download_scene_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_pa
 
 
 # ---------------------------------------------------------------------------
+# Radar in linear power with its incidence angle (for sailab/s1_clean.py, after Mullissa et al. 2021)
+# ---------------------------------------------------------------------------
+S1_FLOAT_COLLECTION = "COPERNICUS/S1_GRD_FLOAT"   # the same scenes as S1_GRD, kept in linear power
+S1_FLOAT_BANDS = ("VV", "VH", "angle")
+
+
+def s1_scene_heading(scene_id: str) -> float:
+    """The "heading" the terrain correction needs, worked out over the WHOLE scene the way the code of
+    Mullissa et al. (2021) does it (terrain_flattening.py): the mean aspect of the incidence angle band,
+    reduced over the scene's footprint at 1000 m, then put in -180 to 180. Inside a small lake window the
+    angle band holds a single value, so this cannot be worked out from the window itself."""
+    image = ee.Image(f"{S1_FLOAT_COLLECTION}/{scene_id}")
+    mean = ee.Terrain.aspect(image.select("angle")).reduceRegion(ee.Reducer.mean(), image.geometry(), 1000)
+    value = mean.getInfo().get("aspect")
+    if value is None:
+        raise EarthEngineError(f"no heading could be worked out for {scene_id}")
+    return value - 360.0 if value > 180.0 else value
+
+
+def download_s1_float_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_path: str | Path) -> None:
+    """The lake window of one Sentinel-1 scene in LINEAR power (VV, VH) with the incidence angle band, on the
+    same 10 m UTM grid as the stored radar window. Mullissa et al. (2021): "all the preprocessing steps
+    require the data to be in linear scale". Same temporary-file-then-check pattern as download_s1_window()."""
+    import requests
+
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    partial = out_path.with_name(out_path.name + ".partial")
+    try:
+        image = ee.Image(f"{S1_FLOAT_COLLECTION}/{scene_info.scene_id}").select(list(S1_FLOAT_BANDS)).toFloat()
+        region = export_region(lake)
+        url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(S1_FLOAT_BANDS)})
+        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        if response.status_code != 200:
+            raise EarthEngineError(f"radar float download HTTP {response.status_code}: {response.text[:300]}")
+        if not response.content.startswith((b"II*\x00", b"MM\x00*")):
+            raise EarthEngineError(f"radar float download did not return a GeoTIFF (first bytes {response.content[:16]!r})")
+        partial.write_bytes(response.content)
+        check_downloaded_window(partial, utm_epsg(lake["centre_lon"], lake["centre_lat"]), S1_FLOAT_BANDS)
+        _label_bands(partial, S1_FLOAT_BANDS)
+        import rasterio
+
+        with rasterio.open(partial, "r+") as dst:
+            dst.update_tags(HEADING_DEG=f"{s1_scene_heading(scene_info.scene_id):.6f}")
+        partial.replace(out_path)
+    except EarthEngineError:
+        partial.unlink(missing_ok=True)
+        raise
+    except Exception as exc:
+        partial.unlink(missing_ok=True)
+        raise EarthEngineError(
+            f"download_s1_float_window failed for {scene_info.scene_id} ({lake['code']}): {type(exc).__name__}: {exc}") from exc
+
+
+# ---------------------------------------------------------------------------
 # Extra bands for the SMBWI water index (Su et al. 2024)
 # ---------------------------------------------------------------------------
 # SMBWI = B2 + 2.5 B3 - 2 (B8 + B8A + B9) - B11 - B12 (Su et al. 2024, equation 1). The stored pictures
