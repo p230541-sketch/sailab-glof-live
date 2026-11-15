@@ -1,6 +1,6 @@
 # Critical roads below Shishper lake (Sugiura and Kurauchi 2023)
 
-Written by `scripts/critical_roads_shishper.py` on 2026-11-15 10:05 UTC.
+Written by `scripts/critical_roads_shishper.py` on 2026-11-15 14:01 UTC.
 Roads: 644 junction-to-junction roads from OpenStreetMap (580 junctions); 6 road ends leave the mapped area and are used as the places help comes from.
 Bridges found by Tarjan's method in the whole road graph: 321.
 

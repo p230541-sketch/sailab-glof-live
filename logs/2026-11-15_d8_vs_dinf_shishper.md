@@ -1,6 +1,6 @@
 # D8 (old) against D-infinity (new): Shishper valley
 
-Written by `scripts/compare_flow_paths.py` on 2026-11-15 08:25 UTC.
+Written by `scripts/compare_flow_paths.py` on 2026-11-15 14:01 UTC.
 Height map: Copernicus 30 m DEM from the earlier project folder (`D:\University\FYP\data\downstream\shishper\dem.tif`), window 74.5 to 74.72 E, 36.24 to 36.4 N: 576 x 792 cells of 24.9 m x 30.7 m.
 Start: the lake cell at 74.56239 E, 36.36060 N (row 142, column 225), from the earlier project's lake position (tools/lakes.mjs).
 Both methods run on the same sink-filled grid (Priority Flood). This is a likely path, not a flood simulation: no depth, speed or arrival time.
