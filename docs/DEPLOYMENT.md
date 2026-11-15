@@ -24,12 +24,12 @@ Get the latest database from the cloud (for the local web app, which also shows 
 inside the project folder (`sailab-glof-live`), and not while a local backfill is writing to the database:
 
 ```
-git fetch deploy data
-git restore --source=deploy/data --worktree -- sailab_glof.db
+git fetch origin data
+git restore --source=origin/data --worktree -- sailab_glof.db
 .venv\Scripts\python -m uvicorn app:app
 ```
 
-(`deploy` is the name of the remote for this repository; on a fresh clone it is `origin`. Do not use
+(Do not use
 `git show ... > sailab_glof.db` in PowerShell: `>` saves text and corrupts the binary database file.)
 
 The laptop must not also run the nightly job, or two copies of the database would drift apart. The Windows
