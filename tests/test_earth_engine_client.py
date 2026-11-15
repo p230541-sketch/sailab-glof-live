@@ -337,3 +337,60 @@ def test_a_pass_without_vv_is_refused():
 
     with pytest.raises(EarthEngineError):
         bands_present(("VV", "VH"), ["HH", "HV"])
+
+
+# --- added 2026-11-15: temporary Google errors are tried again ------------------------------------------
+class _Answer:
+    def __init__(self, status):
+        self.status_code = status
+
+
+def test_a_temporary_503_is_tried_again_and_then_succeeds(monkeypatch):
+    import requests
+
+    from sailab import earth_engine_client as c
+
+    answers = iter([_Answer(503), _Answer(503), _Answer(200)])
+    monkeypatch.setattr(requests, "get", lambda url, timeout: next(answers))
+    waited = []
+    assert c.download_with_retries("http://x", sleep=waited.append).status_code == 200
+    assert waited == [5, 20]
+
+
+def test_a_permanent_error_is_not_retried(monkeypatch):
+    import requests
+
+    from sailab import earth_engine_client as c
+
+    calls = []
+    monkeypatch.setattr(requests, "get", lambda url, timeout: calls.append(1) or _Answer(400))
+    assert c.download_with_retries("http://x", sleep=lambda s: None).status_code == 400
+    assert len(calls) == 1
+
+
+def test_it_gives_up_after_the_last_try_and_returns_the_error(monkeypatch):
+    import requests
+
+    from sailab import earth_engine_client as c
+
+    calls = []
+    monkeypatch.setattr(requests, "get", lambda url, timeout: calls.append(1) or _Answer(503))
+    assert c.download_with_retries("http://x", sleep=lambda s: None).status_code == 503
+    assert len(calls) == 4
+
+
+def test_a_dropped_connection_is_tried_again(monkeypatch):
+    import requests
+
+    from sailab import earth_engine_client as c
+
+    outcomes = iter([requests.ConnectionError("reset"), _Answer(200)])
+
+    def fake_get(url, timeout):
+        outcome = next(outcomes)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    monkeypatch.setattr(requests, "get", fake_get)
+    assert c.download_with_retries("http://x", sleep=lambda s: None).status_code == 200

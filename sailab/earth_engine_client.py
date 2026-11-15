@@ -258,6 +258,32 @@ def find_new_scenes(lake: Mapping[str, Any], since_date: date, until_date: date 
 # Band 6, SCL (Sentinel-2's own scene classification: cloud, shadow, snow/ice...), was added on
 # 2026-11-08 for the snow/ice and cloud-touching-the-lake checks in pipeline.measure_scene. It is a
 # 20 m band, delivered on the same 10 m grid. Bands 1-5 are unchanged from the manual export.
+# Temporary failures on Google's side (seen for real: "radar download HTTP 503" stopped the 2017 backfill
+# on 2026-11-15 after 508 good downloads). These are tried again after a pause; anything else (a bad
+# request, a missing band, a refused key) fails at once, so real problems are never hidden by retrying.
+RETRY_STATUS = (429, 500, 502, 503, 504)
+RETRY_WAITS_S = (5, 20, 60)        # pauses before the 2nd, 3rd and 4th try
+
+
+def download_with_retries(url: str, waits: tuple[float, ...] = RETRY_WAITS_S, sleep=None):
+    """requests.get(url), tried again after each pause in `waits` when Google answers with a temporary error
+    (RETRY_STATUS) or the connection fails. Returns the last response; raises the last connection error."""
+    import time
+
+    import requests
+
+    sleep = sleep or time.sleep
+    for attempt in range(len(waits) + 1):
+        try:
+            response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+            if response.status_code not in RETRY_STATUS or attempt == len(waits):
+                return response
+        except (requests.ConnectionError, requests.Timeout):
+            if attempt == len(waits):
+                raise
+        sleep(waits[attempt])
+
+
 MANUAL_EXPORT_BANDS = ("B2", "B3", "B4", "B8", "B11")
 DOWNLOAD_BANDS = MANUAL_EXPORT_BANDS + ("SCL",)
 DOWNLOAD_SCALE_M = 10
@@ -326,7 +352,7 @@ def download_scene_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_pa
         image = ee.Image(f"{COLLECTION}/{scene_info.scene_id}").select(list(DOWNLOAD_BANDS)).toUint16()
         region = export_region(lake)
         url = image.clip(region).getDownloadURL(download_params(lake, region))
-        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        response = download_with_retries(url)
         if response.status_code != 200:
             raise EarthEngineError(f"download HTTP {response.status_code}: {response.text[:300]}")
         if not response.content.startswith((b"II*\x00", b"MM\x00*")):
@@ -390,7 +416,7 @@ def download_s1_float_window(scene_info: SceneInfo, lake: Mapping[str, Any], out
         image = source.select(list(bands)).toFloat()
         region = export_region(lake)
         url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(bands)})
-        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        response = download_with_retries(url)
         if response.status_code != 200:
             raise EarthEngineError(f"radar float download HTTP {response.status_code}: {response.text[:300]}")
         if not response.content.startswith((b"II*\x00", b"MM\x00*")):
@@ -436,7 +462,7 @@ def download_smbwi_bands(scene_info: SceneInfo, lake: Mapping[str, Any], out_pat
                  .resample("bicubic").toUint16())
         region = export_region(lake)
         url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(SMBWI_EXTRA_BANDS)})
-        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        response = download_with_retries(url)
         if response.status_code != 200:
             raise EarthEngineError(f"SMBWI band download HTTP {response.status_code}: {response.text[:300]}")
         if not response.content.startswith((b"II*\x00", b"MM\x00*")):
@@ -473,7 +499,7 @@ def download_dem_window(lake: Mapping[str, Any], out_path: str | Path) -> None:
         dem = tiles.mosaic().setDefaultProjection(tiles.first().projection()).resample("bilinear").toFloat()
         region = export_region(lake)
         params = {**download_params(lake, region), "bands": ["DEM"]}
-        response = requests.get(dem.clip(region).getDownloadURL(params), timeout=DOWNLOAD_TIMEOUT_S)
+        response = download_with_retries(dem.clip(region).getDownloadURL(params))
         if response.status_code != 200 or not response.content.startswith((b"II*\x00", b"MM\x00*")):
             raise EarthEngineError(f"DEM download failed: HTTP {response.status_code}: {response.text[:200]}")
         out_path.write_bytes(response.content)
@@ -524,7 +550,7 @@ def download_s1_window(scene_info: SceneInfo, lake: Mapping[str, Any], out_path:
         image = source.select(list(bands)).toFloat()
         region = export_region(lake)
         url = image.clip(region).getDownloadURL({**download_params(lake, region), "bands": list(bands)})
-        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT_S)
+        response = download_with_retries(url)
         if response.status_code != 200:
             raise EarthEngineError(f"radar download HTTP {response.status_code}: {response.text[:300]}")
         if not response.content.startswith((b"II*\x00", b"MM\x00*")):
