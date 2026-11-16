@@ -1,0 +1,22 @@
+2026-11-10 22:06:42,290 INFO run_once: mode: scheduled/normal, data dir: D:\University\FYP\sailab-glof-live\data\scenes
+2026-11-10 22:06:42,704 INFO sailab.pipeline: run 13 started
+2026-11-10 22:06:46,563 INFO sailab.pipeline: signed in to Earth Engine as sailab-ee@sailab-glof.iam.gserviceaccount.com
+2026-11-10 22:06:49,234 INFO sailab.pipeline: KRB: 2 scenes listed after 2026-11-04
+2026-11-10 22:06:49,235 INFO sailab.pipeline: KRB 20261105T055021_20261105T055015_T43SCA: already recorded, skipped
+2026-11-10 22:06:49,238 INFO sailab.pipeline: KRB 20261110T055049_20261110T055844_T43SCA: lake cloud 92.1259521772781% > 10.0% limit: too cloudy for optical, recorded but not downloaded (radar passes are listed separately)
+2026-11-10 22:06:49,708 INFO sailab.pipeline: KRB: 2 radar scenes listed after 2026-11-08
+2026-11-10 22:06:50,009 INFO sailab.pipeline: KRB S1D_IW_GRDH_1SDV_20261109T130519_20261109T130544_005391_00A47E_3D25: already recorded, skipped
+2026-11-10 22:06:52,976 INFO sailab.pipeline: KRB S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: downloaded data/scenes/KRB/S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D.tif sha256=5c899ab15164059f3cc4d35845fce8d0b52f27ecf868d41c61786986ddcddcaf
+2026-11-10 22:06:53,222 INFO sailab.pipeline: KRB S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: radar ok 261.14 (26114 px below -17.32 dB connected to the centre)
+2026-11-10 22:06:53,222 INFO sailab.pipeline: KRB S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: radar not risk-scored (SCORE_RADAR is off: snowmelt errors, see pipeline.py)
+2026-11-10 22:06:55,823 INFO sailab.pipeline: ATS: 2 scenes listed after 2026-11-04
+2026-11-10 22:06:55,824 INFO sailab.pipeline: ATS 20261105T055021_20261105T055015_T43SCA: already recorded, skipped
+2026-11-10 22:06:55,827 INFO sailab.pipeline: ATS 20261110T055049_20261110T055844_T43SCA: lake cloud 70.70438472418671% > 10.0% limit: too cloudy for optical, recorded but not downloaded (radar passes are listed separately)
+2026-11-10 22:06:56,217 INFO sailab.pipeline: ATS: 2 radar scenes listed after 2026-11-08
+2026-11-10 22:06:56,301 INFO sailab.pipeline: ATS S1D_IW_GRDH_1SDV_20261109T130454_20261109T130519_005391_00A47E_443A: already recorded, skipped
+2026-11-10 22:06:58,500 INFO sailab.pipeline: ATS S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: downloaded data/scenes/ATS/S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D.tif sha256=3281926f2dec40b880647ecfccb0cba6e009abbd4bf9e69efcd47e17d28ef47b
+2026-11-10 22:06:58,589 INFO sailab.pipeline: ATS S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: radar ok 98.05 (9805 px below -15.05 dB connected to the centre)
+2026-11-10 22:06:58,590 INFO sailab.pipeline: ATS S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: radar not risk-scored (SCORE_RADAR is off: snowmelt errors, see pipeline.py)
+2026-11-10 22:06:58,593 INFO sailab.pipeline: run 13 finished: RunResult(run_id=13, lakes_processed=2, scenes_recorded=4, scenes_downloaded=2, measurements=2, risk_scores=0, errors=None, notes=[])
+2026-11-10 22:06:58,593 INFO run_once: summary: run_id=13 lakes=2 scenes_recorded=4 downloaded=2 measurements=2 risk_scores=0
+2026-11-10 22:06:58,593 INFO run_once: run OK

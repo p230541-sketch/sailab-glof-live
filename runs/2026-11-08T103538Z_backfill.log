@@ -1,0 +1,33 @@
+2026-11-08 10:35:38,259 INFO run_once: mode: BACKFILL (started by hand), data dir: /home/rayannn/Documents/SAILAB_FYP1_FINAL/data/backfill
+2026-11-08 10:35:38,668 INFO sailab.pipeline: run 1 started
+2026-11-08 10:35:38,677 ERROR sailab.pipeline: run 1 failed: EarthEngineError: find_new_scenes failed for lake KRB: EEException: Earth Engine client library not initialized. See http://goo.gle/ee-auth.
+Traceback (most recent call last):
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/pipeline.py", line 226, in run_pipeline_once
+    run.run()
+    ~~~~~~~^^
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/acquisition.py", line 46, in run
+    self.downloader(lake_id)
+    ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/pipeline.py", line 218, in process_lake
+    scenes = client.find_new_scenes(lake, since, until_date)
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/earth_engine_client.py", line 245, in find_new_scenes
+    raise EarthEngineError(f"find_new_scenes failed for lake {lake['code']}: {type(exc).__name__}: {exc}") from exc
+sailab.earth_engine_client.EarthEngineError: find_new_scenes failed for lake KRB: EEException: Earth Engine client library not initialized. See http://goo.gle/ee-auth.
+
+2026-11-08 10:35:38,685 INFO sailab.pipeline: run 1 finished: RunResult(run_id=1, lakes_processed=0, scenes_recorded=0, scenes_downloaded=0, measurements=0, risk_scores=0, errors='EarthEngineError: find_new_scenes failed for lake KRB: EEException: Earth Engine client library not initialized. See http://goo.gle/ee-auth.\nTraceback (most recent call last):\n  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/pipeline.py", line 226, in run_pipeline_once\n    run.run()\n    ~~~~~~~^^\n  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/acquisition.py", line 46, in run\n    self.downloader(lake_id)\n    ~~~~~~~~~~~~~~~^^^^^^^^^\n  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/pipeline.py", line 218, in process_lake\n    scenes = client.find_new_scenes(lake, since, until_date)\n  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/earth_engine_client.py", line 245, in find_new_scenes\n    raise EarthEngineError(f"find_new_scenes failed for lake {lake[\'code\']}: {type(exc).__name__}: {exc}") from exc\nsailab.earth_engine_client.EarthEngineError: find_new_scenes failed for lake KRB: EEException: Earth Engine client library not initialized. See http://goo.gle/ee-auth.\n', notes=[])
+2026-11-08 10:35:38,685 INFO run_once: summary: run_id=1 lakes=0 scenes_recorded=0 downloaded=0 measurements=0 risk_scores=0
+2026-11-08 10:35:38,686 ERROR run_once: run FAILED, recorded in run_log 1:
+EarthEngineError: find_new_scenes failed for lake KRB: EEException: Earth Engine client library not initialized. See http://goo.gle/ee-auth.
+Traceback (most recent call last):
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/pipeline.py", line 226, in run_pipeline_once
+    run.run()
+    ~~~~~~~^^
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/acquisition.py", line 46, in run
+    self.downloader(lake_id)
+    ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/pipeline.py", line 218, in process_lake
+    scenes = client.find_new_scenes(lake, since, until_date)
+  File "/home/rayannn/Documents/SAILAB_FYP1_FINAL/sailab/earth_engine_client.py", line 245, in find_new_scenes
+    raise EarthEngineError(f"find_new_scenes failed for lake {lake['code']}: {type(exc).__name__}: {exc}") from exc
+sailab.earth_engine_client.EarthEngineError: find_new_scenes failed for lake KRB: EEException: Earth Engine client library not initialized. See http://goo.gle/ee-auth.
+

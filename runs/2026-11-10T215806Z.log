@@ -1,0 +1,32 @@
+2026-11-10 21:58:06,890 INFO run_once: mode: scheduled/normal, data dir: D:\University\FYP\sailab-glof-live\data\scenes
+2026-11-10 21:58:07,422 INFO sailab.pipeline: run 11 started
+2026-11-10 21:58:09,306 WARNING googleapiclient.http: Encountered 403 Forbidden with reason "PERMISSION_DENIED"
+2026-11-10 21:58:09,313 ERROR sailab.pipeline: run 11 failed: EarthEngineError: Earth Engine sign-in failed for sailab-ee@sailab-glof.iam.gserviceaccount.com: EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.
+ee.ee_exception.EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\University\FYP\sailab-glof-live\sailab\pipeline.py", line 277, in run_pipeline_once
+    log.info("signed in to Earth Engine as %s", client.initialize())
+                                                ~~~~~~~~~~~~~~~~~^^
+  File "D:\University\FYP\sailab-glof-live\sailab\earth_engine_client.py", line 177, in initialize
+    raise EarthEngineError(f"Earth Engine sign-in failed for {email}: {type(exc).__name__}: {exc}") from exc
+sailab.earth_engine_client.EarthEngineError: Earth Engine sign-in failed for sailab-ee@sailab-glof.iam.gserviceaccount.com: EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.
+
+2026-11-10 21:58:09,316 INFO sailab.pipeline: run 11 finished: RunResult(run_id=11, lakes_processed=0, scenes_recorded=0, scenes_downloaded=0, measurements=0, risk_scores=0, errors='EarthEngineError: Earth Engine sign-in failed for sailab-ee@sailab-glof.iam.gserviceaccount.com: EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.\nee.ee_exception.EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File "D:\\University\\FYP\\sailab-glof-live\\sailab\\pipeline.py", line 277, in run_pipeline_once\n    log.info("signed in to Earth Engine as %s", client.initialize())\n                                                ~~~~~~~~~~~~~~~~~^^\n  File "D:\\University\\FYP\\sailab-glof-live\\sailab\\earth_engine_client.py", line 177, in initialize\n    raise EarthEngineError(f"Earth Engine sign-in failed for {email}: {type(exc).__name__}: {exc}") from exc\nsailab.earth_engine_client.EarthEngineError: Earth Engine sign-in failed for sailab-ee@sailab-glof.iam.gserviceaccount.com: EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.\n', notes=[])
+2026-11-10 21:58:09,316 INFO run_once: summary: run_id=11 lakes=0 scenes_recorded=0 downloaded=0 measurements=0 risk_scores=0
+2026-11-10 21:58:09,316 ERROR run_once: run FAILED, recorded in run_log 11:
+EarthEngineError: Earth Engine sign-in failed for sailab-ee@sailab-glof.iam.gserviceaccount.com: EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.
+ee.ee_exception.EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\University\FYP\sailab-glof-live\sailab\pipeline.py", line 277, in run_pipeline_once
+    log.info("signed in to Earth Engine as %s", client.initialize())
+                                                ~~~~~~~~~~~~~~~~~^^
+  File "D:\University\FYP\sailab-glof-live\sailab\earth_engine_client.py", line 177, in initialize
+    raise EarthEngineError(f"Earth Engine sign-in failed for {email}: {type(exc).__name__}: {exc}") from exc
+sailab.earth_engine_client.EarthEngineError: Earth Engine sign-in failed for sailab-ee@sailab-glof.iam.gserviceaccount.com: EEException: Caller does not have required permission to use project sailab-glof. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=sailab-glof and then retry. Propagation of the new permission may take a few minutes.
+

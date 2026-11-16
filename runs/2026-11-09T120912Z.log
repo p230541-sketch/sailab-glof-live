@@ -1,0 +1,14 @@
+2026-11-09 12:09:12,841 INFO run_once: mode: scheduled/normal, data dir: /home/runner/work/sailab-glof-live/sailab-glof-live/data/scenes
+2026-11-09 12:09:13,051 INFO sailab.pipeline: run 8 started
+2026-11-09 12:09:13,982 INFO sailab.pipeline: signed in to Earth Engine as sailab-glof-bot@kaarigar-507118.iam.gserviceaccount.com
+2026-11-09 12:09:15,096 INFO sailab.pipeline: KRB: 1 scenes listed after 2026-11-04
+2026-11-09 12:09:15,096 INFO sailab.pipeline: KRB 20261105T055021_20261105T055015_T43SCA: already recorded, skipped
+2026-11-09 12:09:15,281 INFO sailab.pipeline: KRB: 1 radar scenes listed after 2026-10-27
+2026-11-09 12:09:15,648 INFO sailab.pipeline: KRB S1D_IW_GRDH_1SDV_20261028T130519_20261028T130544_005216_009E76_3B4B: already recorded, skipped
+2026-11-09 12:09:16,762 INFO sailab.pipeline: ATS: 1 scenes listed after 2026-11-04
+2026-11-09 12:09:16,763 INFO sailab.pipeline: ATS 20261105T055021_20261105T055015_T43SCA: already recorded, skipped
+2026-11-09 12:09:16,976 INFO sailab.pipeline: ATS: 1 radar scenes listed after 2026-10-27
+2026-11-09 12:09:17,081 INFO sailab.pipeline: ATS S1D_IW_GRDH_1SDV_20261028T130454_20261028T130519_005216_009E76_6D2E: already recorded, skipped
+2026-11-09 12:09:17,083 INFO sailab.pipeline: run 8 finished: RunResult(run_id=8, lakes_processed=2, scenes_recorded=0, scenes_downloaded=0, measurements=0, risk_scores=0, errors=None, notes=[])
+2026-11-09 12:09:17,083 INFO run_once: summary: run_id=8 lakes=2 scenes_recorded=0 downloaded=0 measurements=0 risk_scores=0
+2026-11-09 12:09:17,083 INFO run_once: run OK

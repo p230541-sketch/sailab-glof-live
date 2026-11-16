@@ -1,0 +1,24 @@
+2026-11-16 05:05:12,184 INFO run_once: mode: BACKFILL (started by hand), data dir: D:\University\FYP\sailab-glof-live\data\backfill
+2026-11-16 05:05:12,189 INFO run_once: lakes with no stored scenes start after 2022-12-31
+2026-11-16 05:05:12,663 INFO sailab.pipeline: run 22 started
+2026-11-16 05:05:12,680 ERROR sailab.pipeline: run 22 failed: EarthEngineError: no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and C:\Users\M. Haseeb Afridi\.config\sailab\ee-key.json does not exist
+Traceback (most recent call last):
+  File "D:\University\FYP\sailab-glof-live\sailab\pipeline.py", line 290, in run_pipeline_once
+    log.info("signed in to Earth Engine as %s", client.initialize())
+                                                ~~~~~~~~~~~~~~~~~^^
+  File "D:\University\FYP\sailab-glof-live\sailab\earth_engine_client.py", line 166, in initialize
+    raise EarthEngineError(f"no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and {key_file} does not exist")
+sailab.earth_engine_client.EarthEngineError: no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and C:\Users\M. Haseeb Afridi\.config\sailab\ee-key.json does not exist
+
+2026-11-16 05:05:12,682 INFO sailab.pipeline: run 22 finished: RunResult(run_id=22, lakes_processed=0, scenes_recorded=0, scenes_downloaded=0, measurements=0, risk_scores=0, errors='EarthEngineError: no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and C:\\Users\\M. Haseeb Afridi\\.config\\sailab\\ee-key.json does not exist\nTraceback (most recent call last):\n  File "D:\\University\\FYP\\sailab-glof-live\\sailab\\pipeline.py", line 290, in run_pipeline_once\n    log.info("signed in to Earth Engine as %s", client.initialize())\n                                                ~~~~~~~~~~~~~~~~~^^\n  File "D:\\University\\FYP\\sailab-glof-live\\sailab\\earth_engine_client.py", line 166, in initialize\n    raise EarthEngineError(f"no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and {key_file} does not exist")\nsailab.earth_engine_client.EarthEngineError: no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and C:\\Users\\M. Haseeb Afridi\\.config\\sailab\\ee-key.json does not exist\n', notes=[])
+2026-11-16 05:05:12,683 INFO run_once: summary: run_id=22 lakes=0 scenes_recorded=0 downloaded=0 measurements=0 risk_scores=0
+2026-11-16 05:05:12,683 ERROR run_once: run FAILED, recorded in run_log 22:
+EarthEngineError: no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and C:\Users\M. Haseeb Afridi\.config\sailab\ee-key.json does not exist
+Traceback (most recent call last):
+  File "D:\University\FYP\sailab-glof-live\sailab\pipeline.py", line 290, in run_pipeline_once
+    log.info("signed in to Earth Engine as %s", client.initialize())
+                                                ~~~~~~~~~~~~~~~~~^^
+  File "D:\University\FYP\sailab-glof-live\sailab\earth_engine_client.py", line 166, in initialize
+    raise EarthEngineError(f"no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and {key_file} does not exist")
+sailab.earth_engine_client.EarthEngineError: no service-account key: EE_SERVICE_ACCOUNT_KEY is unset and C:\Users\M. Haseeb Afridi\.config\sailab\ee-key.json does not exist
+
