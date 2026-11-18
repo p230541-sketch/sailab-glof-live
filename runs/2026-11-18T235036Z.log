@@ -1,0 +1,80 @@
+2026-11-18 23:50:36,203 INFO run_once: mode: scheduled/normal, data dir: /home/runner/work/sailab-glof-live/sailab-glof-live/data/scenes
+2026-11-18 23:50:36,204 INFO run_once: lakes with no stored scenes start after 2022-12-31
+2026-11-18 23:50:36,418 INFO sailab.pipeline: run 28 started
+2026-11-18 23:50:37,185 INFO sailab.pipeline: signed in to Earth Engine as sailab-ee@sailab-glof.iam.gserviceaccount.com
+2026-11-18 23:50:38,532 INFO sailab.pipeline: KRB: 2 scenes listed after 2026-11-14
+2026-11-18 23:50:38,534 INFO sailab.pipeline: KRB 20261115T055101_20261115T055104_T43SCA: already recorded, skipped
+2026-11-18 23:50:40,209 INFO sailab.pipeline: KRB 20261117T055241_20261117T055242_T43SCA: downloaded data/scenes/KRB/20261117T055241_20261117T055242_T43SCA.tif sha256=8a50763ffa4283ac31a290ba62f9947d743a6ffa43c31457ae06379cd9bbb127
+2026-11-18 23:50:40,760 INFO sailab.pipeline: KRB 20261117T055241_20261117T055242_T43SCA: insufficient_observation None (lake region (21000 px) borders 316 no-data pixels; it may be cut off)
+2026-11-18 23:50:41,185 INFO sailab.pipeline: KRB: 1 radar scenes listed after 2026-11-09
+2026-11-18 23:50:41,476 INFO sailab.pipeline: KRB S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: already recorded, skipped
+2026-11-18 23:50:42,521 INFO sailab.pipeline: ATS: 2 scenes listed after 2026-11-14
+2026-11-18 23:50:42,522 INFO sailab.pipeline: ATS 20261115T055101_20261115T055104_T43SCA: already recorded, skipped
+2026-11-18 23:50:43,690 INFO sailab.pipeline: ATS 20261117T055241_20261117T055242_T43SCA: downloaded data/scenes/ATS/20261117T055241_20261117T055242_T43SCA.tif sha256=ea8da39563a045d20660eca4317a31314c4ae37da66a4fdb1dccc07ddc97cf9d
+2026-11-18 23:50:43,898 INFO sailab.pipeline: ATS 20261117T055241_20261117T055242_T43SCA: insufficient_observation None (check D: lake region (10414 px) borders 20 cloud/shadow pixels)
+2026-11-18 23:50:44,314 INFO sailab.pipeline: ATS: 1 radar scenes listed after 2026-11-09
+2026-11-18 23:50:44,419 INFO sailab.pipeline: ATS S1D_IW_GRDH_1SDV_20261110T010541_20261110T010606_005398_00A4C0_EE4D: already recorded, skipped
+2026-11-18 23:50:45,595 INFO sailab.pipeline: SHP: 2 scenes listed after 2026-11-14
+2026-11-18 23:50:45,597 INFO sailab.pipeline: SHP 20261115T055101_20261115T055104_T43SDA: already recorded, skipped
+2026-11-18 23:50:47,636 INFO sailab.pipeline: SHP 20261117T055241_20261117T055242_T43SDA: downloaded data/scenes/SHP/20261117T055241_20261117T055242_T43SDA.tif sha256=ed541fdad00b8e4b1283e1c5257b6a3303052c4ec468e203fd3a1d949b738c06
+2026-11-18 23:50:48,280 INFO sailab.pipeline: SHP 20261117T055241_20261117T055242_T43SDA: insufficient_observation None (centre pixel Pixel(row=301, col=300) is not water (NDWI <= 0.2))
+2026-11-18 23:50:48,457 INFO sailab.pipeline: SHP: 1 radar scenes listed after 2026-11-15
+2026-11-18 23:50:49,838 INFO sailab.pipeline: SHP: DEM downloaded to /home/runner/work/sailab-glof-live/sailab-glof-live/data/dem/SHP_dem.tif sha256=68c68cb2695e5dbc5d6193995c84684ca1cd583542830329c76525207e855a85
+2026-11-18 23:50:50,266 INFO sailab.pipeline: SHP S1D_IW_GRDH_1SDV_20261116T125648_20261116T125713_005493_00A7F5_4173: already recorded, skipped
+2026-11-18 23:50:52,289 INFO sailab.pipeline: KHD: 3 scenes listed after 2026-11-14
+2026-11-18 23:50:52,290 INFO sailab.pipeline: KHD 20261115T055101_20261115T055104_T43SEA: already recorded, skipped
+2026-11-18 23:50:53,974 INFO sailab.pipeline: KHD 20261117T054109_20261117T054316_T43SEA: downloaded data/scenes/KHD/20261117T054109_20261117T054316_T43SEA.tif sha256=1be1f53115cb01401c3b3308a770c04ca09ca6caba51e5c07e0baa1c08106bde
+2026-11-18 23:50:54,583 INFO sailab.pipeline: KHD 20261117T054109_20261117T054316_T43SEA: insufficient_observation None (centre pixel Pixel(row=300, col=299) is not water (NDWI <= 0.2))
+2026-11-18 23:50:56,177 INFO sailab.pipeline: KHD 20261117T055241_20261117T055242_T43SEA: downloaded data/scenes/KHD/20261117T055241_20261117T055242_T43SEA.tif sha256=3aec09e16b71b626ce0fb9a4f20db404e59bab612ec652de28b230755249fef4
+2026-11-18 23:50:56,780 INFO sailab.pipeline: KHD 20261117T055241_20261117T055242_T43SEA: insufficient_observation None (centre pixel Pixel(row=300, col=299) is not water (NDWI <= 0.2))
+2026-11-18 23:50:57,027 INFO sailab.pipeline: KHD: 2 radar scenes listed after 2026-11-15
+2026-11-18 23:50:57,948 INFO sailab.pipeline: KHD: DEM downloaded to /home/runner/work/sailab-glof-live/sailab-glof-live/data/dem/KHD_dem.tif sha256=0e8d54e5eee6b8d4a9fb24453e88e7ec56d6bb1fb2093e81f8ebe5261d16cd24
+2026-11-18 23:50:58,367 INFO sailab.pipeline: KHD S1D_IW_GRDH_1SDV_20261116T125648_20261116T125713_005493_00A7F5_4173: already recorded, skipped
+2026-11-18 23:51:00,801 INFO sailab.pipeline: KHD S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: downloaded data/scenes/KHD/S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA.tif sha256=0580ce865b91cb6509916298e313c0e61f09d0fc997190c29ff5cdba3ebde804
+2026-11-18 23:51:00,838 INFO sailab.pipeline: KHD S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: radar insufficient_observation None (centre pixel Pixel(row=300, col=299) is not below the Otsu threshold -8.44 dB)
+2026-11-18 23:51:01,980 INFO sailab.pipeline: BDS: 2 scenes listed after 2026-11-14
+2026-11-18 23:51:01,982 INFO sailab.pipeline: BDS 20261115T055101_20261115T055104_T43SDA: already recorded, skipped
+2026-11-18 23:51:04,905 INFO sailab.pipeline: BDS 20261117T055241_20261117T055242_T43SDA: downloaded data/scenes/BDS/20261117T055241_20261117T055242_T43SDA.tif sha256=d51a876f7ddb98ce5edbb15f786d6f590557b18d45779d5d82386cbf2417cb35
+2026-11-18 23:51:05,584 INFO sailab.pipeline: BDS 20261117T055241_20261117T055242_T43SDA: ok 58.37 (5837 water pixels connected to the centre)
+2026-11-18 23:51:05,586 INFO sailab.pipeline: BDS 20261117T055241_20261117T055242_T43SDA: optical risk ok baseline=52.44076923076923 score=0.630147456995482
+2026-11-18 23:51:06,138 INFO sailab.pipeline: BDS 20261117T055241_20261117T055242_T43SDA: optical EIF risk ok score=0.0 (Area 58.4 ha is about the usual 57.3 ha for November; 2 days before it was 11% above usual. Ordinary compared with 168 earlier readings.)
+2026-11-18 23:51:06,224 INFO sailab.pipeline: BDS: 1 radar scenes listed after 2026-11-15
+2026-11-18 23:51:07,492 INFO sailab.pipeline: BDS: DEM downloaded to /home/runner/work/sailab-glof-live/sailab-glof-live/data/dem/BDS_dem.tif sha256=4185569575b5c714e523b575029642f4e0ac203616dd803f231ba9ea2b287bad
+2026-11-18 23:51:07,914 INFO sailab.pipeline: BDS S1D_IW_GRDH_1SDV_20261116T125648_20261116T125713_005493_00A7F5_4173: already recorded, skipped
+2026-11-18 23:51:09,476 INFO sailab.pipeline: CHJ: 4 scenes listed after 2026-11-14
+2026-11-18 23:51:09,477 INFO sailab.pipeline: CHJ 20261115T055101_20261115T055104_T43SDA: already recorded, skipped
+2026-11-18 23:51:09,478 INFO sailab.pipeline: CHJ 20261115T055101_20261115T055104_T43SCA: already recorded, skipped
+2026-11-18 23:51:10,827 INFO sailab.pipeline: CHJ 20261117T055241_20261117T055242_T43SDA: downloaded data/scenes/CHJ/20261117T055241_20261117T055242_T43SDA.tif sha256=b2c3aa9ce66955991bd4945663a40905d7e0dc75ef8b7dac8d3894088e3152d2
+2026-11-18 23:51:11,429 INFO sailab.pipeline: CHJ 20261117T055241_20261117T055242_T43SDA: insufficient_observation None (centre pixel Pixel(row=303, col=301) is not water (NDWI <= 0.2))
+2026-11-18 23:51:12,372 INFO sailab.pipeline: CHJ 20261117T055241_20261117T055242_T43SCA: downloaded data/scenes/CHJ/20261117T055241_20261117T055242_T43SCA.tif sha256=d47addec2251bb1fc7aa2b2720815b61faaf5c5fa0a1260aa80ae8d0280d176f
+2026-11-18 23:51:12,970 INFO sailab.pipeline: CHJ 20261117T055241_20261117T055242_T43SCA: insufficient_observation None (centre pixel Pixel(row=303, col=301) is not water (NDWI <= 0.2))
+2026-11-18 23:51:13,143 INFO sailab.pipeline: CHJ: 1 radar scenes listed after 2026-11-15
+2026-11-18 23:51:14,273 INFO sailab.pipeline: CHJ: DEM downloaded to /home/runner/work/sailab-glof-live/sailab-glof-live/data/dem/CHJ_dem.tif sha256=bf180682f9941e8cfca093f08adf12df7e99c8df4a75fef7bdbf2160e7162a30
+2026-11-18 23:51:14,693 INFO sailab.pipeline: CHJ S1D_IW_GRDH_1SDV_20261116T125648_20261116T125713_005493_00A7F5_4173: already recorded, skipped
+2026-11-18 23:51:15,815 INFO sailab.pipeline: PSU: 2 scenes listed after 2026-11-14
+2026-11-18 23:51:15,817 INFO sailab.pipeline: PSU 20261115T055101_20261115T055104_T43SDA: already recorded, skipped
+2026-11-18 23:51:17,574 INFO sailab.pipeline: PSU 20261117T055241_20261117T055242_T43SDA: downloaded data/scenes/PSU/20261117T055241_20261117T055242_T43SDA.tif sha256=5a0db4984df10215d9da0dbb46e7390f47f2a9c206b2f386734cd66d7ba32608
+2026-11-18 23:51:18,196 INFO sailab.pipeline: PSU 20261117T055241_20261117T055242_T43SDA: ok 11.31 (1131 water pixels connected to the centre)
+2026-11-18 23:51:18,198 INFO sailab.pipeline: PSU 20261117T055241_20261117T055242_T43SDA: optical risk ok baseline=11.204 score=0.04087053347799218
+2026-11-18 23:51:18,744 INFO sailab.pipeline: PSU 20261117T055241_20261117T055242_T43SDA: optical EIF risk ok score=7.0 (Area 11.3 ha is 5% below the usual 11.9 ha for November; 7 days before it was 97% below usual. Slightly unusual compared with 168 earlier readings.)
+2026-11-18 23:51:18,918 INFO sailab.pipeline: PSU: 2 radar scenes listed after 2026-11-15
+2026-11-18 23:51:20,054 INFO sailab.pipeline: PSU: DEM downloaded to /home/runner/work/sailab-glof-live/sailab-glof-live/data/dem/PSU_dem.tif sha256=c7bb5b68d9c193be5a4c9afe4d80170c89567d833c592c992903a772df8afc23
+2026-11-18 23:51:20,465 INFO sailab.pipeline: PSU S1D_IW_GRDH_1SDV_20261116T125648_20261116T125713_005493_00A7F5_4173: already recorded, skipped
+2026-11-18 23:51:21,664 INFO sailab.pipeline: PSU S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: downloaded data/scenes/PSU/S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA.tif sha256=ce5daf993d93c68cbad1d00afe44a06a1bf4c17cfeac04c40bb195879181e5f0
+2026-11-18 23:51:22,177 INFO sailab.pipeline: PSU S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: radar ok 42.17 (4217 px below -10.38 dB connected to the centre)
+2026-11-18 23:51:22,177 INFO sailab.pipeline: PSU S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: radar not risk-scored (SCORE_RADAR is off: snowmelt errors, see pipeline.py)
+2026-11-18 23:51:23,827 INFO sailab.pipeline: RSH: 3 scenes listed after 2026-11-14
+2026-11-18 23:51:23,828 INFO sailab.pipeline: RSH 20261115T055101_20261115T055104_T43SDA: already recorded, skipped
+2026-11-18 23:51:24,783 INFO sailab.pipeline: RSH 20261117T054109_20261117T054316_T43SDA: downloaded data/scenes/RSH/20261117T054109_20261117T054316_T43SDA.tif sha256=ac3f2e8236f5226ef711bc8b3c15a7ea03e399dd38b0c264d2369a2d404151af
+2026-11-18 23:51:25,365 INFO sailab.pipeline: RSH 20261117T054109_20261117T054316_T43SDA: insufficient_observation None (centre pixel Pixel(row=300, col=299) is not water (NDWI <= 0.2))
+2026-11-18 23:51:27,313 INFO sailab.pipeline: RSH 20261117T055241_20261117T055242_T43SDA: downloaded data/scenes/RSH/20261117T055241_20261117T055242_T43SDA.tif sha256=edde0edb4a8f950732df4f01cbedabc50f626cb81be95dee9ebf08335edf9fdc
+2026-11-18 23:51:27,922 INFO sailab.pipeline: RSH 20261117T055241_20261117T055242_T43SDA: insufficient_observation None (centre pixel Pixel(row=300, col=299) is not water (NDWI <= 0.2))
+2026-11-18 23:51:28,098 INFO sailab.pipeline: RSH: 2 radar scenes listed after 2026-11-15
+2026-11-18 23:51:28,799 INFO sailab.pipeline: RSH: DEM downloaded to /home/runner/work/sailab-glof-live/sailab-glof-live/data/dem/RSH_dem.tif sha256=578c58f72857cafadeefa95481cc1bb56cf66c7a4833311009572cfcf8db1e4e
+2026-11-18 23:51:29,211 INFO sailab.pipeline: RSH S1D_IW_GRDH_1SDV_20261116T125648_20261116T125713_005493_00A7F5_4173: already recorded, skipped
+2026-11-18 23:51:30,932 INFO sailab.pipeline: RSH S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: downloaded data/scenes/RSH/S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA.tif sha256=25cff89c297a2aa1bc0ccdf19e22e974130c983fb85b0018528e24b8eef3e3ba
+2026-11-18 23:51:31,389 INFO sailab.pipeline: RSH S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: radar ok 10.31 (1031 px below -11.46 dB connected to the centre)
+2026-11-18 23:51:31,389 INFO sailab.pipeline: RSH S1D_IW_GRDH_1SDV_20261117T005737_20261117T005802_005500_00A83B_5EAA: radar not risk-scored (SCORE_RADAR is off: snowmelt errors, see pipeline.py)
+2026-11-18 23:51:31,390 INFO sailab.pipeline: run 28 finished: RunResult(run_id=28, lakes_processed=8, scenes_recorded=14, scenes_downloaded=14, measurements=14, risk_scores=2, errors=None, notes=[])
+2026-11-18 23:51:31,390 INFO run_once: summary: run_id=28 lakes=8 scenes_recorded=14 downloaded=14 measurements=14 risk_scores=2
+2026-11-18 23:51:31,390 INFO run_once: run OK
